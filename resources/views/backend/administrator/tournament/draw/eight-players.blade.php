@@ -1,0 +1,9163 @@
+@extends('layouts.master')
+@section('title', 'Tournament Draw & Tree')
+
+@section('content')
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="mb-sm-0 font-size-18">Tournament Draw & Tree ({{ count($players) }} Players)</h4>
+
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard </a></li>
+                                <li class="breadcrumb-item active" style="color: #74788d;">Tournament Draw & Tree</li>
+                            </ol>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+
+            
+
+            @if(count($errors) > 0)
+                <div class="alert alert-dismissible fade show color-box bg-danger bg-gradient p-4" role="alert">
+                    <x-jet-validation-errors class="mb-4 my-2 text-white" />
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            
+            @if($tournament->tree_size == 8)
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body" style="text-align: center;">
+
+                                <span class="badge bg-info mb-4 text-center">Deadlines</span>
+
+                                <form class="needs-validation" action="{{ route('submit.deadlines', $tournament->id) }}" method="post" novalidate="">
+                                @csrf
+                                
+                                    <div class="row mb-4">
+                                        <div>
+                                            <h5 class="text-center text-info" style="font-weight:510;">Round One</h5>
+                                            <div class="input-daterange input-group" id="project-date-inputgroup" data-provide="datepicker" data-date-format="dd M, yyyy"  data-date-container='#project-date-inputgroup' data-date-autoclose="true">
+
+                                                <input type="text" class="start form-control" @if($tournament->round_one_deadline) value="{{ $t_d_rou1->start }}" @endif placeholder="Start Date" name="rou_1_start" required />
+                                                <input type="text" class="end form-control" @if($tournament->round_one_deadline) value="{{ $t_d_rou1->end }}" @endif placeholder="End Date" name="rou_1_end" required />
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div>
+                                            <h5 class="text-center text-info" style="font-weight:510;">Semi Finals</h5>
+                                            <div class="input-daterange input-group" id="project-date-inputgroup" data-provide="datepicker" data-date-format="dd M, yyyy"  data-date-container='#project-date-inputgroup' data-date-autoclose="true">
+
+                                                <input type="text" class="start form-control" @if($tournament->semi_final_deadline) value="{{ $t_d_semf->start }}" @endif placeholder="Start Date" name="sem_start" required />
+                                                <input type="text" class="end form-control" @if($tournament->semi_final_deadline) value="{{ $t_d_semf->end }}" @endif placeholder="End Date" name="sem_end" required />
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div>
+                                            <h5 class="text-center text-info" style="font-weight:510;"> Final</h5>
+                                            <div class="input-daterange input-group" id="project-date-inputgroup" data-provide="datepicker" data-date-format="dd M, yyyy"  data-date-container='#project-date-inputgroup' data-date-autoclose="true">
+
+                                                <input type="text" class="start form-control" @if($tournament->final_deadline) value="{{ $t_d_final->start }}" @endif placeholder="Start Date" name="final_start" required />
+                                                <input type="text" class="end form-control" @if($tournament->final_deadline) value="{{ $t_d_final->end }}" @endif placeholder="End Date" name="final_end" required />
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <button type="submit" class="btn btn-success btn-label waves-effect waves-light mt-3 mb-1" onclick="return confirm('Are you sure to set the schedule of the tournament?');"><i class="bx bx-add-to-queue label-icon"></i> Submit Deadlines <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i></button>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br><br>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div>
+                                        <h5 class="text-center text-info" style="font-weight:510;">Round One</h5>
+                                    </div>
+
+                                    <i class="bx bx-chevrons-down bx-fade-down text-info display-6 text-center mt-1"></i>
+                                    <span style="margin-top:20px;"></span>
+                                        
+                                        <div class="col-xl-4"></div>
+                                        <div class="col-xl-4 text-center">
+                                            <span class="badge bg-info mb-4">Matches</span>
+                                        </div>
+                                        <div class="col-xl-4"></div>
+                                        
+                                        <div class="col-xl-6">
+                                            <div class="mb-3 position-relative">
+
+                                                <form class="needs-validation" action="{{ route('submit.round.one.match.one', $tournament->id) }}" method="post" novalidate="">
+                                                    @csrf
+                            
+                                                    <label class="form-label text-dark"> Match - 1 (Left)</label>
+                                                    <div class="row">
+
+                                                        <div class="col-5">
+                                                            <select class="form-control select2" id="validationTooltip81" name="rou_1_mat_1_player_1" required>
+                                            
+                                                                <option value="">Select Player</option>
+                                                                
+                                                                <?php 
+                                                                    $rou_1_mat_1 = []; 
+
+                                                                    if($tournament->round_one_matches) {
+                                                                        $find_matches = json_decode($tournament->round_one_matches, true);
+
+                                                                        if(array_key_exists('match_1', $find_matches)) {
+                                                                            $matches = $find_matches['match_1'];
+                                                                            $match = explode(" VS ", $matches);
+                                                                            array_push($rou_1_mat_1, \App\Models\User::findOrFail($match[0])->name);
+                                                                            array_push($rou_1_mat_1, \App\Models\User::findOrFail($match[1])->name);
+                                                                        }
+                                                                    }
+                                                                ?>
+                                                                @foreach($players as $player)
+                                                                    <?php 
+                                                                        $user = \App\Models\User::findOrFail($player);
+
+                                                                        if($tournament->round_one_matches) {
+                                                                            $find_matches = json_decode($tournament->round_one_matches, true);
+
+                                                                            if(array_key_exists('match_1', $find_matches)) {
+                                                                                $matches = $find_matches['match_1'];
+                                                                                $match = explode(" VS ", $matches);
+                                                                            }
+                                                                        }
+                                                                    ?>
+
+
+                                                                    <option value="{{ $user->id }}" @if($round_one_matches) @if(array_key_exists('match_1', $round_one_matches)) {{ $match[0] == $user->id ? "selected" : "" }} @endif @else {{ old('rou_1_mat_1_player_1') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+
+                                                                @endforeach
+
+                                                            </select>
+
+                                                            <div class="invalid-feedback">
+                                                                Please select a player.
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-1 text-center" style="margin-top: 10px !important;margin: 0 auto;"><span class="badge bg-secondary">VS</span> </div>
+
+                                                        <div class="col-5">
+                                                            <select class="form-control select2" id="validationTooltip82" name="rou_1_mat_1_player_2" required>
+                                            
+                                                                <option value="">Select Player</option>
+                                                                
+                                                                @foreach($players as $player)
+                                                                    <?php 
+                                                                        $user = \App\Models\User::findOrFail($player);
+
+                                                                        if($tournament->round_one_matches) {
+                                                                            $find_matches = json_decode($tournament->round_one_matches, true);
+
+                                                                            if(array_key_exists('match_1', $find_matches)) {
+                                                                                $matches = $find_matches['match_1'];
+                                                                                $match = explode(" VS ", $matches);
+                                                                            }
+                                                                        }
+                                                                    ?>
+
+
+                                                                    <option value="{{ $user->id }}" @if($round_one_matches) @if(array_key_exists('match_1', $round_one_matches)) {{ $match[1] == $user->id ? "selected" : "" }} @endif @else {{ old('rou_1_mat_1_player_2') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+
+                                                                @endforeach
+
+
+                                                            </select>
+
+                                                            <div class="invalid-feedback">
+                                                                Please select a player.
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="col-5">
+                                                            <button type="submit" class="btn btn-success btn-label waves-effect waves-light mt-3" @if($round_one_results) @if(array_key_exists('match_1', $round_one_results)) disabled @endif @endif style="margin: 0 auto; width: 100%;" @if($round_one_matches) @if(array_key_exists('match_1', $round_one_matches)) onclick="return confirm('Match draw has been performed already. Are you sure to change the draw and send SMS to the players again?');" @else onclick="return confirm('Are you sure to make the match draw and send SMS to the players?');" @endif @else onclick="return confirm('Are you sure to make the match draw and send SMS to the players?');" @endif ><i class="bx bx-add-to-queue label-icon"></i> @if($round_one_matches) @if(array_key_exists('match_1', $round_one_matches)) Change @else Submit @endif @else Submit @endif Match <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i></button>
+                                                        </div>
+
+                                                    </div>
+                                                </form>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-6">
+                                            <div class="mb-3 position-relative">
+                                                
+                                                <form class="needs-validation" action="{{ route('submit.round.one.match.two', $tournament->id) }}" method="post" novalidate="">
+                                                    @csrf
+
+                                                    <label class="form-label text-dark"> Match - 2 (Left)</label>
+                                                    <div class="row">
+
+                                                        <div class="col-5">
+                                                            <select class="form-control select2" id="validationTooltip83" name="rou_1_mat_2_player_1" required>
+                                            
+                                                                <option value="">Select Player</option>
+                                                                
+                                                                <?php 
+                                                                    $rou_1_mat_2 = []; 
+
+                                                                    if($tournament->round_one_matches) {
+                                                                        $find_matches = json_decode($tournament->round_one_matches, true);
+
+                                                                        if(array_key_exists('match_2', $find_matches)) {
+                                                                            $matches = $find_matches['match_2'];
+                                                                            $match = explode(" VS ", $matches);
+                                                                            array_push($rou_1_mat_2, \App\Models\User::findOrFail($match[0])->name);
+                                                                            array_push($rou_1_mat_2, \App\Models\User::findOrFail($match[1])->name);
+                                                                        }
+                                                                    }
+                                                                ?>
+                                                                @foreach($players as $player)
+                                                                    <?php 
+                                                                        $user = \App\Models\User::findOrFail($player);
+
+                                                                        if($tournament->round_one_matches) {
+                                                                            $find_matches = json_decode($tournament->round_one_matches, true);
+
+                                                                            if(array_key_exists('match_2', $find_matches)) {
+                                                                                $matches = $find_matches['match_2'];
+                                                                                $match = explode(" VS ", $matches);
+                                                                            }
+                                                                        }
+                                                                    ?>
+
+
+                                                                    <option value="{{ $user->id }}" @if($round_one_matches) @if(array_key_exists('match_2', $round_one_matches)) {{ $match[0] == $user->id ? "selected" : "" }} @endif @else {{ old('rou_1_mat_2_player_1') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+
+                                                                @endforeach
+
+                                                            </select>
+
+                                                            <div class="invalid-feedback">
+                                                                Please select a player.
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-1 text-center" style="margin-top: 10px !important;margin: 0 auto;"><span class="badge bg-secondary">VS</span> </div>
+
+                                                        <div class="col-5">
+                                                            <select class="form-control select2" id="validationTooltip84" name="rou_1_mat_2_player_2" required>
+                                            
+                                                                <option value="">Select Player</option>
+                                                                
+                                                                @foreach($players as $player)
+                                                                    <?php 
+                                                                        $user = \App\Models\User::findOrFail($player);
+
+                                                                        if($tournament->round_one_matches) {
+                                                                            $find_matches = json_decode($tournament->round_one_matches, true);
+
+                                                                            if(array_key_exists('match_2', $find_matches)) {
+                                                                                $matches = $find_matches['match_2'];
+                                                                                $match = explode(" VS ", $matches);
+                                                                            }
+                                                                        }
+                                                                    ?>
+
+
+                                                                    <option value="{{ $user->id }}" @if($round_one_matches) @if(array_key_exists('match_2', $round_one_matches)) {{ $match[1] == $user->id ? "selected" : "" }} @endif @else {{ old('rou_1_mat_2_player_2') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+
+                                                                @endforeach
+
+                                                            </select>
+
+                                                            <div class="invalid-feedback">
+                                                                Please select a player.
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-5">
+                                                            <button type="submit" class="btn btn-success btn-label waves-effect waves-light mt-3" @if($round_one_results) @if(array_key_exists('match_2', $round_one_results)) disabled @endif @endif style="margin: 0 auto; width: 100%;" @if($round_one_matches) @if(array_key_exists('match_2', $round_one_matches)) onclick="return confirm('Match draw has been performed already. Are you sure to change the draw and send SMS to the players again?');" @else onclick="return confirm('Are you sure to make the match draw and send SMS to the players?');" @endif @else onclick="return confirm('Are you sure to make the match draw and send SMS to the players?');" @endif ><i class="bx bx-add-to-queue label-icon"></i> @if($round_one_matches) @if(array_key_exists('match_2', $round_one_matches)) Change @else Submit @endif @else Submit @endif Match <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i></button>
+                                                        </div>
+
+                                                    </div>  
+
+                                                </form>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-6">
+                                            <div class="mb-3 position-relative">
+
+                                                <form class="needs-validation" action="{{ route('submit.round.one.match.three', $tournament->id) }}" method="post" novalidate="">
+                                                    @csrf
+
+                                                    <label class="form-label text-dark"> Match - 3 (Right)</label>
+                                                    <div class="row">
+
+                                                        <div class="col-5">
+                                                            <select class="form-control select2" id="validationTooltip85" name="rou_1_mat_3_player_1" required>
+                                            
+                                                                <option value="">Select Player</option>
+                                                                
+                                                                <?php 
+                                                                    $rou_1_mat_3 = []; 
+
+                                                                    if($tournament->round_one_matches) {
+                                                                        $find_matches = json_decode($tournament->round_one_matches, true);
+
+                                                                        if(array_key_exists('match_3', $find_matches)) {
+                                                                            $matches = $find_matches['match_3'];
+                                                                            $match = explode(" VS ", $matches);
+                                                                            array_push($rou_1_mat_3, \App\Models\User::findOrFail($match[0])->name);
+                                                                            array_push($rou_1_mat_3, \App\Models\User::findOrFail($match[1])->name);
+                                                                        }
+                                                                    }
+                                                                ?>
+
+                                                                @foreach($players as $player)
+                                                                    <?php 
+                                                                        $user = \App\Models\User::findOrFail($player);
+
+                                                                        if($tournament->round_one_matches) {
+                                                                            $find_matches = json_decode($tournament->round_one_matches, true);
+
+                                                                            if(array_key_exists('match_3', $find_matches)) {
+                                                                                $matches = $find_matches['match_3'];
+                                                                                $match = explode(" VS ", $matches);
+                                                                                
+                                                                            }
+                                                                        }
+                                                                    ?>
+
+
+                                                                    <option value="{{ $user->id }}" @if($round_one_matches) @if(array_key_exists('match_3', $round_one_matches)) {{ $match[0] == $user->id ? "selected" : "" }} @endif @else {{ old('rou_1_mat_3_player_1') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+
+                                                                @endforeach
+
+                                                            </select>
+
+                                                            <div class="invalid-feedback">
+                                                                Please select a player.
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-1 text-center" style="margin-top: 10px !important;margin: 0 auto;"><span class="badge bg-secondary">VS</span> </div>
+
+                                                        <div class="col-5">
+                                                            <select class="form-control select2" id="validationTooltip86" name="rou_1_mat_3_player_2" required>
+                                            
+                                                                <option value="">Select Player</option>
+                                                                
+                                                                @foreach($players as $player)
+                                                                    <?php 
+                                                                        $user = \App\Models\User::findOrFail($player);
+
+                                                                        if($tournament->round_one_matches) {
+                                                                            $find_matches = json_decode($tournament->round_one_matches, true);
+
+                                                                            if(array_key_exists('match_3', $find_matches)) {
+                                                                                $matches = $find_matches['match_3'];
+                                                                                $match = explode(" VS ", $matches);
+                                                                                
+                                                                            }
+                                                                        }
+                                                                    ?>
+
+
+                                                                    <option value="{{ $user->id }}" @if($round_one_matches) @if(array_key_exists('match_3', $round_one_matches)) {{ $match[1] == $user->id ? "selected" : "" }} @endif @else {{ old('rou_1_mat_3_player_2') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+
+                                                                @endforeach
+
+                                                            </select>
+
+                                                            <div class="invalid-feedback">
+                                                                Please select a player.
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-5">
+                                                            <button type="submit" class="btn btn-success btn-label waves-effect waves-light mt-3" @if($round_one_results) @if(array_key_exists('match_3', $round_one_results)) disabled @endif @endif style="margin: 0 auto; width: 100%;" @if($round_one_matches) @if(array_key_exists('match_3', $round_one_matches)) onclick="return confirm('Match draw has been performed already. Are you sure to change the draw and send SMS to the players again?');" @else onclick="return confirm('Are you sure to make the match draw and send SMS to the players?');" @endif @else onclick="return confirm('Are you sure to make the match draw and send SMS to the players?');" @endif ><i class="bx bx-add-to-queue label-icon"></i> @if($round_one_matches) @if(array_key_exists('match_3', $round_one_matches)) Change @else Submit @endif @else Submit @endif Match <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i></button>
+                                                        </div>
+
+                                                    </div>  
+
+                                                </form>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-6">
+                                            <div class="mb-3 position-relative">
+
+                                                <form class="needs-validation" action="{{ route('submit.round.one.match.four', $tournament->id) }}" method="post" novalidate="">
+                                                    @csrf
+
+                                                    <label class="form-label text-dark"> Match - 4 (Right)</label>
+                                                    <div class="row">
+
+                                                        <div class="col-5">
+                                                            <select class="form-control select2" id="validationTooltip87" name="rou_1_mat_4_player_1" required>
+                                            
+                                                                <option value="">Select Player</option>
+                                                                
+                                                                <?php 
+                                                                    $rou_1_mat_4 = []; 
+
+                                                                    if($tournament->round_one_matches) {
+                                                                        $find_matches = json_decode($tournament->round_one_matches, true);
+
+                                                                        if(array_key_exists('match_4', $find_matches)) {
+                                                                            $matches = $find_matches['match_4'];
+                                                                            $match = explode(" VS ", $matches);
+                                                                            array_push($rou_1_mat_4, \App\Models\User::findOrFail($match[0])->name);
+                                                                            array_push($rou_1_mat_4, \App\Models\User::findOrFail($match[1])->name);
+                                                                        }
+                                                                    }
+                                                                ?>
+                                                                @foreach($players as $player)
+                                                                    <?php 
+                                                                        $user = \App\Models\User::findOrFail($player);
+
+                                                                        if($tournament->round_one_matches) {
+                                                                            $find_matches = json_decode($tournament->round_one_matches, true);
+
+                                                                            if(array_key_exists('match_4', $find_matches)) {
+                                                                                $matches = $find_matches['match_4'];
+                                                                                $match = explode(" VS ", $matches);
+                                                                            }
+                                                                        }
+                                                                    ?>
+
+
+                                                                    <option value="{{ $user->id }}" @if($round_one_matches) @if(array_key_exists('match_4', $round_one_matches)) {{ $match[0] == $user->id ? "selected" : "" }} @endif @else {{ old('rou_1_mat_4_player_1') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+
+                                                                @endforeach
+
+                                                            </select>
+
+                                                            <div class="invalid-feedback">
+                                                                Please select a player.
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-1 text-center" style="margin-top: 10px !important;margin: 0 auto;"><span class="badge bg-secondary">VS</span> </div>
+
+                                                        <div class="col-5">
+                                                            <select class="form-control select2" id="validationTooltip88" name="rou_1_mat_4_player_2" required>
+                                            
+                                                                <option value="">Select Player</option>
+                                                                
+                                                                @foreach($players as $player)
+                                                                    <?php 
+                                                                        $user = \App\Models\User::findOrFail($player);
+
+                                                                        if($tournament->round_one_matches) {
+                                                                            $find_matches = json_decode($tournament->round_one_matches, true);
+
+                                                                            if(array_key_exists('match_4', $find_matches)) {
+                                                                                $matches = $find_matches['match_4'];
+                                                                                $match = explode(" VS ", $matches);
+                                                                            }
+                                                                        }
+                                                                    ?>
+
+
+                                                                    <option value="{{ $user->id }}" @if($round_one_matches) @if(array_key_exists('match_4', $round_one_matches)) {{ $match[1] == $user->id ? "selected" : "" }} @endif @else {{ old('rou_1_mat_4_player_2') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+
+                                                                @endforeach
+
+
+                                                            </select>
+
+                                                            <div class="invalid-feedback">
+                                                                Please select a player.
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-5">
+                                                            <button type="submit" class="btn btn-success btn-label waves-effect waves-light mt-3" @if($round_one_results) @if(array_key_exists('match_4', $round_one_results)) disabled @endif @endif style="margin: 0 auto; width: 100%;" @if($round_one_matches) @if(array_key_exists('match_4', $round_one_matches)) onclick="return confirm('Match draw has been performed already. Are you sure to change the draw and send SMS to the players again?');" @else onclick="return confirm('Are you sure to make the match draw and send SMS to the players?');" @endif @else onclick="return confirm('Are you sure to make the match draw and send SMS to the players?');" @endif ><i class="bx bx-add-to-queue label-icon"></i> @if($round_one_matches) @if(array_key_exists('match_4', $round_one_matches)) Change @else Submit @endif @else Submit @endif Match <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i></button>
+                                                        </div>
+
+                                                    </div>  
+                                                </form>
+
+                                            </div>
+                                        </div>
+
+
+
+                                        <i class="bx bx-chevrons-down bx-fade-down text-info display-6 text-center mt-1"></i>
+                                        <span style="margin-top:20px;"></span>
+
+                                        <div class="col-xl-4"></div>
+                                        <div class="col-xl-4 text-center">
+                                            <span class="badge bg-info mb-4">Auto Selection</span>
+                                        </div>
+                                        <div class="col-xl-4"></div>
+
+                                        <?php 
+                                            $rou_1_mat_auto = [];
+                                        ?>
+                                        @for($k = 1; $k < 5; $k++)
+                                            <div class="col-xl-6">
+                                                <div class="mb-3 position-relative">
+                                                    
+                                                    <form class="needs-validation" action="{{ route('submit.round.one.auto.selection', $tournament->id) }}" method="post" novalidate="">
+                                                        @csrf
+
+                                    
+                                                        <div class="row">
+
+                                                            <div class="col-6">
+                                                                <label class="form-label text-dark"> Select Player </label>
+
+                                                                <select class="form-control select2" id="rou1_mat_{{$k}}_auto_player" name="rou1_mat_auto_player" required>
+                                                
+                                                                    <option value="">Select Player</option>
+                                                                    
+                                                                    <?php 
+                                                                        
+                                                                        if($round_one_auto_selection) {               
+                                                                            if(array_key_exists('match_'.$k, $round_one_auto_selection)) {
+                                                                                $auto_player = $round_one_auto_selection['match_'.$k];
+                                                                                $rou_1_mat_auto['match_'.$k] = \App\Models\User::findOrFail($auto_player)->name;
+                                                                            }
+                                                                        }
+                                                            
+                                                                    ?>
+
+                                                                    @foreach($players as $player)
+                                                                        <?php 
+                                                                            $user = \App\Models\User::findOrFail($player);
+                                                                        ?>
+
+
+                                                                        <option value="{{ $user->id }}" @if($round_one_auto_selection) @if(array_key_exists('match_'.$k, $round_one_auto_selection)) {{ $auto_player == $user->id ? "selected" : "" }} @else {{ old('rou1_mat_auto_player') == $user->id ? "selected" : "" }} @endif @else {{ old('rou1_mat_auto_player') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+
+                                                                    @endforeach
+
+                                                                </select>
+
+                                                                <div class="invalid-feedback">
+                                                                    Please select a player.
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            
+                                                            <div class="col-6">
+                                                                <label class="form-label text-dark"> Define Match </label>
+
+                                                                <select class="form-control select2" id="rou1_mat_{{ $k }}_auto" name="rou1_mat_auto" required>
+                                                
+                                                                    <option value="">Select Any Match</option>
+                                                                    
+                                                                    
+                                                                    <?php 
+                                                                        $match_word = strtolower(ucwords((new NumberFormatter('en_IN', NumberFormatter::SPELLOUT))->format($k)));
+                                                                    ?>
+                                                                    <option value="match_{{ $k }}" @if($round_one_auto_selection) @if(array_key_exists('match_'.$k, $round_one_auto_selection)) selected @endif @endif>Match - {{ $k }}</option>
+                                                                    
+
+                                                                </select>
+
+                                                                <div class="invalid-feedback">
+                                                                    Please select/define a match.
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="col-12">
+                                                                <button type="submit" class="btn btn-info btn-label waves-effect waves-light mt-3" style="margin: 0 auto; width: 100%;" @if($tournament->round_one_auto_selection) @if(array_key_exists('match_'.$k, $round_one_auto_selection)) onclick="return confirm('Match auto selection has been performed already. Are you sure to change the selection and send SMS to the players again?');" @else onclick="return confirm('Are you sure to make the match auto selection and send SMS to the player?');" @endif @else onclick="return confirm('Are you sure to make the match auto selection and send SMS to the player?');" @endif><i class="bx bx-add-to-queue label-icon"></i> @if($tournament->round_one_auto_selection) @if(array_key_exists('match_'.$k, $round_one_auto_selection))  Change @else Submit @endif @else Submit @endif Automatic Selection <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i></button>
+                                                            </div>
+
+                                                        </div>  
+
+                                                    </form>
+
+                                                </div>
+                                            </div>
+
+                                        @endfor
+                                   
+                                </div>
+                                                  
+
+                                @if($tournament->round_one_matches)
+                                    <div class="row">
+                                        <i class="bx bx-chevrons-down bx-fade-down text-info display-6 text-center mt-1"></i>
+                                        <span style="margin-top:20px;"></span>
+                                            
+                                            <div class="col-xl-4"></div>
+                                            <div class="col-xl-4 text-center">
+                                                <span class="badge bg-info mb-1">Match Results</span>
+                                            </div>
+                                            <div class="col-xl-4"></div>
+
+                                            <div class="col-xl-6 mt-4">
+                                                
+                                                <form class="needs-validation" action="{{ route('submit.round.one.result.one', $tournament->id) }}" method="post" novalidate="">
+                                                @csrf
+                                
+                                                    <label class="form-label text-dark" style="border:1px dashed #ddd; padding: 7px; border-radius: 2px; margin-bottom: 15px;"> Match - 1 (Left)</label>
+
+                                                    <?php 
+                                                        if($tournament->round_one_matches) {
+                                                            $find_matches = json_decode($tournament->round_one_matches, true);
+
+                                                            if(array_key_exists('match_1', $find_matches)) {
+                                                                $matches = $find_matches['match_1'];
+                                                                $match = explode(" VS ", $matches);
+
+                                                                $p1_m1 = \App\Models\User::findOrFail($match[0]);
+                                                                $p2_m1 = \App\Models\User::findOrFail($match[1]);
+                                                            }
+
+                                                        }
+
+                                                        if($tournament->round_one_results) {
+                                                            $rou1_m1_s1 = [];
+                                                            $rou1_m1_s2 = [];
+                                                            $rou1_m1_s3 = [];
+
+                                                            $find_results = json_decode($tournament->round_one_results, true);
+
+                                                            if(array_key_exists('match_1', $find_results)) {
+                                                                $results = $find_results['match_1'];
+                                                                foreach($results as $result_array) {
+                                                                    if(array_key_exists('set_1', $result_array)) {
+                                                                        $rs = $result_array['set_1'];
+                                                                        array_push($rou1_m1_s1, $rs);
+                                                                    }
+
+                                                                    if(array_key_exists('set_2', $result_array)) {
+                                                                        $rs2 = $result_array['set_2'];
+                                                                        array_push($rou1_m1_s2, $rs2);
+                                                                    }
+
+                                                                    if(array_key_exists('set_3', $result_array)) {
+                                                                        $rs3 = $result_array['set_3'];
+                                                                        array_push($rou1_m1_s3, $rs3);
+                                                                    }
+                                                                }
+                                                            }
+
+                                                        }
+                                                    ?>
+
+
+                                                    <input type="hidden" name="p1_m1" value="@if(array_key_exists('match_1', $round_one_matches)) {{ $p1_m1->id }} @endif">
+                                                    <input type="hidden" name="p2_m1" value="@if(array_key_exists('match_1', $round_one_matches)) {{ $p2_m1->id }} @endif">
+
+                                                    <div class="row mb-2">
+                                                        
+                                                        <label for="validationTooltip100" class="col-xl-4 col-form-label">@if(array_key_exists('match_1', $round_one_matches)) {{ $p1_m1->name }} @else N/A @endif</label>
+                                                        
+                                                        <div class="col-xl-8" style="margin-bottom: 0.7rem!important;">
+                                                            <div class="row">
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="1st Set" @if($tournament->round_one_results) value="{{ $rou1_m1_s1 ? $rou1_m1_s1[0] : '' }}" @endif name="p1_m1_s1" required="">
+                                                                </div>
+
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="2nd Set" @if($tournament->round_one_results) value="{{ $rou1_m1_s2 ? $rou1_m1_s2[0] : '' }}" @endif name="p1_m1_s2" required="">
+                                                                </div>
+
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="3rd Set" @if($tournament->round_one_results) value="{{ $rou1_m1_s3 ? $rou1_m1_s3[0] : '' }}" @endif name="p1_m1_s3">
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="row mb-2">
+                                                        <label for="validationTooltip100" class="col-xl-4 col-form-label">@if(array_key_exists('match_1', $round_one_matches)) {{ $p2_m1->name }} @else N/A @endif</label>
+                                                        
+                                                        <div class="col-xl-8">
+                                                            <div class="row">
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="1st Set" @if($tournament->round_one_results) value="{{ $rou1_m1_s1 ? $rou1_m1_s1[1] : '' }}" @endif name="p2_m1_s1" required="">
+                                                                </div>
+
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="2nd Set" @if($tournament->round_one_results) value="{{ $rou1_m1_s2 ? $rou1_m1_s2[1] : '' }}" @endif name="p2_m1_s2" required="">
+                                                                </div>
+
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="3rd Set" @if($tournament->round_one_results) value="{{ $rou1_m1_s3 ? $rou1_m1_s3[1] : '' }}" @endif name="p2_m1_s3">
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="row mb-2" style="margin-top: 20px;">
+                                                        <label for="rou_1_mat_1_status" class="col-xl-4 col-form-label text-info">Status</label>
+                                                        
+                                                        <div class="col-xl-8">
+                                                            <div class="mb-1 position-relative">
+                                                                <select class="form-control select2" id="rou_1_mat_1_status" name="rou_1_mat_1_status">
+                                            
+                                                                    <option value="">Select Status</option>
+
+                                                                    <option value="Withdraw" @if($round_one_status) @if(array_key_exists('match_1', $round_one_status)) {{ $round_one_status['match_1'] == 'Withdraw' ? "selected" : "" }} @endif @endif>Withdraw</option>
+
+                                                                    <option value="Retired" @if($round_one_status) @if(array_key_exists('match_1', $round_one_status)) {{ $round_one_status['match_1'] == 'Retired' ? "selected" : "" }} @endif @endif>Retired</option>
+
+                                                                    <option value="Decided by Organisers" @if($round_one_status) @if(array_key_exists('match_1', $round_one_status)) {{ $round_one_status['match_1'] == 'Decided by Organisers' ? "selected" : "" }} @endif @endif>Decided by Organisers</option>
+                                                                    
+                                                                </select>
+
+                                                                <div class="valid-feedback">
+                                                                    Looks good!
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="row">
+                                                        <div class="col-4"></div>
+                                                        <div class="col-8 mb-4">
+                                                            <button type="submit" class="btn btn-success btn-label waves-effect waves-light mt-3" style="width: 100%; margin: 0 auto;" 
+                                                                @if($round_one_results) 
+                                                                    @if(array_key_exists('match_1', $round_one_results)) 
+                                                                        onclick="return confirm('Match result have been added already. Are you sure to change the match result? It will affect the winners list.');" 
+                                                                    @else
+                                                                        onclick="return confirm('Are you sure to submit the match result?');"
+                                                                    @endif 
+                                                                @else 
+                                                                    onclick="return confirm('Are you sure to submit the match result?');" 
+                                                                @endif>
+                                                                    <i class="bx bx-add-to-queue label-icon"></i> 
+
+                                                                    @if($round_one_results) 
+                                                                        @if(array_key_exists('match_1', $round_one_results))
+                                                                            Change 
+                                                                        @else
+                                                                            Submit
+                                                                        @endif
+                                                                    @else 
+                                                                        Submit 
+                                                                    @endif 
+                                                                        Result <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i>
+                                                            </button>  
+
+                                                        </div>
+                                                    </div>
+                                                </form>
+
+                                            </div>
+                                            
+                                            <div class="col-xl-6 mt-4">
+
+                                                <form class="needs-validation" action="{{ route('submit.round.one.result.two', $tournament->id) }}" method="post" novalidate="">
+                                                @csrf
+                                                    <label class="form-label text-dark" style="border:1px dashed #ddd; padding: 7px; border-radius: 2px; margin-bottom: 15px;"> Match - 2 (Left)</label>
+
+                                                    <?php 
+                                                        if($tournament->round_one_matches) {
+                                                            $find_matches = json_decode($tournament->round_one_matches, true);
+
+                                                            if(array_key_exists('match_2', $find_matches)) {
+                                                                $matches = $find_matches['match_2'];
+                                                                $match = explode(" VS ", $matches);
+
+                                                                $p1_m2 = \App\Models\User::findOrFail($match[0]);
+                                                                $p2_m2 = \App\Models\User::findOrFail($match[1]);
+                                                            }
+
+                                                        }
+
+                                                        if($tournament->round_one_results) {
+                                                            $rou1_m2_s1 = [];
+                                                            $rou1_m2_s2 = [];
+                                                            $rou1_m2_s3 = [];
+
+                                                            $find_results = json_decode($tournament->round_one_results, true);
+
+                                                            if(array_key_exists('match_2', $find_results)) {
+                                                                $results = $find_results['match_2'];
+                                                                foreach($results as $result_array) {
+                                                                    if(array_key_exists('set_1', $result_array)) {
+                                                                        $rs = $result_array['set_1'];
+                                                                        array_push($rou1_m2_s1, $rs);
+                                                                    }
+
+                                                                    if(array_key_exists('set_2', $result_array)) {
+                                                                        $rs2 = $result_array['set_2'];
+                                                                        array_push($rou1_m2_s2, $rs2);
+                                                                    }
+
+                                                                    if(array_key_exists('set_3', $result_array)) {
+                                                                        $rs3 = $result_array['set_3'];
+                                                                        array_push($rou1_m2_s3, $rs3);
+                                                                    }
+                                                                }
+                                                            }
+
+                                                        }
+
+                                                    ?>
+
+
+                                                    <input type="hidden" name="p1_m2" value="@if(array_key_exists('match_2', $round_one_matches)) {{ $p1_m2->id }} @endif">
+                                                    <input type="hidden" name="p2_m2" value="@if(array_key_exists('match_2', $round_one_matches)) {{ $p2_m2->id }} @endif">
+
+                                                    <div class="row mb-2">
+                                                        <label for="validationTooltip100" class="col-xl-4 col-form-label">@if(array_key_exists('match_2', $round_one_matches)) {{ $p1_m2->name }} @else N/A @endif</label>
+                                                        
+                                                        <div class="col-xl-8" style="margin-bottom: 0.7rem!important;">
+                                                            <div class="row">
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="1st Set" @if($tournament->round_one_results) value="{{ $rou1_m2_s1 ? $rou1_m2_s1[0] : '' }}" @endif name="p1_m2_s1" required="">
+                                                                </div>
+
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="2nd Set" @if($tournament->round_one_results) value="{{ $rou1_m2_s2 ? $rou1_m2_s2[0] : '' }}" @endif name="p1_m2_s2" required="">
+                                                                </div>
+
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="3rd Set" @if($tournament->round_one_results) value="{{ $rou1_m2_s3 ? $rou1_m2_s3[0] : '' }}" @endif name="p1_m2_s3">
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-2">
+                                                        <label for="validationTooltip100" class="col-xl-4 col-form-label">@if(array_key_exists('match_2', $round_one_matches)) {{ $p2_m2->name }} @else N/A @endif</label>
+                                                        
+                                                        <div class="col-xl-8">
+                                                            <div class="row">
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="1st Set" @if($tournament->round_one_results) value="{{ $rou1_m2_s1 ? $rou1_m2_s1[1] : '' }}" @endif name="p2_m2_s1" required="">
+                                                                </div>
+
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="2nd Set" @if($tournament->round_one_results) value="{{ $rou1_m2_s2 ? $rou1_m2_s2[1] : '' }}" @endif name="p2_m2_s2" required="">
+                                                                </div>
+
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="3rd Set" @if($tournament->round_one_results) value="{{ $rou1_m2_s3 ? $rou1_m2_s3[1] : '' }}" @endif name="p2_m2_s3">
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="row mb-2" style="margin-top: 20px;">
+                                                        <label for="rou_1_mat_2_status" class="col-xl-4 col-form-label text-info">Status</label>
+                                                        
+                                                        <div class="col-xl-8">
+                                                            <div class="mb-1 position-relative">
+                                                                <select class="form-control select2" id="rou_1_mat_2_status" name="rou_1_mat_2_status">
+                                            
+                                                                    <option value="">Select Status</option>
+                                                                    
+                                                                    <option value="Withdraw" @if($round_one_status) @if(array_key_exists('match_2', $round_one_status)) {{ $round_one_status['match_2'] == 'Withdraw' ? "selected" : "" }} @endif @endif>Withdraw</option>
+
+                                                                    <option value="Retired" @if($round_one_status) @if(array_key_exists('match_2', $round_one_status)) {{ $round_one_status['match_2'] == 'Retired' ? "selected" : "" }} @endif @endif>Retired</option>
+
+                                                                    <option value="Decided by Organisers" @if($round_one_status) @if(array_key_exists('match_2', $round_one_status)) {{ $round_one_status['match_2'] == 'Decided by Organisers' ? "selected" : "" }} @endif @endif>Decided by Organisers</option>
+                                                                    
+                                                                </select>
+
+                                                                <div class="valid-feedback">
+                                                                    Looks good!
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="row">
+                                                        <div class="col-4"></div>
+                                                        <div class="col-8 mb-4">
+                                                            <button type="submit" class="btn btn-success btn-label waves-effect waves-light mt-3" style="width: 100%; margin: 0 auto;" 
+                                                                @if($round_one_results) 
+                                                                    @if(array_key_exists('match_2', $round_one_results)) 
+                                                                        onclick="return confirm('Match result have been added already. Are you sure to change the match result? It will affect the winners list.');" 
+                                                                    @else
+                                                                        onclick="return confirm('Are you sure to submit the match result?');"
+                                                                    @endif 
+                                                                @else 
+                                                                    onclick="return confirm('Are you sure to submit the match result?');" 
+                                                                @endif>
+                                                                    <i class="bx bx-add-to-queue label-icon"></i> 
+                                                                    
+                                                                    @if($round_one_results) 
+                                                                        @if(array_key_exists('match_2', $round_one_results))
+                                                                            Change 
+                                                                        @else
+                                                                            Submit
+                                                                        @endif
+                                                                    @else 
+                                                                        Submit 
+                                                                    @endif 
+                                                                        Result <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i>
+                                                            </button>  
+
+                                                        </div>
+                                                    </div>
+                                                </form>
+
+                                            </div>
+
+                                            <div class="col-xl-6 mt-4">
+
+                                                <form class="needs-validation" action="{{ route('submit.round.one.result.three', $tournament->id) }}" method="post" novalidate="">
+                                                @csrf
+                                                    <label class="form-label text-dark" style="border:1px dashed #ddd; padding: 7px; border-radius: 2px; margin-bottom: 15px;"> Match - 3 (Right)</label>
+
+                                                    <?php 
+                                                        
+                                                        if($tournament->round_one_matches) {
+                                                            $find_matches = json_decode($tournament->round_one_matches, true);
+
+                                                            if(array_key_exists('match_3', $find_matches)) {
+                                                                $matches = $find_matches['match_3'];
+                                                                $match = explode(" VS ", $matches);
+
+                                                                $p1_m3 = \App\Models\User::findOrFail($match[0]);
+                                                                $p2_m3 = \App\Models\User::findOrFail($match[1]);
+                                                            }
+
+                                                        }
+
+                                                        if($tournament->round_one_results) {
+                                                            $rou1_m3_s1 = [];
+                                                            $rou1_m3_s2 = [];
+                                                            $rou1_m3_s3 = [];
+
+                                                            $find_results = json_decode($tournament->round_one_results, true);
+
+                                                            if(array_key_exists('match_3', $find_results)) {
+                                                                $results = $find_results['match_3'];
+                                                                foreach($results as $result_array) {
+                                                                    if(array_key_exists('set_1', $result_array)) {
+                                                                        $rs = $result_array['set_1'];
+                                                                        array_push($rou1_m3_s1, $rs);
+                                                                    }
+
+                                                                    if(array_key_exists('set_2', $result_array)) {
+                                                                        $rs2 = $result_array['set_2'];
+                                                                        array_push($rou1_m3_s2, $rs2);
+                                                                    }
+
+                                                                    if(array_key_exists('set_3', $result_array)) {
+                                                                        $rs3 = $result_array['set_3'];
+                                                                        array_push($rou1_m3_s3, $rs3);
+                                                                    }
+                                                                }
+                                                            }
+
+                                                        }
+                                                    ?>
+
+                                                
+                                                    <input type="hidden" name="p1_m3" value="@if(array_key_exists('match_3', $round_one_matches)) {{ $p1_m3->id }} @endif">
+                                                    <input type="hidden" name="p2_m3" value="@if(array_key_exists('match_3', $round_one_matches)) {{ $p2_m3->id }} @endif">
+
+                                                    <div class="row mb-2">
+                                                        <label for="validationTooltip100" class="col-xl-4 col-form-label">@if(array_key_exists('match_3', $round_one_matches)) {{ $p1_m3->name }} @else N/A @endif</label>
+                                                        
+                                                        <div class="col-xl-8" style="margin-bottom: 0.7rem!important;">
+                                                            <div class="row">
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="1st Set" @if($tournament->round_one_results) value="{{ $rou1_m3_s1 ? $rou1_m3_s1[0] : '' }}" @endif name="p1_m3_s1" required="">
+                                                                </div>
+
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="2nd Set" @if($tournament->round_one_results) value="{{ $rou1_m3_s2 ? $rou1_m3_s2[0] : '' }}" @endif name="p1_m3_s2" required="">
+                                                                </div>
+
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="3rd Set" @if($tournament->round_one_results) value="{{ $rou1_m3_s3 ? $rou1_m3_s3[0] : '' }}" @endif name="p1_m3_s3">
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-2">
+                                                        <label for="validationTooltip100" class="col-xl-4 col-form-label">@if(array_key_exists('match_3', $round_one_matches)) {{ $p2_m3->name }} @else N/A @endif</label>
+                                                        
+                                                        <div class="col-xl-8">
+                                                            <div class="row">
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="1st Set" @if($tournament->round_one_results) value="{{ $rou1_m3_s1 ? $rou1_m3_s1[1] : '' }}" @endif name="p2_m3_s1" required="">
+                                                                </div>
+
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="2nd Set" @if($tournament->round_one_results) value="{{ $rou1_m3_s2 ? $rou1_m3_s2[1] : '' }}" @endif name="p2_m3_s2" required="">
+                                                                </div>
+
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="3rd Set" @if($tournament->round_one_results) value="{{ $rou1_m3_s3 ? $rou1_m3_s3[1] : '' }}" @endif name="p2_m3_s3">
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="row mb-2" style="margin-top: 20px;">
+                                                        <label for="rou_1_mat_3_status" class="col-xl-4 col-form-label text-info">Status</label>
+                                                        
+                                                        <div class="col-xl-8">
+                                                            <div class="mb-1 position-relative">
+                                                                <select class="form-control select2" id="rou_1_mat_3_status" name="rou_1_mat_3_status">
+                                            
+                                                                    <option value="">Select Status</option>
+                                                                    
+                                                                    <option value="Withdraw" @if($round_one_status) @if(array_key_exists('match_3', $round_one_status)) {{ $round_one_status['match_3'] == 'Withdraw' ? "selected" : "" }} @endif @endif>Withdraw</option>
+
+                                                                    <option value="Retired" @if($round_one_status) @if(array_key_exists('match_3', $round_one_status)) {{ $round_one_status['match_3'] == 'Retired' ? "selected" : "" }} @endif @endif>Retired</option>
+
+                                                                    <option value="Decided by Organisers" @if($round_one_status) @if(array_key_exists('match_3', $round_one_status)) {{ $round_one_status['match_3'] == 'Decided by Organisers' ? "selected" : "" }} @endif @endif>Decided by Organisers</option>
+                                                                    
+                                                                </select>
+
+                                                                <div class="valid-feedback">
+                                                                    Looks good!
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="row">
+                                                        <div class="col-4"></div>
+                                                        <div class="col-8 mb-4">
+                                                            <button type="submit" class="btn btn-success btn-label waves-effect waves-light mt-3" style="width: 100%; margin: 0 auto;" 
+                                                                @if($round_one_results) 
+                                                                    @if(array_key_exists('match_3', $round_one_results)) 
+                                                                        onclick="return confirm('Match result have been added already. Are you sure to change the match result? It will affect the winners list.');" 
+                                                                    @else
+                                                                        onclick="return confirm('Are you sure to submit the match result?');"
+                                                                    @endif 
+                                                                @else 
+                                                                    onclick="return confirm('Are you sure to submit the match result?');" 
+                                                                @endif>
+                                                                    <i class="bx bx-add-to-queue label-icon"></i> 
+                                                                    
+                                                                    @if($round_one_results) 
+                                                                        @if(array_key_exists('match_3', $round_one_results))
+                                                                            Change 
+                                                                        @else
+                                                                            Submit
+                                                                        @endif
+                                                                    @else 
+                                                                        Submit 
+                                                                    @endif 
+                                                                        Result <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i>
+                                                            </button>  
+
+                                                        </div>
+                                                    </div>
+                                                </form>
+
+                                            </div>
+
+                                            <div class="col-xl-6 mt-4">
+
+                                                <form class="needs-validation" action="{{ route('submit.round.one.result.four', $tournament->id) }}" method="post" novalidate="">
+                                                @csrf
+                                                    <label class="form-label text-dark" style="border:1px dashed #ddd; padding: 7px; border-radius: 2px; margin-bottom: 15px;"> Match - 4 (Right)</label>
+
+                                                    <?php 
+                                                        if($tournament->round_one_matches) {
+                                                            $find_matches = json_decode($tournament->round_one_matches, true);
+
+                                                            if(array_key_exists('match_4', $find_matches)) {
+                                                                $matches = $find_matches['match_4'];
+                                                                $match = explode(" VS ", $matches);
+
+                                                                $p1_m4 = \App\Models\User::findOrFail($match[0]);
+                                                                $p2_m4 = \App\Models\User::findOrFail($match[1]);
+                                                            }
+
+                                                        }
+
+                                                        if($tournament->round_one_results) {
+                                                            $rou1_m4_s1 = [];
+                                                            $rou1_m4_s2 = [];
+                                                            $rou1_m4_s3 = [];
+
+                                                            $find_results = json_decode($tournament->round_one_results, true);
+
+                                                            if(array_key_exists('match_4', $find_results)) {
+                                                                $results = $find_results['match_4'];
+                                                                foreach($results as $result_array) {
+                                                                    if(array_key_exists('set_1', $result_array)) {
+                                                                        $rs = $result_array['set_1'];
+                                                                        array_push($rou1_m4_s1, $rs);
+                                                                    }
+
+                                                                    if(array_key_exists('set_2', $result_array)) {
+                                                                        $rs2 = $result_array['set_2'];
+                                                                        array_push($rou1_m4_s2, $rs2);
+                                                                    }
+
+                                                                    if(array_key_exists('set_3', $result_array)) {
+                                                                        $rs3 = $result_array['set_3'];
+                                                                        array_push($rou1_m4_s3, $rs3);
+                                                                    }
+                                                                }
+                                                            }
+
+                                                        }
+                                                    ?>
+
+                                                
+                                                    <input type="hidden" name="p1_m4" value="@if(array_key_exists('match_4', $round_one_matches)) {{ $p1_m4->id }} @endif">
+                                                    <input type="hidden" name="p2_m4" value="@if(array_key_exists('match_4', $round_one_matches)) {{ $p2_m4->id }} @endif">
+
+                                                    <div class="row mb-2">
+                                                        <label for="validationTooltip100" class="col-xl-4 col-form-label">@if(array_key_exists('match_4', $round_one_matches)) {{ $p1_m4->name }} @else N/A @endif</label>
+                                                        
+                                                        <div class="col-xl-8" style="margin-bottom: 0.7rem!important;">
+                                                            <div class="row">
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="1st Set" @if($tournament->round_one_results) value="{{ $rou1_m4_s1 ? $rou1_m4_s1[0] : '' }}" @endif name="p1_m4_s1" required="">
+                                                                </div>
+
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="2nd Set" @if($tournament->round_one_results) value="{{ $rou1_m4_s2 ? $rou1_m4_s2[0] : '' }}" @endif name="p1_m4_s2" required="">
+                                                                </div>
+
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="3rd Set" @if($tournament->round_one_results) value="{{ $rou1_m4_s3 ? $rou1_m4_s3[0] : '' }}" @endif name="p1_m4_s3">
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-2">
+                                                        <label for="validationTooltip100" class="col-xl-4 col-form-label">@if(array_key_exists('match_4', $round_one_matches)) {{ $p2_m4->name }} @else N/A @endif</label>
+                                                        
+                                                        <div class="col-xl-8">
+                                                            <div class="row">
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="1st Set" @if($tournament->round_one_results) value="{{ $rou1_m4_s1 ? $rou1_m4_s1[1] : '' }}" @endif name="p2_m4_s1" required="">
+                                                                </div>
+
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="2nd Set" @if($tournament->round_one_results) value="{{ $rou1_m4_s2 ? $rou1_m4_s2[1] : '' }}" @endif name="p2_m4_s2" required="">
+                                                                </div>
+
+                                                                <div class="col-4">
+                                                                    <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="3rd Set" @if($tournament->round_one_results) value="{{ $rou1_m4_s3 ? $rou1_m4_s3[1] : '' }}" @endif name="p2_m4_s3">
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="row mb-2" style="margin-top: 20px;">
+                                                        <label for="rou_1_mat_4_status" class="col-xl-4 col-form-label text-info">Status</label>
+                                                        
+                                                        <div class="col-xl-8">
+                                                            <div class="mb-1 position-relative">
+                                                                <select class="form-control select2" id="rou_1_mat_4_status" name="rou_1_mat_4_status">
+                                            
+                                                                    <option value="">Select Status</option>
+
+                                                                    <option value="Withdraw" @if($round_one_status) @if(array_key_exists('match_4', $round_one_status)) {{ $round_one_status['match_4'] == 'Withdraw' ? "selected" : "" }} @endif @endif>Withdraw</option>
+
+                                                                    <option value="Retired" @if($round_one_status) @if(array_key_exists('match_4', $round_one_status)) {{ $round_one_status['match_4'] == 'Retired' ? "selected" : "" }} @endif @endif>Retired</option>
+
+                                                                    <option value="Decided by Organisers" @if($round_one_status) @if(array_key_exists('match_4', $round_one_status)) {{ $round_one_status['match_4'] == 'Decided by Organisers' ? "selected" : "" }} @endif @endif>Decided by Organisers</option>
+                                                                    
+                                                                </select>
+
+                                                                <div class="valid-feedback">
+                                                                    Looks good!
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="row">
+                                                        <div class="col-4"></div>
+                                                        <div class="col-8 mb-4">
+                                                            <button type="submit" class="btn btn-success btn-label waves-effect waves-light mt-3" style="width: 100%; margin: 0 auto;" 
+                                                                @if($round_one_results) 
+                                                                    @if(array_key_exists('match_4', $round_one_results)) 
+                                                                        onclick="return confirm('Match result have been added already. Are you sure to change the match result? It will affect the winners list.');" 
+                                                                    @else
+                                                                        onclick="return confirm('Are you sure to submit the match result?');"
+                                                                    @endif 
+                                                                @else 
+                                                                    onclick="return confirm('Are you sure to submit the match result?');" 
+                                                                @endif>
+                                                                    <i class="bx bx-add-to-queue label-icon"></i> 
+                                                                    
+                                                                    @if($round_one_results) 
+                                                                        @if(array_key_exists('match_4', $round_one_results))
+                                                                            Change 
+                                                                        @else
+                                                                            Submit
+                                                                        @endif
+                                                                    @else 
+                                                                        Submit 
+                                                                    @endif 
+                                                                        Result <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i>
+                                                            </button>  
+
+                                                        </div>
+                                                    </div>
+                                                </form>
+
+                                            </div>
+
+
+                                            @if($round_one_status) 
+                                                @if(in_array('Retired', $round_one_status))
+                                                
+                                                    <i class="bx bx-chevrons-down bx-fade-down text-info display-6 text-center mt-1"></i>
+                                                    <span style="margin-top:20px;"></span>
+
+                                                    <div class="col-xl-4"></div>
+                                                    <div class="col-xl-4 text-center">
+                                                        <span class="badge bg-info mb-4">Who're Retiring</span>
+                                                    </div>
+                                                    <div class="col-xl-4"></div>
+
+                                                    <?php 
+                                                        $rou_1_mat_retires = [];
+                                                    ?>
+                                                    @for($k = 1; $k < 5; $k++)
+                                                        <div class="col-xl-6">
+                                                            <div class="mb-3 position-relative">
+                                                                
+                                                                <form class="needs-validation" action="{{ route('submit.round.one.retire', $tournament->id) }}" method="post" novalidate="">
+                                                                    @csrf
+
+                                                
+                                                                    <div class="row">
+
+                                                                        <div class="col-6">
+                                                                            <label class="form-label text-dark"> Select Player </label>
+
+                                                                            <select class="form-control select2" id="rou1_mat_{{$k}}_retire_player" name="rou1_mat_retire_player" required>
+                                                            
+                                                                                <option value="">Select Player</option>
+                                                                                
+                                                                                <?php 
+                                                                                    
+                                                                                    if($round_one_retires) {               
+                                                                                        if(array_key_exists('match_'.$k, $round_one_retires)) {
+                                                                                            $retire_player = $round_one_retires['match_'.$k];
+                                                                                            $rou_1_mat_retires['match_'.$k] = \App\Models\User::findOrFail($retire_player)->name;
+                                                                                        }
+                                                                                    }
+                                                                        
+                                                                                ?>
+
+                                                                                @foreach($players as $player)
+                                                                                    <?php 
+                                                                                        $user = \App\Models\User::findOrFail($player);
+                                                                                    ?>
+
+
+                                                                                    <option value="{{ $user->id }}" @if($round_one_retires) @if(array_key_exists('match_'.$k, $round_one_retires)) {{ $retire_player == $user->id ? "selected" : "" }} @else {{ old('rou1_mat_retire_player') == $user->id ? "selected" : "" }} @endif @else {{ old('rou1_mat_retire_player') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+
+                                                                                @endforeach
+
+                                                                            </select>
+
+                                                                            <div class="invalid-feedback">
+                                                                                Please select a player.
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                        
+                                                                        <div class="col-6">
+                                                                            <label class="form-label text-dark"> Define Match </label>
+
+                                                                            <select class="form-control select2" id="rou1_mat_{{ $k }}_retire" name="rou1_mat_retire" required>
+                                                            
+                                                                                <option value="">Select Any Match</option>
+                                                                                
+                                                                                
+                                                                                <?php 
+                                                                                    $match_word = strtolower(ucwords((new NumberFormatter('en_IN', NumberFormatter::SPELLOUT))->format($k)));
+                                                                                ?>
+                                                                                <option value="match_{{ $k }}" @if($round_one_retires) @if(array_key_exists('match_'.$k, $round_one_retires)) selected @endif @endif>Match - {{ $k }}</option>
+                                                                                
+
+                                                                            </select>
+
+                                                                            <div class="invalid-feedback">
+                                                                                Please select/define a match.
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                        <div class="col-12">
+                                                                            <button type="submit" class="btn btn-warning btn-label waves-effect waves-light mt-3" style="margin: 0 auto; width: 100%;" @if($tournament->round_one_retires) @if(array_key_exists('match_'.$k, $round_one_retires)) onclick="return confirm('Match retirement has been performed already. Are you sure to change?');" @else onclick="return confirm('Are you sure to make the match retirement?');" @endif @else onclick="return confirm('Are you sure to make the match retirement?');" @endif><i class="bx bx-add-to-queue label-icon"></i> @if($tournament->round_one_retires) @if(array_key_exists('match_'.$k, $round_one_retires))  Change @else Submit @endif @else Submit @endif Retirement <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i></button>
+                                                                        </div>
+
+                                                                    </div>  
+
+                                                                </form>
+
+                                                            </div>
+                                                        </div>
+
+                                                    @endfor
+
+                                                @endif
+                                            @endif
+
+
+                                    </div>                     
+                                @endif
+
+                                
+                                @if($tournament->round_one_results) 
+                                    <form class="needs-validation" action="{{ route('submit.round.one.winners', $tournament->id) }}" method="post" novalidate="">
+                                    @csrf
+                                    
+                                        <div class="row">
+                                            <i class="bx bx-chevrons-down bx-fade-down text-info display-6 text-center mt-1"></i>
+                                            <span style="margin-top:20px;"></span>
+                                                
+                                                <div class="col-xl-4"></div>
+                                                <div class="col-xl-4 text-center">
+                                                    <span class="badge bg-info mb-4">Winners</span>
+                                                </div>
+                                                <div class="col-xl-4"></div>
+                                                
+                                                <div class="col-xl-3">
+                                                    <div class="mb-3 position-relative">
+                                                        <label class="form-label text-dark"> Match - 1 (Left)</label>
+                                                            <div class="row">
+
+                                                                <div class="col-12">
+                                                                    <select class="form-control select2" id="rou_1_mat_1_winner" name="rou_1_mat_1_winner" required>
+                                                    
+                                                                        <option value="">Select Player</option>
+                                                                        
+                                                                            <?php 
+                                                                                if($tournament->round_one_matches) {
+                                                                                    $find_matches = json_decode($tournament->round_one_matches, true);
+
+                                                                                    if(array_key_exists('match_1', $find_matches)) {
+                                                                                        $matches = $find_matches['match_1'];
+                                                                                        $match = explode(" VS ", $matches);
+                                                                                    }
+
+                                                                                    if($tournament->round_one_winners) {
+                                                                                        $find_winners = json_decode($tournament->round_one_winners, true);
+                                                                                        
+                                                                                        if(array_key_exists('match_1', $find_winners)){
+                                                                                            $winner = $find_winners['match_1'];
+                                                                                        }
+                                                                                    }
+
+                                                                                }
+                                                                            ?>
+
+                                                                            @foreach($match as $value)
+                                                                                <?php 
+                                                                                    $user = \App\Models\User::findOrFail($value);
+                                                                                ?>
+                                                                                <option value="{{ $user->id }}" @if($tournament->round_one_winners) @if(array_key_exists('match_1', $round_one_winners)) {{ $winner == $user->id ? "selected" : "" }} @else {{ old('rou_1_mat_1_winner') == $user->id ? "selected" : "" }} @endif @else {{ old('rou_1_mat_1_winner') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+                                                                            @endforeach
+
+                                                                    </select>
+
+                                                                    <div class="invalid-feedback">
+                                                                        Please select a player.
+                                                                    </div>
+                                                                </div>
+                                                                
+
+                                                            </div>  
+
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-xl-3">
+                                                    <div class="mb-3 position-relative">
+                                                        <label class="form-label text-dark"> Match - 2 (Left)</label>
+                                                            <div class="row">
+
+                                                                <div class="col-12">
+                                                                    <select class="form-control select2" id="rou_1_mat_2_winner" name="rou_1_mat_2_winner" required>
+                                                    
+                                                                        <option value="">Select Player</option>
+                                                                        
+                                                                            <?php 
+                                                                                if($tournament->round_one_matches) {
+                                                                                    $find_matches = json_decode($tournament->round_one_matches, true);
+
+                                                                                    if(array_key_exists('match_2', $find_matches)) {
+                                                                                        $matches = $find_matches['match_2'];
+                                                                                        $match = explode(" VS ", $matches);
+                                                                                    }
+
+                                                                                    if($tournament->round_one_winners) {
+                                                                                        $find_winners = json_decode($tournament->round_one_winners, true);
+                                                                                        
+                                                                                        if(array_key_exists('match_2', $find_winners)){
+                                                                                            $winner = $find_winners['match_2'];
+                                                                                        }
+                                                                                    }
+
+                                                                                }
+                                                                            ?>
+
+                                                                            @foreach($match as $value)
+                                                                                <?php 
+                                                                                    $user = \App\Models\User::findOrFail($value);
+                                                                                ?>
+                                                                                <option value="{{ $user->id }}" @if($tournament->round_one_winners) @if(array_key_exists('match_2', $round_one_winners)) {{ $winner == $user->id ? "selected" : "" }} @else {{ old('rou_1_mat_2_winner') == $user->id ? "selected" : "" }} @endif @else {{ old('rou_1_mat_2_winner') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+                                                                            @endforeach
+
+                                                                    </select>
+
+                                                                    <div class="invalid-feedback">
+                                                                        Please select a player.
+                                                                    </div>
+                                                                </div>
+                                                                
+
+                                                            </div>  
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-xl-3">
+                                                    <div class="mb-3 position-relative">
+                                                        <label class="form-label text-dark"> Match - 3 (Right)</label>
+                                                            <div class="row">
+
+                                                                <div class="col-12">
+                                                                    <select class="form-control select2" id="rou_1_mat_3_winner" name="rou_1_mat_3_winner" required>
+                                                    
+                                                                        <option value="">Select Player</option>
+                                                                        
+                                                                            <?php 
+                                                                                if($tournament->round_one_matches) {
+                                                                                    $find_matches = json_decode($tournament->round_one_matches, true);
+
+                                                                                    if(array_key_exists('match_3', $find_matches)) {
+                                                                                        $matches = $find_matches['match_3'];
+                                                                                        $match = explode(" VS ", $matches);
+                                                                                    }
+
+                                                                                    if($tournament->round_one_winners) {
+                                                                                        $find_winners = json_decode($tournament->round_one_winners, true);
+                                                                                        
+                                                                                        if(array_key_exists('match_3', $find_winners)){
+                                                                                            $winner = $find_winners['match_3'];
+                                                                                        }
+                                                                                    }
+
+                                                                                }
+                                                                            ?>
+
+                                                                            @foreach($match as $value)
+                                                                                <?php 
+                                                                                    $user = \App\Models\User::findOrFail($value);
+                                                                                ?>
+                                                                                <option value="{{ $user->id }}" @if($tournament->round_one_winners) @if(array_key_exists('match_3', $round_one_winners)) {{ $winner == $user->id ? "selected" : "" }} @else {{ old('rou_1_mat_3_winner') == $user->id ? "selected" : "" }} @endif @else {{ old('rou_1_mat_3_winner') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+                                                                            @endforeach
+
+                                                                    </select>
+
+                                                                    <div class="invalid-feedback">
+                                                                        Please select a player.
+                                                                    </div>
+                                                                </div>
+                                                                
+
+                                                            </div>  
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-xl-3">
+                                                    <div class="mb-3 position-relative">
+                                                        <label class="form-label text-dark"> Match - 4 (Right)</label>
+                                                            <div class="row">
+
+                                                                <div class="col-12">
+                                                                    <select class="form-control select2" id="rou_1_mat_4_winner" name="rou_1_mat_4_winner" required>
+                                                    
+                                                                        <option value="">Select Player</option>
+                                                                        
+                                                                            <?php 
+                                                                                if($tournament->round_one_matches) {
+                                                                                    $find_matches = json_decode($tournament->round_one_matches, true);
+
+                                                                                    if(array_key_exists('match_4', $find_matches)) {
+                                                                                        $matches = $find_matches['match_4'];
+                                                                                        $match = explode(" VS ", $matches);
+                                                                                    }
+
+                                                                                    if($tournament->round_one_winners) {
+                                                                                        $find_winners = json_decode($tournament->round_one_winners, true);
+                                                                                        
+                                                                                        if(array_key_exists('match_4', $find_winners)){
+                                                                                            $winner = $find_winners['match_4'];
+                                                                                        }
+                                                                                    }
+
+                                                                                }
+                                                                            ?>
+
+                                                                            @foreach($match as $value)
+                                                                                <?php 
+                                                                                    $user = \App\Models\User::findOrFail($value);
+                                                                                ?>
+                                                                                <option value="{{ $user->id }}" @if($tournament->round_one_winners) @if(array_key_exists('match_4', $round_one_winners)) {{ $winner == $user->id ? "selected" : "" }} @else {{ old('rou_1_mat_4_winner') == $user->id ? "selected" : "" }} @endif @else {{ old('rou_1_mat_4_winner') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+                                                                            @endforeach
+
+                                                                    </select>
+
+                                                                    <div class="invalid-feedback">
+                                                                        Please select a player.
+                                                                    </div>
+                                                                </div>
+                                                                
+
+                                                            </div>  
+
+                                                    </div>
+                                                </div>
+
+                                                @if(count($round_one_results) == 4) 
+                                                    <button type="submit" class="btn btn-success btn-label waves-effect waves-light mt-3" style="width: 60%; margin: 0 auto;" @if($tournament->round_one_winners) onclick="return confirm('Winners have been selected already. Are you sure to change?');" @else onclick="return confirm('Are you sure to select these playes as Winners?');" @endif><i class="bx bx-add-to-queue label-icon"></i> @if($tournament->round_one_matches) Change @else Submit @endif Winners <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i></button>
+                                                @endif    
+
+                                           
+                                        </div>
+                        
+                                    </form>
+                                @endif
+
+
+                                @if($tournament->round_one_results)
+                                    <form class="needs-validation" action="{{ route('submit.round.one.points', $tournament->id) }}" method="post" novalidate="">
+                                        @csrf
+
+                                        <div class="row">
+                                            <i class="bx bx-chevrons-down bx-fade-down text-info display-6 text-center mt-1"></i>
+                                            <span style="margin-top:20px;"></span>
+                                                
+                                                <div class="col-xl-4"></div>
+                                                <div class="col-xl-4 text-center">
+                                                    <span class="badge bg-info mb-1">Match Points</span>
+                                                </div>
+                                                <div class="col-xl-4"></div>
+
+                                                    @for($i = 1; $i < 5; $i++)
+                                                        <div class="col-xl-6 mt-4">
+                                            
+                                                            <label class="form-label text-dark" style="border:1px dashed #ddd; padding: 7px; border-radius: 2px; margin-bottom: 15px;"> Match - {{ $i }} </label>
+
+                                                            <?php 
+                                                                if($tournament->round_one_matches) {
+                                                                    $find_matches = json_decode($tournament->round_one_matches, true);
+
+                                                                    if(array_key_exists('match_'.$i, $find_matches)) {
+                                                                        $matches = $find_matches['match_'.$i];
+                                                                        $match = explode(" VS ", $matches);
+
+                                                                        $p1 = \App\Models\User::findOrFail($match[0]);
+                                                                        $p2 = \App\Models\User::findOrFail($match[1]);
+                                                                    }
+
+                                                                }
+
+                                                                
+                                                                if($tournament->round_one_points) {
+
+                                                                    ${'rou1_p1_m'.$i} = '';
+                                                                    ${'rou1_p2_m'.$i} = '';
+
+                                                                    $find_points = (array)json_decode($tournament->round_one_points, true);
+
+                                                                    if(array_key_exists('match_'.$i, $find_points)) {
+                                                                        $results = $find_points['match_'.$i];
+                                                                        
+                                                                        ${'rou1_p1_m'.$i} = $results[$p1->id];
+                                                                        ${'rou1_p2_m'.$i} = $results[$p2->id];
+                                                                    }
+                                                                    
+                                                                }
+
+                                                            ?>
+
+                                                            
+                                                            <?php 
+                                                                if($tournament->round_one_matches) {
+                                                                    $find_matches = json_decode($tournament->round_one_matches, true);
+
+                                                                    if(array_key_exists('match_'.$i, $find_matches)) {
+                                                                        $matches = $find_matches['match_'.$i];
+                                                                        $match = explode(" VS ", $matches);
+                                                                    }
+
+                                                                    if($tournament->round_one_winners) {
+                                                                        $find_winners = json_decode($tournament->round_one_winners, true);
+                                                                        
+                                                                        if(array_key_exists('match_'.$i, $find_winners)){
+                                                                            $winner = $find_winners['match_'.$i];
+                                                                        }
+                                                                    }
+
+                                                                }
+                                                            ?>
+
+        
+
+                                                            <input type="hidden" name="p1_m{{ $i }}_id" value="{{ ${"p1_m".$i}->id ?? '' }}">
+
+                                                            <input type="hidden" name="p2_m{{ $i }}_id" value="{{ ${"p2_m".$i}->id ?? '' }}">
+
+                                                            <div class="row mb-2">
+                                                                
+                                                                <label for="r1_m{{ $i }}_p1" class="col-xl-4 col-form-label">
+                                                                    @if(array_key_exists('match_'.$i, $round_one_matches)) 
+                                                                        {{ $p1->name ?? "N/A" }}  
+                                                                        @if($tournament->round_one_winners)
+                                                                            @if(array_key_exists('match_'.$i, $round_one_winners)) 
+                                                                                <span class="text-danger text-center" style="font-weight: 500; font-size: 10px;">{{ $winner == $p1->id ? "(W)" : "" }}</span>
+                                                                            @endif 
+                                                                        @endif
+                                                                    @else
+                                                                        N/A 
+                                                                    @endif
+                                                                </label>
+                                                                
+                                                                <div class="col-xl-8" style="margin-bottom: 0.7rem!important;">
+                                                                    <div class="row">
+                                                                        <div class="col-12">
+                                                                            <input type="number" min="0" class="form-control" id="r1_m{{ $i }}_p1" placeholder="Enter point" 
+                                                                                @if($tournament->round_one_points) 
+                                                                                    value="{{ isset(${'rou1_p1_m'.$i}) ? ${'rou1_p1_m'.$i} : '' }}"
+                                                                                @endif 
+                                                                                name="p1_m{{ $i }}"
+                                                                            >
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <label for="r1_m{{ $i }}_p2" class="col-xl-4 col-form-label">
+                                                                    @if(array_key_exists('match_'.$i, $round_one_matches)) 
+                                                                        {{ $p2->name ?? "N/A" }} 
+                                                                        @if($tournament->round_one_winners)
+                                                                            @if(array_key_exists('match_'.$i, $round_one_winners)) 
+                                                                                <span class="text-danger text-center" style="font-weight: 500; font-size: 10px;">{{ $winner == $p2->id ? "(W)" : "" }}</span>
+                                                                            @endif 
+                                                                        @endif
+                                                                    @else 
+                                                                        N/A 
+                                                                    @endif
+                                                                </label>
+                                                                
+                                                                <div class="col-xl-8">
+                                                                    <div class="row">
+                                                                        <div class="col-12">
+                                                                            <input type="number" min="0" class="form-control" id="r1_m{{ $i }}_p2" placeholder="Enter point" 
+                                                                                @if($tournament->round_one_points) 
+                                                                                    value="{{ isset(${'rou1_p2_m'.$i}) ? ${'rou1_p2_m'.$i} : '' }}"
+                                                                                @endif 
+                                                                                name="p2_m{{ $i }}"
+                                                                            >
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </div>                                   
+
+                                                        </div>
+                                                    @endfor
+
+                                                    <button type="submit" class="btn btn-info btn-label waves-effect waves-light mt-3" style="width: 60%; margin: 0 auto;"  
+                                                        onclick="return confirm('Are you sure to submit the points?');" 
+                                                    >
+                                                        <i class="bx bx-add-to-queue label-icon"></i> Save Points 
+                                                        <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i>
+                                                    </button>
+                                        </div>
+
+                                    </form>
+                                @endif
+
+                            </div>
+                            <!-- end card body -->
+                        </div>
+                        <!-- end card -->
+                    </div>
+                    <!-- end col -->
+                </div>
+
+                <br><br>
+
+                {{-- SEMI FINAL --}}
+                @if($tournament->round_one_winners)
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <div class="row">
+                                        <div>
+                                            <h5 class="text-center text-info" style="font-weight:510;">Semi Finals</h5>
+                                        </div>
+
+                                        <i class="bx bx-chevrons-down bx-fade-down text-info display-6 text-center mt-1"></i>
+                                        <span style="margin-top:20px;"></span>
+                                            
+                                            <div class="col-xl-4"></div>
+                                            <div class="col-xl-4 text-center">
+                                                <span class="badge bg-info mb-4">Matches</span>
+                                            </div>
+                                            <div class="col-xl-4"></div>
+                                            
+                                            <?php 
+                                                $w_arr = json_decode($tournament->round_one_winners, true);
+                                                $winners = [];
+
+                                                if(array_key_exists('match_1', $w_arr)) {
+                                                    $win = $w_arr['match_1'];
+                                                    array_push($winners, $win);
+                                                }
+
+                                                if(array_key_exists('match_2', $w_arr)) {
+                                                    $win = $w_arr['match_2'];
+                                                    array_push($winners, $win);
+                                                }
+
+                                                if(array_key_exists('match_3', $w_arr)) {
+                                                    $win = $w_arr['match_3'];
+                                                    array_push($winners, $win);
+                                                }
+
+                                                if(array_key_exists('match_4', $w_arr)) {
+                                                    $win = $w_arr['match_4'];
+                                                    array_push($winners, $win);
+                                                }
+                                            ?>
+
+                                            <div class="col-xl-6">
+                                                <div class="mb-3 position-relative">
+                                                    <form class="needs-validation" action="{{ route('submit.semi.final.match.one', $tournament->id) }}" method="post" novalidate="">
+                                                        @csrf
+
+                                                        <label class="form-label text-dark"> Match - 1 (Left)</label>
+                                                        <div class="row">
+
+                                                            <div class="col-5">
+                                                                <select class="form-control select2" id="sem_mat_1_player_1" name="sem_mat_1_player_1" required>
+                                                
+                                                                    <option value="">Select Player</option>
+                                                                    
+                                                                    <?php 
+                                                                        $sem_mat_1 = []; 
+
+                                                                        if($tournament->semi_final_matches) {
+                                                                            $find_matches = json_decode($tournament->semi_final_matches, true);
+
+                                                                            if(array_key_exists('match_1', $find_matches)) {
+                                                                                $matches = $find_matches['match_1'];
+                                                                                $match = explode(" VS ", $matches);
+                                                                                array_push($sem_mat_1, \App\Models\User::findOrFail($match[0])->name);
+                                                                                array_push($sem_mat_1, \App\Models\User::findOrFail($match[1])->name);
+                                                                            }
+                                                                        }
+                                                                    ?>
+                                                                    @foreach($winners as $player)
+                                                                        <?php 
+                                                                            $user = \App\Models\User::findOrFail($player);
+
+                                                                            if($tournament->semi_final_matches) {
+                                                                                $find_matches = json_decode($tournament->semi_final_matches, true);
+
+                                                                                if(array_key_exists('match_1', $find_matches)) {
+                                                                                    $matches = $find_matches['match_1'];
+                                                                                    $match = explode(" VS ", $matches);
+                                                                                }
+                                                                            }
+                                                                        ?>
+
+
+                                                                        <option value="{{ $user->id }}" @if($semi_final_matches) @if(array_key_exists('match_1', $semi_final_matches)) {{ $match[0] == $user->id ? "selected" : "" }} @endif @else {{ old('sem_mat_1_player_1') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+
+                                                                    @endforeach
+
+                                                                </select>
+
+                                                                <div class="invalid-feedback">
+                                                                    Please select a player.
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="col-1 text-center" style="margin-top: 10px !important;margin: 0 auto;"><span class="badge bg-secondary">VS</span> </div>
+
+                                                            <div class="col-5">
+                                                                <select class="form-control select2" id="sem_mat_1_player_2" name="sem_mat_1_player_2" required>
+                                                
+                                                                    <option value="">Select Player</option>
+                                                                    
+                                                                    @foreach($winners as $player)
+                                                                        <?php 
+                                                                            $user = \App\Models\User::findOrFail($player);
+
+                                                                            if($tournament->semi_final_matches) {
+                                                                                $find_matches = json_decode($tournament->semi_final_matches, true);
+
+                                                                                if(array_key_exists('match_1', $find_matches)) {
+                                                                                    $matches = $find_matches['match_1'];
+                                                                                    $match = explode(" VS ", $matches);
+                                                                                }
+                                                                            }
+                                                                        ?>
+
+
+                                                                        <option value="{{ $user->id }}" @if($semi_final_matches) @if(array_key_exists('match_1', $semi_final_matches)) {{ $match[1] == $user->id ? "selected" : "" }} @endif @else {{ old('sem_mat_1_player_2') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+
+                                                                    @endforeach
+
+
+                                                                </select>
+
+                                                                <div class="invalid-feedback">
+                                                                    Please select a player.
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-5">
+                                                                <button type="submit" class="btn btn-success btn-label waves-effect waves-light mt-3" @if($semi_final_results) @if(array_key_exists('match_1', $semi_final_results)) disabled @endif @endif style="margin: 0 auto; width: 100%;" @if($semi_final_matches) onclick="return confirm('Match draw has been performed already. Are you sure to change the match draw and send SMS to the players again?');" @else onclick="return confirm('Are you sure to make the match draw and send SMS to the players?');" @endif><i class="bx bx-add-to-queue label-icon"></i> @if($semi_final_matches) @if(array_key_exists('match_1', $semi_final_matches)) Change @else Submit @endif @else Submit @endif Match <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i></button>
+                                                            </div>
+
+                                                        </div>  
+                                                    </form>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-xl-6">
+                                                <div class="mb-3 position-relative">
+                                                    <form class="needs-validation" action="{{ route('submit.semi.final.match.two', $tournament->id) }}" method="post" novalidate="">
+                                                        @csrf
+
+                                                        <label class="form-label text-dark"> Match - 2 (Right)</label>
+                                                        <div class="row">
+
+                                                            <div class="col-5">
+                                                                <select class="form-control select2" id="sem_mat_2_player_1" name="sem_mat_2_player_1" required>
+                                                
+                                                                    <option value="">Select Player</option>
+                                                                    
+                                                                    <?php 
+                                                                        $sem_mat_2 = []; 
+
+                                                                        if($tournament->semi_final_matches) {
+                                                                            $find_matches = json_decode($tournament->semi_final_matches, true);
+
+                                                                            if(array_key_exists('match_2', $find_matches)) {
+                                                                                $matches = $find_matches['match_2'];
+                                                                                $match = explode(" VS ", $matches);
+                                                                                array_push($sem_mat_2, \App\Models\User::findOrFail($match[0])->name);
+                                                                                array_push($sem_mat_2, \App\Models\User::findOrFail($match[1])->name);
+                                                                            }
+                                                                        }
+                                                                    ?>
+                                                                    @foreach($winners as $player)
+                                                                        <?php 
+                                                                            $user = \App\Models\User::findOrFail($player);
+
+                                                                            if($tournament->semi_final_matches) {
+                                                                                $find_matches = json_decode($tournament->semi_final_matches, true);
+
+                                                                                if(array_key_exists('match_2', $find_matches)) {
+                                                                                    $matches = $find_matches['match_2'];
+                                                                                    $match = explode(" VS ", $matches);
+                                                                                }
+                                                                            }
+                                                                        ?>
+
+
+                                                                        <option value="{{ $user->id }}" @if($semi_final_matches) @if(array_key_exists('match_2', $semi_final_matches)) {{ $match[0] == $user->id ? "selected" : "" }} @endif @else {{ old('sem_mat_2_player_1') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+
+                                                                    @endforeach
+
+                                                                </select>
+
+                                                                <div class="invalid-feedback">
+                                                                    Please select a player.
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="col-1 text-center" style="margin-top: 10px !important;margin: 0 auto;"><span class="badge bg-secondary">VS</span> </div>
+
+                                                            <div class="col-5">
+                                                                <select class="form-control select2" id="sem_mat_2_player_2" name="sem_mat_2_player_2" required>
+                                                
+                                                                    <option value="">Select Player</option>
+                                                                    
+                                                                    @foreach($winners as $player)
+                                                                        <?php 
+                                                                            $user = \App\Models\User::findOrFail($player);
+
+                                                                            if($tournament->semi_final_matches) {
+                                                                                $find_matches = json_decode($tournament->semi_final_matches, true);
+
+                                                                                if(array_key_exists('match_2', $find_matches)) {
+                                                                                    $matches = $find_matches['match_2'];
+                                                                                    $match = explode(" VS ", $matches);
+                                                                                    array_push($sem_mat_2, \App\Models\User::findOrFail($match[1])->name);
+                                                                                }
+                                                                            }
+                                                                        ?>
+
+
+                                                                        <option value="{{ $user->id }}" @if($semi_final_matches) @if(array_key_exists('match_2', $semi_final_matches)) {{ $match[1] == $user->id ? "selected" : "" }} @endif @else {{ old('sem_mat_2_player_2') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+
+                                                                    @endforeach
+
+                                                                </select>
+
+                                                                <div class="invalid-feedback">
+                                                                    Please select a player.
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-5">
+                                                                <button type="submit" class="btn btn-success btn-label waves-effect waves-light mt-3" @if($semi_final_results) @if(array_key_exists('match_2', $semi_final_results)) disabled @endif @endif style="margin: 0 auto; width: 100%;" @if($semi_final_matches) onclick="return confirm('Match draw has been performed already. Are you sure to change the match draw and send SMS to the players again?');" @else onclick="return confirm('Are you sure to make the match draw and send SMS to the players?');" @endif><i class="bx bx-add-to-queue label-icon"></i> @if($semi_final_matches) @if(array_key_exists('match_2', $semi_final_matches)) Change @else Submit @endif @else Submit @endif Match <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i></button>
+                                                            </div>
+
+                                                        </div> 
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        
+
+                                        <i class="bx bx-chevrons-down bx-fade-down text-info display-6 text-center mt-1"></i>
+                                        <span style="margin-top:20px;"></span>
+
+                                        <div class="col-xl-4"></div>
+                                        <div class="col-xl-4 text-center">
+                                            <span class="badge bg-info mb-4">Auto Selection</span>
+                                        </div>
+                                        <div class="col-xl-4"></div>
+
+                                        <div class="col-xl-12">
+                                            <div class="mb-3 position-relative">
+                                                
+                                                <form class="needs-validation" action="{{ route('submit.semi.final.auto.selection', $tournament->id) }}" method="post" novalidate="">
+                                                    @csrf
+
+                                
+                                                    <div class="row">
+
+                                                        <div class="col-6">
+                                                            <label class="form-label text-dark"> Select Player </label>
+
+                                                            <select class="form-control select2" id="sem_mat_auto_player" name="sem_mat_auto_player" required>
+                                            
+                                                                <option value="">Select Player</option>
+                                                                
+                                                                <?php 
+                                                                    $sem_mat_auto = []; 
+
+                                                                    for($i = 1; $i < 3; $i++) {
+                                                                        if($semi_final_auto_selection) {               
+                                                                            if(array_key_exists('match_'.$i, $semi_final_auto_selection)) {
+                                                                                $auto_player = $semi_final_auto_selection['match_'.$i];
+                                                                                array_push($sem_mat_auto, \App\Models\User::findOrFail($auto_player)->name);
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                ?>
+                                                                @foreach($winners as $player)
+                                                                    <?php 
+                                                                        $user = \App\Models\User::findOrFail($player);
+                                                                    ?>
+
+
+                                                                    <option value="{{ $user->id }}" @if($semi_final_auto_selection) {{ $auto_player == $user->id ? "selected" : "" }} @else {{ old('sem_mat_auto_player') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+
+                                                                @endforeach
+
+                                                            </select>
+
+                                                            <div class="invalid-feedback">
+                                                                Please select a player.
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        
+                                                        <div class="col-6">
+                                                            <label class="form-label text-dark"> Define Match </label>
+
+                                                            <select class="form-control select2" id="sem_mat_auto" name="sem_mat_auto" required>
+                                            
+                                                                <option value="">Select Any Match</option>
+                                                                
+                                                                
+                                                                @for($i = 1; $i < 3; $i++)
+                                                                    <?php 
+                                                                        $match_word = strtolower(ucwords((new NumberFormatter('en_IN', NumberFormatter::SPELLOUT))->format($i)));
+                                                                    ?>
+                                                                    <option value="match_{{ $i }}" @if($semi_final_auto_selection) @if(array_key_exists('match_'.$i, $semi_final_auto_selection)) selected @endif @endif>Match - {{ $i }}</option>
+                                                                @endfor
+
+                                                            </select>
+
+                                                            <div class="invalid-feedback">
+                                                                Please select/define a match.
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="col-5">
+                                                            <button type="submit" class="btn btn-info btn-label waves-effect waves-light mt-3" style="margin: 0 auto; width: 100%;" @if($tournament->semi_final_auto_selection) onclick="return confirm('Match auto selection has been performed already. Are you sure to change the selection and send SMS to the players again?');" @else onclick="return confirm('Are you sure to make the match auto selection and send SMS to the player?');" @endif><i class="bx bx-add-to-queue label-icon"></i> @if($tournament->semi_final_auto_selection) Change @else Submit @endif Automatic Selection <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i></button>
+                                                        </div>
+
+                                                    </div>  
+
+                                                </form>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                        
+                                    
+                                    @if($tournament->semi_final_matches)
+                                        
+                                            <div class="row">
+                                                <i class="bx bx-chevrons-down bx-fade-down text-info display-6 text-center mt-1"></i>
+                                                <span style="margin-top:20px;"></span>
+                                                    
+                                                    <div class="col-xl-4"></div>
+                                                    <div class="col-xl-4 text-center">
+                                                        <span class="badge bg-info mb-1">Match Results</span>
+                                                    </div>
+                                                    <div class="col-xl-4"></div>
+
+                                                    <div class="col-xl-6 mt-4">
+
+                                                        <form class="needs-validation" action="{{ route('submit.semi.final.result.one', $tournament->id) }}" method="post" novalidate="">
+                                                            @csrf
+                                                            
+                                                            <label class="form-label text-dark" style="border:1px dashed #ddd; padding: 7px; border-radius: 2px; margin-bottom: 15px;"> Match - 1 (Left)</label>
+
+                                                            <?php 
+                                                                if($tournament->semi_final_matches) {
+                                                                    $find_matches = json_decode($tournament->semi_final_matches, true);
+
+                                                                    if(array_key_exists('match_1', $find_matches)) {
+                                                                        $matches = $find_matches['match_1'];
+                                                                        $match = explode(" VS ", $matches);
+
+                                                                        $p1_m1 = \App\Models\User::findOrFail($match[0]);
+                                                                        $p2_m1 = \App\Models\User::findOrFail($match[1]);
+                                                                    }
+
+                                                                }
+
+                                                                if($tournament->semi_final_results) {
+                                                                    $sem_m1_s1 = [];
+                                                                    $sem_m1_s2 = [];
+                                                                    $sem_m1_s3 = [];
+
+                                                                    $find_results = json_decode($tournament->semi_final_results, true);
+
+                                                                    if(array_key_exists('match_1', $find_results)) {
+                                                                        $results = $find_results['match_1'];
+                                                                        foreach($results as $result_array) {
+                                                                            if(array_key_exists('set_1', $result_array)) {
+                                                                                $rs = $result_array['set_1'];
+                                                                                array_push($sem_m1_s1, $rs);
+                                                                            }
+
+                                                                            if(array_key_exists('set_2', $result_array)) {
+                                                                                $rs2 = $result_array['set_2'];
+                                                                                array_push($sem_m1_s2, $rs2);
+                                                                            }
+
+                                                                            if(array_key_exists('set_3', $result_array)) {
+                                                                                $rs3 = $result_array['set_3'];
+                                                                                array_push($sem_m1_s3, $rs3);
+                                                                            }
+                                                                        }
+                                                                    }
+
+                                                                }
+                                                            ?>
+
+
+                                                            <input type="hidden" name="p1_m1" value="@if(array_key_exists('match_1', $semi_final_matches)) {{ $p1_m1->id }} @endif">
+                                                            <input type="hidden" name="p2_m1" value="@if(array_key_exists('match_1', $semi_final_matches)) {{ $p2_m1->id }} @endif">
+
+                                                            <div class="row mb-2">
+                                                                <label for="validationTooltip100" class="col-xl-4 col-form-label">@if(array_key_exists('match_1', $semi_final_matches)) {{ $p1_m1->name }} @else N/A @endif</label>
+                                                                
+                                                                <div class="col-xl-8" style="margin-bottom: 0.7rem!important;">
+                                                                    <div class="row">
+                                                                        <div class="col-4">
+                                                                            <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="1st Set" @if($tournament->semi_final_results) value="{{ $sem_m1_s1 ? $sem_m1_s1[0] : '' }}" @endif name="p1_m1_s1" required="">
+                                                                        </div>
+
+                                                                        <div class="col-4">
+                                                                            <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="2nd Set" @if($tournament->semi_final_results) value="{{ $sem_m1_s2 ? $sem_m1_s2[0] : '' }}" @endif name="p1_m1_s2" required="">
+                                                                        </div>
+
+                                                                        <div class="col-4">
+                                                                            <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="3rd Set" @if($tournament->semi_final_results) value="{{ $sem_m1_s3 ? $sem_m1_s3[0] : '' }}" @endif name="p1_m1_s3">
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <label for="validationTooltip100" class="col-xl-4 col-form-label">@if(array_key_exists('match_1', $semi_final_matches)) {{ $p2_m1->name }} @else N/A @endif</label>
+                                                                
+                                                                <div class="col-xl-8">
+                                                                    <div class="row">
+                                                                        <div class="col-4">
+                                                                            <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="1st Set" @if($tournament->semi_final_results) value="{{ $sem_m1_s1 ? $sem_m1_s1[1] : '' }}" @endif name="p2_m1_s1" required="">
+                                                                        </div>
+
+                                                                        <div class="col-4">
+                                                                            <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="2nd Set" @if($tournament->semi_final_results) value="{{ $sem_m1_s2 ? $sem_m1_s2[1] : '' }}" @endif name="p2_m1_s2" required="">
+                                                                        </div>
+
+                                                                        <div class="col-4">
+                                                                            <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="3rd Set" @if($tournament->semi_final_results) value="{{ $sem_m1_s3 ? $sem_m1_s3[1] : '' }}" @endif name="p2_m1_s3">
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="row mb-2" style="margin-top: 20px;">
+                                                                <label for="sem_mat_1_status" class="col-xl-4 col-form-label text-info">Status</label>
+                                                                
+                                                                <div class="col-xl-8">
+                                                                    <div class="mb-1 position-relative">
+                                                                        <select class="form-control select2" id="sem_mat_1_status" name="sem_mat_1_status">
+                                                    
+                                                                            <option value="">Select Status</option>
+
+                                                                            <option value="Withdraw" @if($semi_final_status) @if(array_key_exists('match_1', $semi_final_status)) {{ $semi_final_status['match_1'] == 'Withdraw' ? "selected" : "" }} @endif @endif>Withdraw</option>
+
+                                                                            <option value="Retired" @if($semi_final_status) @if(array_key_exists('match_1', $semi_final_status)) {{ $semi_final_status['match_1'] == 'Retired' ? "selected" : "" }} @endif @endif>Retired</option>
+
+                                                                            <option value="Decided by Organisers" @if($semi_final_status) @if(array_key_exists('match_1', $semi_final_status)) {{ $semi_final_status['match_1'] == 'Decided by Organisers' ? "selected" : "" }} @endif @endif>Decided by Organisers</option>
+                                                                            
+                                                                        </select>
+
+                                                                        <div class="valid-feedback">
+                                                                            Looks good!
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="row">
+                                                                <div class="col-4"></div>
+                                                                <div class="col-8 mb-4">
+                                                                    <button type="submit" class="btn btn-success btn-label waves-effect waves-light mt-3" style="width: 100%; margin: 0 auto;" 
+                                                                        @if($semi_final_results) 
+                                                                            @if(array_key_exists('match_1', $semi_final_results)) 
+                                                                                onclick="return confirm('Match result have been added already. Are you sure to change the match result? It will affect the winners list.');" 
+                                                                            @else
+                                                                                onclick="return confirm('Are you sure to submit the match result?');"
+                                                                            @endif 
+                                                                        @else 
+                                                                            onclick="return confirm('Are you sure to submit the match result?');" 
+                                                                        @endif>
+                                                                            <i class="bx bx-add-to-queue label-icon"></i> 
+
+                                                                            @if($semi_final_results) 
+                                                                                @if(array_key_exists('match_1', $semi_final_results))
+                                                                                    Change 
+                                                                                @else
+                                                                                    Submit
+                                                                                @endif
+                                                                            @else 
+                                                                                Submit 
+                                                                            @endif 
+                                                                                Result <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i>
+                                                                    </button>  
+
+                                                                </div>
+                                                            </div>
+
+                                                        </form>
+
+                                                    </div>
+                                                    
+                                                    <div class="col-xl-6 mt-4">
+
+                                                        <form class="needs-validation" action="{{ route('submit.semi.final.result.two', $tournament->id) }}" method="post" novalidate="">
+                                                            @csrf
+
+                                                            <label class="form-label text-dark" style="border:1px dashed #ddd; padding: 7px; border-radius: 2px; margin-bottom: 15px;"> Match - 2 (Right)</label>
+
+                                                            <?php 
+                                                                if($tournament->semi_final_matches) {
+                                                                    $find_matches = json_decode($tournament->semi_final_matches, true);
+
+                                                                    if(array_key_exists('match_2', $find_matches)) {
+                                                                        $matches = $find_matches['match_2'];
+                                                                        $match = explode(" VS ", $matches);
+
+                                                                        $p1_m2 = \App\Models\User::findOrFail($match[0]);
+                                                                        $p2_m2 = \App\Models\User::findOrFail($match[1]);
+                                                                    }
+
+                                                                }
+
+                                                                if($tournament->semi_final_results) {
+                                                                    $sem_m2_s1 = [];
+                                                                    $sem_m2_s2 = [];
+                                                                    $sem_m2_s3 = [];
+
+                                                                    $find_results = json_decode($tournament->semi_final_results, true);
+
+                                                                    if(array_key_exists('match_2', $find_results)) {
+                                                                        $results = $find_results['match_2'];
+                                                                        foreach($results as $result_array) {
+                                                                            if(array_key_exists('set_1', $result_array)) {
+                                                                                $rs = $result_array['set_1'];
+                                                                                array_push($sem_m2_s1, $rs);
+                                                                            }
+
+                                                                            if(array_key_exists('set_2', $result_array)) {
+                                                                                $rs2 = $result_array['set_2'];
+                                                                                array_push($sem_m2_s2, $rs2);
+                                                                            }
+
+                                                                            if(array_key_exists('set_3', $result_array)) {
+                                                                                $rs3 = $result_array['set_3'];
+                                                                                array_push($sem_m2_s3, $rs3);
+                                                                            }
+                                                                        }
+                                                                    }
+
+                                                                }
+                                                            ?>
+
+
+                                                            <input type="hidden" name="p1_m2" value="@if(array_key_exists('match_2', $semi_final_matches)) {{ $p1_m2->id }} @endif">
+                                                            <input type="hidden" name="p2_m2" value="@if(array_key_exists('match_2', $semi_final_matches)) {{ $p2_m2->id }} @endif">
+
+                                                            <div class="row mb-2">
+                                                                <label for="validationTooltip100" class="col-xl-4 col-form-label">@if(array_key_exists('match_2', $semi_final_matches)) {{ $p1_m2->name }} @else N/A @endif</label>
+                                                                
+                                                                <div class="col-xl-8" style="margin-bottom: 0.7rem!important;">
+                                                                    <div class="row">
+                                                                        <div class="col-4">
+                                                                            <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="1st Set" @if($tournament->semi_final_results) value="{{ $sem_m2_s1 ? $sem_m2_s1[0] : '' }}" @endif name="p1_m2_s1" required="">
+                                                                        </div>
+
+                                                                        <div class="col-4">
+                                                                            <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="2nd Set" @if($tournament->semi_final_results) value="{{ $sem_m2_s2 ? $sem_m2_s2[0] : '' }}" @endif name="p1_m2_s2" required="">
+                                                                        </div>
+
+                                                                        <div class="col-4">
+                                                                            <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="3rd Set" @if($tournament->semi_final_results) value="{{ $sem_m2_s3 ? $sem_m2_s3[0] : '' }}" @endif name="p1_m2_s3">
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <label for="validationTooltip100" class="col-xl-4 col-form-label">@if(array_key_exists('match_2', $semi_final_matches)) {{ $p2_m2->name }} @else N/A @endif</label>
+                                                                
+                                                                <div class="col-xl-8">
+                                                                    <div class="row">
+                                                                        <div class="col-4">
+                                                                            <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="1st Set" @if($tournament->semi_final_results) value="{{ $sem_m2_s1 ? $sem_m2_s1[1] : '' }}" @endif name="p2_m2_s1" required="">
+                                                                        </div>
+
+                                                                        <div class="col-4">
+                                                                            <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="2nd Set" @if($tournament->semi_final_results) value="{{ $sem_m2_s2 ? $sem_m2_s2[1] : '' }}" @endif name="p2_m2_s2" required="">
+                                                                        </div>
+
+                                                                        <div class="col-4">
+                                                                            <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="3rd Set" @if($tournament->semi_final_results) value="{{ $sem_m2_s3 ? $sem_m2_s3[1] : '' }}" @endif name="p2_m2_s3">
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="row mb-2" style="margin-top: 20px;">
+                                                                <label for="sem_mat_2_status" class="col-xl-4 col-form-label text-info">Status</label>
+                                                                
+                                                                <div class="col-xl-8">
+                                                                    <div class="mb-1 position-relative">
+                                                                        <select class="form-control select2" id="sem_mat_2_status" name="sem_mat_2_status">
+                                                    
+                                                                            <option value="">Select Status</option>
+
+                                                                            <option value="Withdraw" @if($semi_final_status) @if(array_key_exists('match_2', $semi_final_status)) {{ $semi_final_status['match_2'] == 'Withdraw' ? "selected" : "" }} @endif @endif>Withdraw</option>
+
+                                                                            <option value="Retired" @if($semi_final_status) @if(array_key_exists('match_2', $semi_final_status)) {{ $semi_final_status['match_2'] == 'Retired' ? "selected" : "" }} @endif @endif>Retired</option>
+
+                                                                            <option value="Decided by Organisers" @if($semi_final_status) @if(array_key_exists('match_2', $semi_final_status)) {{ $semi_final_status['match_2'] == 'Decided by Organisers' ? "selected" : "" }} @endif @endif>Decided by Organisers</option>
+                                                                            
+                                                                        </select>
+
+                                                                        <div class="valid-feedback">
+                                                                            Looks good!
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="row">
+                                                                <div class="col-4"></div>
+                                                                <div class="col-8 mb-4">
+                                                                    <button type="submit" class="btn btn-success btn-label waves-effect waves-light mt-3" style="width: 100%; margin: 0 auto;" 
+                                                                        @if($semi_final_results) 
+                                                                            @if(array_key_exists('match_2', $semi_final_results)) 
+                                                                                onclick="return confirm('Match result have been added already. Are you sure to change the match result? It will affect the winners list.');" 
+                                                                            @else
+                                                                                onclick="return confirm('Are you sure to submit the match result?');"
+                                                                            @endif 
+                                                                        @else 
+                                                                            onclick="return confirm('Are you sure to submit the match result?');" 
+                                                                        @endif>
+                                                                            <i class="bx bx-add-to-queue label-icon"></i> 
+
+                                                                            @if($semi_final_results) 
+                                                                                @if(array_key_exists('match_2', $semi_final_results))
+                                                                                    Change 
+                                                                                @else
+                                                                                    Submit
+                                                                                @endif
+                                                                            @else 
+                                                                                Submit 
+                                                                            @endif 
+                                                                                Result <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i>
+                                                                    </button>  
+
+                                                                </div>
+                                                            </div>
+
+                                                        </form>
+
+                                                    </div> 
+                                                
+                                                @if($semi_final_status) 
+                                                    @if(in_array('Retired', $semi_final_status))
+                                                    
+                                                        <i class="bx bx-chevrons-down bx-fade-down text-info display-6 text-center mt-1"></i>
+                                                        <span style="margin-top:20px;"></span>
+
+                                                        <div class="col-xl-4"></div>
+                                                        <div class="col-xl-4 text-center">
+                                                            <span class="badge bg-info mb-4">Who're Retiring</span>
+                                                        </div>
+                                                        <div class="col-xl-4"></div>
+
+                                                        <?php 
+                                                            $sem_mat_retires = [];
+                                                        ?>
+                                                        @for($k = 1; $k < 3; $k++)
+                                                            <div class="col-xl-6">
+                                                                <div class="mb-3 position-relative">
+                                                                    
+                                                                    <form class="needs-validation" action="{{ route('submit.semi.final.retire', $tournament->id) }}" method="post" novalidate="">
+                                                                        @csrf
+
+                                                    
+                                                                        <div class="row">
+
+                                                                            <div class="col-6">
+                                                                                <label class="form-label text-dark"> Select Player </label>
+
+                                                                                <select class="form-control select2" id="sem_mat_{{$k}}_retire_player" name="sem_mat_retire_player" required>
+                                                                
+                                                                                    <option value="">Select Player</option>
+                                                                                    
+                                                                                    <?php 
+                                                                                        
+                                                                                        if($semi_final_retires) {               
+                                                                                            if(array_key_exists('match_'.$k, $semi_final_retires)) {
+                                                                                                $retire_player = $semi_final_retires['match_'.$k];
+                                                                                                $sem_mat_retires['match_'.$k] = \App\Models\User::findOrFail($retire_player)->name;
+                                                                                            }
+                                                                                        }
+                                                                            
+                                                                                    ?>
+
+                                                                                    @foreach($winners as $player)
+                                                                                        <?php 
+                                                                                            $user = \App\Models\User::findOrFail($player);
+                                                                                        ?>
+
+
+                                                                                        <option value="{{ $user->id }}" @if($semi_final_retires) @if(array_key_exists('match_'.$k, $semi_final_retires)) {{ $retire_player == $user->id ? "selected" : "" }} @else {{ old('sem_mat_retire_player') == $user->id ? "selected" : "" }} @endif @else {{ old('sem_mat_retire_player') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+
+                                                                                    @endforeach
+
+                                                                                </select>
+
+                                                                                <div class="invalid-feedback">
+                                                                                    Please select a player.
+                                                                                </div>
+                                                                            </div>
+                                                                            
+                                                                            
+                                                                            <div class="col-6">
+                                                                                <label class="form-label text-dark"> Define Match </label>
+
+                                                                                <select class="form-control select2" id="sem_mat_{{ $k }}_retire" name="sem_mat_retire" required>
+                                                                
+                                                                                    <option value="">Select Any Match</option>
+                                                                                    
+                                                                                    
+                                                                                    <?php 
+                                                                                        $match_word = strtolower(ucwords((new NumberFormatter('en_IN', NumberFormatter::SPELLOUT))->format($k)));
+                                                                                    ?>
+                                                                                    <option value="match_{{ $k }}" @if($semi_final_retires) @if(array_key_exists('match_'.$k, $semi_final_retires)) selected @endif @endif>Match - {{ $k }}</option>
+                                                                                    
+
+                                                                                </select>
+
+                                                                                <div class="invalid-feedback">
+                                                                                    Please select/define a match.
+                                                                                </div>
+                                                                            </div>
+
+
+                                                                            <div class="col-12">
+                                                                                <button type="submit" class="btn btn-warning btn-label waves-effect waves-light mt-3" style="margin: 0 auto; width: 100%;" @if($tournament->semi_final_retires) @if(array_key_exists('match_'.$k, $semi_final_retires)) onclick="return confirm('Match retirement has been performed already. Are you sure to change?');" @else onclick="return confirm('Are you sure to make the match retirement?');" @endif @else onclick="return confirm('Are you sure to make the match retirement?');" @endif><i class="bx bx-add-to-queue label-icon"></i> @if($tournament->semi_final_retires) @if(array_key_exists('match_'.$k, $semi_final_retires))  Change @else Submit @endif @else Submit @endif Retirement <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i></button>
+                                                                            </div>
+
+                                                                        </div>  
+
+                                                                    </form>
+
+                                                                </div>
+                                                            </div>
+
+                                                        @endfor
+
+                                                    @endif
+                                                @endif
+
+                                            </div>
+                            
+                                    @endif
+
+                                    
+                                    @if($tournament->semi_final_results)
+                                        <form class="needs-validation" action="{{ route('submit.semifinal.winners', $tournament->id) }}" method="post" novalidate="">
+                                        @csrf
+                                        
+                                            <div class="row">
+                                                <i class="bx bx-chevrons-down bx-fade-down text-info display-6 text-center mt-1"></i>
+                                                <span style="margin-top:20px;"></span>
+                                                    
+                                                    <div class="col-xl-4"></div>
+                                                    <div class="col-xl-4 text-center">
+                                                        <span class="badge bg-info mb-4">Winners</span>
+                                                    </div>
+                                                    <div class="col-xl-4"></div>
+                                                    
+                                                    <div class="col-xl-6">
+                                                        <div class="mb-3 position-relative">
+                                                            <label class="form-label text-dark"> Match - 1 (Left)</label>
+                                                                <div class="row">
+
+                                                                    <div class="col-12">
+                                                                        <select class="form-control select2" id="validationTooltip101" name="sem_mat_1_winner" required>
+                                                        
+                                                                            <option value="">Select Player</option>
+                                                                            
+                                                                                <?php 
+                                                                                    if($tournament->semi_final_matches) {
+                                                                                        $find_matches = json_decode($tournament->semi_final_matches, true);
+
+                                                                                        if(array_key_exists('match_1', $find_matches)) {
+                                                                                            $matches = $find_matches['match_1'];
+                                                                                            $match = explode(" VS ", $matches);
+                                                                                        }
+
+                                                                                        if($tournament->semi_final_winners) {
+                                                                                            $find_winners = json_decode($tournament->semi_final_winners, true);
+                                                                                            
+                                                                                            if(array_key_exists('match_1', $find_winners)){
+                                                                                                $winner = $find_winners['match_1'];
+                                                                                            }
+                                                                                        }
+
+                                                                                    }
+                                                                                ?>
+
+                                                                                @foreach($match as $value)
+                                                                                    <?php 
+                                                                                        $user = \App\Models\User::findOrFail($value);
+                                                                                    ?>
+                                                                                    <option value="{{ $user->id }}" @if($tournament->semi_final_winners) @if(array_key_exists('match_1', $semi_final_winners)) {{ $winner == $user->id ? "selected" : "" }} @else {{ old('sem_mat_1_winner') == $user->id ? "selected" : "" }} @endif @else {{ old('sem_mat_1_winner') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+                                                                                @endforeach
+
+                                                                        </select>
+
+                                                                        <div class="invalid-feedback">
+                                                                            Please select a player.
+                                                                        </div>
+                                                                    </div>
+                                                                    
+
+                                                                </div>  
+
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="col-xl-6">
+                                                        <div class="mb-3 position-relative">
+                                                            <label class="form-label text-dark"> Match - 2 (Right)</label>
+                                                                <div class="row">
+
+                                                                    <div class="col-12">
+                                                                        <select class="form-control select2" id="validationTooltip102" name="sem_mat_2_winner" required>
+                                                        
+                                                                            <option value="">Select Player</option>
+                                                                            
+                                                                                <?php 
+                                                                                    if($tournament->semi_final_matches) {
+                                                                                        $find_matches = json_decode($tournament->semi_final_matches, true);
+
+                                                                                        if(array_key_exists('match_2', $find_matches)) {
+                                                                                            $matches = $find_matches['match_2'];
+                                                                                            $match = explode(" VS ", $matches);
+                                                                                        }
+
+                                                                                        if($tournament->semi_final_winners) {
+                                                                                            $find_winners = json_decode($tournament->semi_final_winners, true);
+                                                                                            
+                                                                                            if(array_key_exists('match_2', $find_winners)){
+                                                                                                $winner = $find_winners['match_2'];
+                                                                                            }
+                                                                                        }
+
+                                                                                    }
+                                                                                ?>
+
+                                                                                @foreach($match as $value)
+                                                                                    <?php 
+                                                                                        $user = \App\Models\User::findOrFail($value);
+                                                                                    ?>
+                                                                                    <option value="{{ $user->id }}" @if($tournament->semi_final_winners) @if(array_key_exists('match_2', $semi_final_winners)) {{ $winner == $user->id ? "selected" : "" }} @else {{ old('sem_mat_2_winner') == $user->id ? "selected" : "" }} @endif @else {{ old('sem_mat_2_winner') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+                                                                                @endforeach
+
+                                                                        </select>
+
+                                                                        <div class="invalid-feedback">
+                                                                            Please select a player.
+                                                                        </div>
+                                                                    </div>
+                                                                    
+
+                                                                </div>  
+
+                                                        </div>
+                                                    </div>
+
+                        
+                                                    @if(count($semi_final_results) == 2) 
+                                                    <button type="submit" class="btn btn-success btn-label waves-effect waves-light mt-3" style="width: 60%; margin: 0 auto;" @if($tournament->semi_final_winners) onclick="return confirm('Winners have been selected already. Are you sure to change?');" @else onclick="return confirm('Are you sure to select these playes as Winners?');" @endif><i class="bx bx-add-to-queue label-icon"></i> @if($tournament->semi_final_matches) Change @else Submit @endif Winners <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i></button>
+                                                @endif        
+
+                                               
+                                            </div>
+                            
+                                        </form>
+                                    @endif
+
+
+                                    @if($tournament->semi_final_results)
+                                        <form class="needs-validation" action="{{ route('submit.semi.final.points', $tournament->id) }}" method="post" novalidate="">
+                                            @csrf
+
+                                            <div class="row">
+                                                <i class="bx bx-chevrons-down bx-fade-down text-info display-6 text-center mt-1"></i>
+                                                <span style="margin-top:20px;"></span>
+                                                    
+                                                    <div class="col-xl-4"></div>
+                                                    <div class="col-xl-4 text-center">
+                                                        <span class="badge bg-info mb-1">Match Points</span>
+                                                    </div>
+                                                    <div class="col-xl-4"></div>
+
+                                                        @for($i = 1; $i < 3; $i++)
+                                                            <div class="col-xl-6 mt-4">
+                                                
+                                                                <label class="form-label text-dark" style="border:1px dashed #ddd; padding: 7px; border-radius: 2px; margin-bottom: 15px;"> Match - {{ $i }} </label>
+
+                                                                <?php 
+                                                                    if($tournament->semi_final_matches) {
+                                                                        $find_matches = json_decode($tournament->semi_final_matches, true);
+
+                                                                        if(array_key_exists('match_'.$i, $find_matches)) {
+                                                                            $matches = $find_matches['match_'.$i];
+                                                                            $match = explode(" VS ", $matches);
+
+                                                                            $p1 = \App\Models\User::findOrFail($match[0]);
+                                                                            $p2 = \App\Models\User::findOrFail($match[1]);
+                                                                        }
+
+                                                                    }
+
+                                                                    
+                                                                    if($tournament->semi_final_points) {
+
+                                                                        ${'sem_p1_m'.$i} = '';
+                                                                        ${'sem_p2_m'.$i} = '';
+
+                                                                        $find_points = (array)json_decode($tournament->semi_final_points, true);
+
+                                                                        if(array_key_exists('match_'.$i, $find_points)) {
+                                                                            $results = $find_points['match_'.$i];
+                                                                            
+                                                                            ${'sem_p1_m'.$i} = $results[$p1->id];
+                                                                            ${'sem_p2_m'.$i} = $results[$p2->id];
+                                                                        }
+                                                                        
+                                                                    }
+
+                                                                ?>
+
+                                                                
+                                                                <?php 
+                                                                    if($tournament->semi_final_matches) {
+                                                                        $find_matches = json_decode($tournament->semi_final_matches, true);
+
+                                                                        if(array_key_exists('match_'.$i, $find_matches)) {
+                                                                            $matches = $find_matches['match_'.$i];
+                                                                            $match = explode(" VS ", $matches);
+                                                                        }
+
+                                                                        if($tournament->semi_final_winners) {
+                                                                            $find_winners = json_decode($tournament->semi_final_winners, true);
+                                                                            
+                                                                            if(array_key_exists('match_'.$i, $find_winners)){
+                                                                                $winner = $find_winners['match_'.$i];
+                                                                            }
+                                                                        }
+
+                                                                    }
+                                                                ?>
+
+            
+
+                                                                <input type="hidden" name="p1_m{{ $i }}_id" value="{{ ${"p1_m".$i}->id ?? '' }}">
+
+                                                                <input type="hidden" name="p2_m{{ $i }}_id" value="{{ ${"p2_m".$i}->id ?? '' }}">
+
+                                                                <div class="row mb-2">
+                                                                    
+                                                                    <label for="sem_m{{ $i }}_p1" class="col-xl-4 col-form-label">
+                                                                        @if(array_key_exists('match_'.$i, $semi_final_matches)) 
+                                                                            {{ $p1->name ?? "N/A" }}  
+                                                                            @if($tournament->semi_final_winners)
+                                                                                @if(array_key_exists('match_'.$i, $semi_final_winners)) 
+                                                                                    <span class="text-danger text-center" style="font-weight: 500; font-size: 10px;">{{ $winner == $p1->id ? "(W)" : "" }}</span>
+                                                                                @endif 
+                                                                            @endif
+                                                                        @else
+                                                                            N/A 
+                                                                        @endif
+                                                                    </label>
+                                                                    
+                                                                    <div class="col-xl-8" style="margin-bottom: 0.7rem!important;">
+                                                                        <div class="row">
+                                                                            <div class="col-12">
+                                                                                <input type="number" min="0" class="form-control" id="sem_m{{ $i }}_p1" placeholder="Enter point" 
+                                                                                    @if($tournament->semi_final_points) 
+                                                                                        value="{{ isset(${'sem_p1_m'.$i}) ? ${'sem_p1_m'.$i} : '' }}"
+                                                                                    @endif 
+                                                                                    name="p1_m{{ $i }}"
+                                                                                >
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="row mb-2">
+                                                                    <label for="sem_m{{ $i }}_p2" class="col-xl-4 col-form-label">
+                                                                        @if(array_key_exists('match_'.$i, $semi_final_matches)) 
+                                                                            {{ $p2->name ?? "N/A" }} 
+                                                                            @if($tournament->semi_final_winners)
+                                                                                @if(array_key_exists('match_'.$i, $semi_final_winners)) 
+                                                                                    <span class="text-danger text-center" style="font-weight: 500; font-size: 10px;">{{ $winner == $p2->id ? "(W)" : "" }}</span>
+                                                                                @endif 
+                                                                            @endif
+                                                                        @else 
+                                                                            N/A 
+                                                                        @endif
+                                                                    </label>
+                                                                    
+                                                                    <div class="col-xl-8">
+                                                                        <div class="row">
+                                                                            <div class="col-12">
+                                                                                <input type="number" min="0" class="form-control" id="sem_m{{ $i }}_p2" placeholder="Enter point" 
+                                                                                    @if($tournament->semi_final_points) 
+                                                                                        value="{{ isset(${'sem_p2_m'.$i}) ? ${'sem_p2_m'.$i} : '' }}"
+                                                                                    @endif 
+                                                                                    name="p2_m{{ $i }}"
+                                                                                >
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                </div>                                   
+
+                                                            </div>
+                                                        @endfor
+
+                                                        <button type="submit" class="btn btn-info btn-label waves-effect waves-light mt-3" style="width: 60%; margin: 0 auto;"  
+                                                            onclick="return confirm('Are you sure to submit the points?');" 
+                                                        >
+                                                            <i class="bx bx-add-to-queue label-icon"></i> Save Points 
+                                                            <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i>
+                                                        </button>
+                                            </div>
+
+                                        </form>
+                                    @endif
+
+                                </div>
+                                <!-- end card body -->
+                            </div>
+                            <!-- end card -->
+                        </div>
+                        <!-- end col -->
+                    </div>
+                @endif
+
+                <br><br>
+
+                {{-- FINAL --}}
+                @if($tournament->semi_final_winners)
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <form class="needs-validation" action="{{ route('submit.final.matches', $tournament->id) }}" method="post" novalidate="">
+                                    @csrf
+                                    
+                                        <div class="row">
+                                            <div>
+                                                <h5 class="text-center text-info" style="font-weight:510;"> Final</h5>
+                                            </div>
+                                            <i class="bx bx-chevrons-down bx-fade-down text-info display-6 text-center mt-1"></i>
+                                            <span style="margin-top:20px;"></span>
+                                                
+                                                <div class="col-xl-4"></div>
+                                                <div class="col-xl-4 text-center">
+                                                    <span class="badge bg-info mb-4">Matches</span>
+                                                </div>
+                                                <div class="col-xl-4"></div>
+                                                
+                                                 <?php 
+                                                    $w_arr = json_decode($tournament->semi_final_winners, true);
+                                                    $winners = [];
+
+                                                    if(array_key_exists('match_1', $w_arr)) {
+                                                        $win = $w_arr['match_1'];
+                                                        array_push($winners, $win);
+                                                    }
+
+                                                    if(array_key_exists('match_2', $w_arr)) {
+                                                        $win = $w_arr['match_2'];
+                                                        array_push($winners, $win);
+                                                    }
+
+                                                    if(array_key_exists('match_3', $w_arr)) {
+                                                        $win = $w_arr['match_3'];
+                                                        array_push($winners, $win);
+                                                    }
+
+                                                    if(array_key_exists('match_4', $w_arr)) {
+                                                        $win = $w_arr['match_4'];
+                                                        array_push($winners, $win);
+                                                    }
+                                                ?>
+
+                                                <div class="col-xl-12">
+                                                    <div class="mb-3 position-relative">
+                                                        <label class="form-label text-dark"> Final Match</label>
+                                                            <div class="row">
+
+                                                                <div class="col-5">
+                                                                    <select class="form-control select2" id="final_mat_1_player_1" name="final_mat_1_player_1" required>
+                                                    
+                                                                        <option value="">Select Player</option>
+                                                                        
+                                                                        <?php 
+                                                                            $final_mat_1 = []; 
+
+                                                                            if($tournament->final_matches) {
+                                                                                $find_matches = json_decode($tournament->final_matches, true);
+
+                                                                                if(array_key_exists('match_1', $find_matches)) {
+                                                                                    $matches = $find_matches['match_1'];
+                                                                                    $match = explode(" VS ", $matches);
+                                                                                    array_push($final_mat_1, \App\Models\User::findOrFail($match[0])->name);
+                                                                                    array_push($final_mat_1, \App\Models\User::findOrFail($match[1])->name);
+                                                                                }
+                                                                            }
+                                                                        ?>
+                                                                        @foreach($winners as $player)
+                                                                            <?php 
+                                                                                $user = \App\Models\User::findOrFail($player);
+
+                                                                                if($tournament->final_matches) {
+                                                                                    $find_matches = json_decode($tournament->final_matches, true);
+
+                                                                                    if(array_key_exists('match_1', $find_matches)) {
+                                                                                        $matches = $find_matches['match_1'];
+                                                                                        $match = explode(" VS ", $matches);
+                                                                                    }
+                                                                                }
+                                                                            ?>
+
+
+                                                                            <option value="{{ $user->id }}" @if($tournament->final_matches) {{ $match[0] == $user->id ? "selected" : "" }} @else {{ old('final_mat_1_player_1') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+
+                                                                        @endforeach
+
+                                                                    </select>
+
+                                                                    <div class="invalid-feedback">
+                                                                        Please select a player.
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                                <div class="col-2 text-center" style="margin-top: 10px !important;margin: 0 auto;"><span class="badge bg-secondary">VS</span> </div>
+
+                                                                <div class="col-5">
+                                                                    <select class="form-control select2" id="final_mat_1_player_2" name="final_mat_1_player_2" required>
+                                                    
+                                                                        <option value="">Select Player</option>
+                                                                        
+                                                                        @foreach($winners as $player)
+                                                                            <?php 
+                                                                                $user = \App\Models\User::findOrFail($player);
+
+                                                                                if($tournament->final_matches) {
+                                                                                    $find_matches = json_decode($tournament->final_matches, true);
+
+                                                                                    if(array_key_exists('match_1', $find_matches)) {
+                                                                                        $matches = $find_matches['match_1'];
+                                                                                        $match = explode(" VS ", $matches);
+                                                                                    }
+                                                                                }
+                                                                            ?>
+
+
+                                                                            <option value="{{ $user->id }}" @if($tournament->final_matches) {{ $match[1] == $user->id ? "selected" : "" }} @else {{ old('final_mat_1_player_2') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+
+                                                                        @endforeach
+
+
+                                                                    </select>
+
+                                                                    <div class="invalid-feedback">
+                                                                        Please select a player.
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>  
+
+                                                    </div>
+                                                </div>
+
+
+                                                <button type="submit" class="btn btn-success btn-label waves-effect waves-light mt-3" @if($tournament->final_results) disabled @endif style="width: 60%; margin: 0 auto;" @if($tournament->final_matches) onclick="return confirm('Draw has been performed already. Are you sure to change the draw and send SMS to the players again?');" @else onclick="return confirm('Are you sure to make the draw and send SMS to the players?');" @endif><i class="bx bx-add-to-queue label-icon"></i> @if($tournament->final_matches) Change @else Submit @endif Match <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i></button>    
+
+                                           
+                                        </div>
+                        
+                                    </form>
+
+
+                                    @if($tournament->final_matches)
+                                        <form class="needs-validation" action="{{ route('submit.final.results', $tournament->id) }}" method="post" novalidate="">
+                                        @csrf
+                                        
+                                            <div class="row">
+                                                <i class="bx bx-chevrons-down bx-fade-down text-info display-6 text-center mt-1"></i>
+                                                <span style="margin-top:20px;"></span>
+                                                    
+                                                    <div class="col-xl-4"></div>
+                                                    <div class="col-xl-4 text-center">
+                                                        <span class="badge bg-info mb-1">Match Results</span>
+                                                    </div>
+                                                    <div class="col-xl-4"></div>
+
+                                                    <div class="col-xl-12 mt-4">
+                                                        <label class="form-label text-dark" style="border:1px dashed #ddd; padding: 7px; border-radius: 2px; margin-bottom: 15px;"> Final Match </label>
+
+                                                        <?php 
+                                                            if($tournament->final_matches) {
+                                                                $find_matches = json_decode($tournament->final_matches, true);
+
+                                                                if(array_key_exists('match_1', $find_matches)) {
+                                                                    $matches = $find_matches['match_1'];
+                                                                    $match = explode(" VS ", $matches);
+                                                                }
+
+                                                            }
+
+                                                            if($tournament->final_results) {
+                                                                $final_m1_s1 = [];
+                                                                $final_m1_s2 = [];
+                                                                $final_m1_s3 = [];
+
+                                                                $find_results = json_decode($tournament->final_results, true);
+
+                                                                if(array_key_exists('match_1', $find_results)) {
+                                                                    $results = $find_results['match_1'];
+                                                                    foreach($results as $result_array) {
+                                                                        if(array_key_exists('set_1', $result_array)) {
+                                                                            $rs = $result_array['set_1'];
+                                                                            array_push($final_m1_s1, $rs);
+                                                                        }
+
+                                                                        if(array_key_exists('set_2', $result_array)) {
+                                                                            $rs2 = $result_array['set_2'];
+                                                                            array_push($final_m1_s2, $rs2);
+                                                                        }
+
+                                                                        if(array_key_exists('set_3', $result_array)) {
+                                                                            $rs3 = $result_array['set_3'];
+                                                                            array_push($final_m1_s3, $rs3);
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                            }
+                                                        ?>
+
+                                                    
+                                                        <?php 
+                                                            $p1_m1 = \App\Models\User::findOrFail($match[0]);
+                                                            $p2_m1 = \App\Models\User::findOrFail($match[1]);
+                                                        ?>
+
+                                                        <input type="hidden" name="p1_m1" value="{{ $p1_m1->id }}">
+                                                        <input type="hidden" name="p2_m1" value="{{ $p2_m1->id }}">
+
+                                                        <div class="row mb-2">
+                                                            <label for="validationTooltip100" class="col-xl-4 col-form-label">{{ $p1_m1->name }}</label>
+                                                            
+                                                            <div class="col-xl-8" style="margin-bottom: 0.7rem!important;">
+                                                                <div class="row">
+                                                                    <div class="col-4">
+                                                                        <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="1st Set" @if($tournament->final_results) value="{{ $final_m1_s1[0] }}" @endif name="p1_m1_s1" required="">
+                                                                    </div>
+
+                                                                    <div class="col-4">
+                                                                        <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="2nd Set" @if($tournament->final_results) value="{{ $final_m1_s2[0] }}" @endif name="p1_m1_s2" required="">
+                                                                    </div>
+
+                                                                    <div class="col-4">
+                                                                        <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="3rd Set" @if($tournament->final_results) value="{{ $final_m1_s3[0] }}" @endif name="p1_m1_s3">
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mb-2">
+                                                            <label for="validationTooltip100" class="col-xl-4 col-form-label">{{ $p2_m1->name }}</label>
+                                                            
+                                                            <div class="col-xl-8">
+                                                                <div class="row">
+                                                                    <div class="col-4">
+                                                                        <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="1st Set" @if($tournament->final_results) value="{{ $final_m1_s1[1] }}" @endif name="p2_m1_s1" required="">
+                                                                    </div>
+
+                                                                    <div class="col-4">
+                                                                        <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="2nd Set" @if($tournament->final_results) value="{{ $final_m1_s2[1] }}" @endif name="p2_m1_s2" required="">
+                                                                    </div>
+
+                                                                    <div class="col-4">
+                                                                        <input type="number" min="0" max="7" class="form-control" id="validationTooltip01" placeholder="3rd Set" @if($tournament->final_results) value="{{ $final_m1_s3[1] }}" @endif name="p2_m1_s3">
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="row mb-2" style="margin-top: 20px;">
+                                                            <label for="final_mat_1_status" class="col-xl-4 col-form-label text-info">Status</label>
+                                                            
+                                                            <div class="col-xl-8">
+                                                                <div class="mb-1 position-relative">
+                                                                    <select class="form-control select2" id="final_mat_1_status" name="final_mat_1_status">
+                                                
+                                                                        <option value="">Select Status</option>
+
+                                                                        <option value="Withdraw" @if($final_status) @if(array_key_exists('match_1', $final_status)) {{ $final_status['match_1'] == 'Withdraw' ? "selected" : "" }} @endif @endif>Withdraw</option>
+
+                                                                        <option value="Retired" @if($final_status) @if(array_key_exists('match_1', $final_status)) {{ $final_status['match_1'] == 'Retired' ? "selected" : "" }} @endif @endif>Retired</option>
+
+                                                                        <option value="Decided by Organisers" @if($final_status) @if(array_key_exists('match_1', $final_status)) {{ $final_status['match_1'] == 'Decided by Organisers' ? "selected" : "" }} @endif @endif>Decided by Organisers</option>
+                                                                        
+                                                                    </select>
+
+                                                                    <div class="valid-feedback">
+                                                                        Looks good!
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                                    
+                                                    
+                                                    <div class="col-xl-4"></div>
+                                                    <div class="col-xl-8">
+                                                        <button type="submit" class="btn btn-success btn-label waves-effect waves-light mt-3" style="width: 100%; margin: 0 auto;" @if($tournament->final_results) onclick="return confirm('Match results have been added already. Are you sure to change?');" @else onclick="return confirm('Are you sure to change the match results? It will affect the winners list.');" @endif><i class="bx bx-add-to-queue label-icon"></i> @if($tournament->final_results) Change @else Submit @endif Results <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i></button>
+                                                    </div>
+                                                    
+                                            </div>
+                            
+                                        </form>
+
+                                        <div class="row">
+                                            @if($final_status) 
+                                                @if(in_array('Retired', $final_status))
+                                                
+                                                    <i class="bx bx-chevrons-down bx-fade-down text-info display-6 text-center mt-1"></i>
+                                                    <span style="margin-top:20px;"></span>
+
+                                                    <div class="col-xl-4"></div>
+                                                    <div class="col-xl-4 text-center">
+                                                        <span class="badge bg-info mb-4">Who're Retiring</span>
+                                                    </div>
+                                                    <div class="col-xl-4"></div>
+
+                                                    <?php 
+                                                        $final_mat_retires = [];
+                                                    ?>
+                                                    @for($k = 1; $k < 2; $k++)
+                                                        <div class="col-xl-12">
+                                                            <div class="mb-3 position-relative">
+                                                                
+                                                                <form class="needs-validation" action="{{ route('submit.final.retire', $tournament->id) }}" method="post" novalidate="">
+                                                                    @csrf
+
+                                                
+                                                                    <div class="row">
+
+                                                                        <div class="col-6">
+                                                                            <label class="form-label text-dark"> Select Player </label>
+
+                                                                            <select class="form-control select2" id="final_mat_{{$k}}_retire_player" name="final_mat_retire_player" required>
+                                                            
+                                                                                <option value="">Select Player</option>
+                                                                                
+                                                                                <?php 
+                                                                                    
+                                                                                    if($final_retires) {               
+                                                                                        if(array_key_exists('match_'.$k, $final_retires)) {
+                                                                                            $retire_player = $final_retires['match_'.$k];
+                                                                                            $final_mat_retires['match_'.$k] = \App\Models\User::findOrFail($retire_player)->name;
+                                                                                        }
+                                                                                    }
+                                                                        
+                                                                                ?>
+
+                                                                                @foreach($winners as $player)
+                                                                                    <?php 
+                                                                                        $user = \App\Models\User::findOrFail($player);
+                                                                                    ?>
+
+
+                                                                                    <option value="{{ $user->id }}" @if($final_retires) @if(array_key_exists('match_'.$k, $final_retires)) {{ $retire_player == $user->id ? "selected" : "" }} @else {{ old('final_mat_retire_player') == $user->id ? "selected" : "" }} @endif @else {{ old('final_mat_retire_player') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+
+                                                                                @endforeach
+
+                                                                            </select>
+
+                                                                            <div class="invalid-feedback">
+                                                                                Please select a player.
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                        
+                                                                        <div class="col-6">
+                                                                            <label class="form-label text-dark"> Define Match </label>
+
+                                                                            <select class="form-control select2" id="final_mat_{{ $k }}_retire" name="final_mat_retire" required>
+                                                            
+                                                                                <option value="">Select Any Match</option>
+                                                                                
+                                                                                
+                                                                                <?php 
+                                                                                    $match_word = strtolower(ucwords((new NumberFormatter('en_IN', NumberFormatter::SPELLOUT))->format($k)));
+                                                                                ?>
+                                                                                <option value="match_{{ $k }}" @if($final_retires) @if(array_key_exists('match_'.$k, $final_retires)) selected @endif @endif>Match - {{ $k }}</option>
+                                                                                
+
+                                                                            </select>
+
+                                                                            <div class="invalid-feedback">
+                                                                                Please select/define a match.
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                        <div class="col-12 text-center">
+                                                                            <button type="submit" class="btn btn-warning btn-label waves-effect waves-light mt-4" style=" width: 60%;margin: 0 auto;" @if($tournament->final_retires) @if(array_key_exists('match_'.$k, $final_retires)) onclick="return confirm('Match retirement has been performed already. Are you sure to change?');" @else onclick="return confirm('Are you sure to make the match retirement?');" @endif @else onclick="return confirm('Are you sure to make the match retirement?');" @endif><i class="bx bx-add-to-queue label-icon"></i> @if($tournament->final_retires) @if(array_key_exists('match_'.$k, $final_retires))  Change @else Submit @endif @else Submit @endif Retirement <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i></button>
+                                                                        </div>
+
+                                                                    </div>  
+
+                                                                </form>
+
+                                                            </div>
+                                                        </div>
+
+                                                    @endfor
+
+                                                @endif
+                                            @endif
+                                        </div>
+
+                                    @endif
+
+                                    
+                                    @if($tournament->final_results)
+                                        <form class="needs-validation" action="{{ route('submit.final.winners', $tournament->id) }}" method="post" novalidate="">
+                                            @csrf
+                                        
+                                            <div class="row">
+                                                <i class="bx bx-chevrons-down bx-fade-down text-info display-6 text-center mt-1"></i>
+                                                <span style="margin-top:20px;"></span>
+                                                    
+                                                    <div class="col-xl-4"></div>
+                                                    <div class="col-xl-4 text-center">
+                                                        <span class="badge bg-info mb-4">Winners</span>
+                                                    </div>
+                                                    <div class="col-xl-4"></div>
+                                                    
+                                                    <div class="col-xl-12">
+                                                        <div class="mb-3 position-relative">
+                                                            <label class="form-label text-dark">Final Match</label>
+                                                                <div class="row">
+
+                                                                    <div class="col-12">
+                                                                        <select class="form-control select2" id="final_mat_1_winner" name="final_mat_1_winner" required>
+                                                        
+                                                                            <option value="">Select Player</option>
+                                                                            
+                                                                                <?php 
+                                                                                    if($tournament->semi_final_matches) {
+                                                                                        $find_matches = json_decode($tournament->final_matches, true);
+
+                                                                                        if(array_key_exists('match_1', $find_matches)) {
+                                                                                            $matches = $find_matches['match_1'];
+                                                                                            $match = explode(" VS ", $matches);
+                                                                                        }
+
+                                                                                        if($tournament->final_winners) {
+                                                                                            $find_winners = json_decode($tournament->final_winners, true);
+                                                                                            
+                                                                                            if(array_key_exists('match_1', $find_winners)){
+                                                                                                $winner = $find_winners['match_1'];
+                                                                                            }
+                                                                                        }
+
+                                                                                    }
+                                                                                ?>
+
+                                                                                @foreach($match as $value)
+                                                                                    <?php 
+                                                                                        $user = \App\Models\User::findOrFail($value);
+                                                                                    ?>
+                                                                                    <option value="{{ $user->id }}" @if($tournament->semi_final_winners) {{ $winner == $user->id ? "selected" : "" }} @else {{ old('final_mat_1_winner') == $user->id ? "selected" : "" }} @endif>{{ $user->name }}</option>
+                                                                                @endforeach
+
+                                                                        </select>
+
+                                                                        <div class="invalid-feedback">
+                                                                            Please select a player.
+                                                                        </div>
+                                                                    </div>
+                                                                    
+
+                                                                </div>  
+
+                                                        </div>
+                                                    </div>
+
+
+                                                    <button type="submit" class="btn btn-success btn-label waves-effect waves-light mt-3" style="width: 60%; margin: 0 auto;" @if($tournament->final_winners) onclick="return confirm('Winners have been selected already. Are you sure to change?');" @else onclick="return confirm('Are you sure to select these playes as Winners?');" @endif><i class="bx bx-add-to-queue label-icon"></i> @if($tournament->final_matches) Change @else Submit @endif Winners <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i></button>    
+                                               
+                                            </div>
+                            
+                                        </form>
+                                    @endif
+
+
+                                    @if($tournament->final_results)
+                                        <form class="needs-validation" action="{{ route('submit.final.points', $tournament->id) }}" method="post" novalidate="">
+                                            @csrf
+
+                                            <div class="row">
+                                                <i class="bx bx-chevrons-down bx-fade-down text-info display-6 text-center mt-1"></i>
+                                                <span style="margin-top:20px;"></span>
+                                                    
+                                                    <div class="col-xl-4"></div>
+                                                    <div class="col-xl-4 text-center">
+                                                        <span class="badge bg-info mb-1">Match Points</span>
+                                                    </div>
+                                                    <div class="col-xl-4"></div>
+
+                                                        @for($i = 1; $i < 2; $i++)
+                                                            
+                                                            <div class="col-xl-7 mt-4">
+                                                
+                                                                <label class="form-label text-dark" style="border:1px dashed #ddd; padding: 7px; border-radius: 2px; margin-bottom: 15px;"> Match - {{ $i }} </label>
+
+                                                                <?php 
+                                                                    if($tournament->final_matches) {
+                                                                        $find_matches = json_decode($tournament->final_matches, true);
+
+                                                                        if(array_key_exists('match_'.$i, $find_matches)) {
+                                                                            $matches = $find_matches['match_'.$i];
+                                                                            $match = explode(" VS ", $matches);
+
+                                                                            $p1 = \App\Models\User::findOrFail($match[0]);
+                                                                            $p2 = \App\Models\User::findOrFail($match[1]);
+                                                                        }
+
+                                                                    }
+
+                                                                    
+                                                                    if($tournament->final_points) {
+
+                                                                        ${'final_p1_m'.$i} = '';
+                                                                        ${'final_p2_m'.$i} = '';
+
+                                                                        $find_points = (array)json_decode($tournament->final_points, true);
+
+                                                                        if(array_key_exists('match_'.$i, $find_points)) {
+                                                                            $results = $find_points['match_'.$i];
+                                                                            
+                                                                            ${'final_p1_m'.$i} = $results[$p1->id];
+                                                                            ${'final_p2_m'.$i} = $results[$p2->id];
+                                                                        }
+                                                                        
+                                                                    }
+
+                                                                ?>
+
+                                                                
+                                                                <?php 
+                                                                    if($tournament->final_matches) {
+                                                                        $find_matches = json_decode($tournament->final_matches, true);
+
+                                                                        if(array_key_exists('match_'.$i, $find_matches)) {
+                                                                            $matches = $find_matches['match_'.$i];
+                                                                            $match = explode(" VS ", $matches);
+                                                                        }
+
+                                                                        if($tournament->final_winners) {
+                                                                            $find_winners = json_decode($tournament->final_winners, true);
+                                                                            
+                                                                            if(array_key_exists('match_'.$i, $find_winners)){
+                                                                                $winner = $find_winners['match_'.$i];
+                                                                            }
+                                                                        }
+
+                                                                    }
+                                                                ?>
+
+            
+
+                                                                <input type="hidden" name="p1_m{{ $i }}_id" value="{{ ${"p1_m".$i}->id ?? '' }}">
+
+                                                                <input type="hidden" name="p2_m{{ $i }}_id" value="{{ ${"p2_m".$i}->id ?? '' }}">
+
+                                                                <div class="row mb-2">
+                                                                    
+                                                                    <label for="final_m{{ $i }}_p1" class="col-xl-4 col-form-label">
+                                                                        @if(array_key_exists('match_'.$i, $final_matches)) 
+                                                                            {{ $p1->name ?? "N/A" }}  
+                                                                            @if($tournament->final_winners)
+                                                                                @if(array_key_exists('match_'.$i, $final_winners)) 
+                                                                                    <span class="text-danger text-center" style="font-weight: 500; font-size: 10px;">{{ $winner == $p1->id ? "(W)" : "" }}</span>
+                                                                                @endif 
+                                                                            @endif
+                                                                        @else
+                                                                            N/A 
+                                                                        @endif
+                                                                    </label>
+                                                                    
+                                                                    <div class="col-xl-8" style="margin-bottom: 0.7rem!important;">
+                                                                        <div class="row">
+                                                                            <div class="col-12">
+                                                                                <input type="number" min="0" class="form-control" id="final_m{{ $i }}_p1" placeholder="Enter point" 
+                                                                                    @if($tournament->final_points) 
+                                                                                        value="{{ isset(${'final_p1_m'.$i}) ? ${'final_p1_m'.$i} : '' }}"
+                                                                                    @endif 
+                                                                                    name="p1_m{{ $i }}"
+                                                                                >
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="row mb-2">
+                                                                    <label for="final_m{{ $i }}_p2" class="col-xl-4 col-form-label">
+                                                                        @if(array_key_exists('match_'.$i, $final_matches)) 
+                                                                            {{ $p2->name ?? "N/A" }} 
+                                                                            @if($tournament->final_winners)
+                                                                                @if(array_key_exists('match_'.$i, $final_winners)) 
+                                                                                    <span class="text-danger text-center" style="font-weight: 500; font-size: 10px;">{{ $winner == $p2->id ? "(W)" : "" }}</span>
+                                                                                @endif 
+                                                                            @endif
+                                                                        @else 
+                                                                            N/A 
+                                                                        @endif
+                                                                    </label>
+                                                                    
+                                                                    <div class="col-xl-8">
+                                                                        <div class="row">
+                                                                            <div class="col-12">
+                                                                                <input type="number" min="0" class="form-control" id="final_m{{ $i }}_p2" placeholder="Enter point" 
+                                                                                    @if($tournament->final_points) 
+                                                                                        value="{{ isset(${'final_p2_m'.$i}) ? ${'final_p2_m'.$i} : '' }}"
+                                                                                    @endif 
+                                                                                    name="p2_m{{ $i }}"
+                                                                                >
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                </div>                                   
+
+                                                            </div>
+                                                            
+                                                        @endfor
+
+                                                        <button type="submit" class="btn btn-info btn-label waves-effect waves-light mt-3" style="width: 60%; margin: 0 auto;"  
+                                                            onclick="return confirm('Are you sure to submit the points?');" 
+                                                        >
+                                                            <i class="bx bx-add-to-queue label-icon"></i> Save Points 
+                                                            <i class="bx bx-right-arrow-circle bx-fade-right font-size-20 align-middle me-1"></i>
+                                                        </button>
+                                            </div>
+
+                                        </form>
+                                    @endif
+
+                                </div>
+                                <!-- end card body -->
+                            </div>
+                            <!-- end card -->
+                        </div>
+                        <!-- end col -->
+                    </div>
+                @endif
+            @endif
+            <!-- end row -->
+
+            <?php 
+                if($t_d_semf) {
+                    $strt_sem = explode(", ", $t_d_semf->start);
+                    $endd_sem = explode(", ", $t_d_semf->end);
+                }
+            ?>
+
+            <?php 
+                if($t_d_rou1) {
+                    $strt_r1 = explode(", ", $t_d_rou1->start);
+                    $endd_r1 = explode(", ", $t_d_rou1->end);
+                }
+            ?>
+
+            <?php 
+                if($t_d_quar) {
+                    $strt_quar = explode(", ", $t_d_quar->start);
+                    $endd_quar = explode(", ", $t_d_quar->end);
+                }
+            ?>
+
+            <?php 
+                if($t_d_final) {
+                    $strt_f = explode(", ", $t_d_final->start);
+                    $endd_f = explode(", ", $t_d_final->end);
+                }
+            ?>
+
+            <?php
+                if($t_d_rou2) {
+                    $strt_r2 = explode(', ', $t_d_rou2->start);
+                    $endd_r2 = explode(', ', $t_d_rou2->end);
+                }
+            ?>
+
+            <?php
+                if($t_d_rou3) {
+                    $strt_r3 = explode(', ', $t_d_rou3->start);
+                    $endd_r3 = explode(', ', $t_d_rou3->end);
+                }
+            ?>
+
+
+            @if($tournament->tree_size == 8)
+                <header class="hero">
+                    <div class="hero-wrap">
+                     <p class="intro" id="intro">Tennis4All</p>
+                         <h1 id="headline">Tournament</h1>
+                         <p class="year" style="margin-top: -10px;"><i class="fa fa-star"></i> {{ $tournament->name }} <i class="fa fa-star"></i></p>
+                     <p>Fixtures ({{ $tournament->tree_size }} Players)</p>
+                   </div>
+                </header>
+
+                <section id="bracket">
+                    <div class="container" style="overflow: scroll;">
+                        <div class="split split-one">
+
+                            @if($round_one_auto_selection)
+
+                                <div class="round round-one @if($round_one_auto_selection) current @elseif($round_one_matches) current @endif">
+                                    <div class="round-details">Round 1<br/><span class="date">@if($t_d_rou1) {{ $strt_r1[0] }} - {{ $endd_r1[0] }} @else N/A @endif</span></div>
+                                    
+                                    @for($i = 1; $i < 3; $i++)
+                                        @if (array_key_exists('match_'.$i, $round_one_auto_selection))
+                                            
+                                            <ul class="matchup">
+
+                                                <span class="custooltipleft">
+                                                    <li
+                                                        class="team team-top winnerclractive">
+                                                        {{ \Illuminate\Support\Str::limit($rou_1_mat_auto['match_'.$i], 100) }}
+
+                                                        <span
+                                                            class="score winnerclractive">N/A</span>
+
+                                                    </li>
+                                                    <span class="custooltiplefttext">{{ $rou_1_mat_auto['match_'.$i] }}</span>
+                                                </span>
+
+                                                <span class="custooltipleft">
+                                                    <li
+                                                        class="team team-bottom">
+                                                        N/A
+
+                                                        <span
+                                                            class="score">N/A</span>
+
+                                                    </li>
+                                                    <span class="custooltiplefttext">N/A</span>
+                                                </span>
+
+                                            </ul>
+                                            
+                                        @else
+
+                                            @if($tournament->round_one_matches)
+                                                                                                   
+                                                @if (array_key_exists('match_'.$i, $round_one_matches))
+                                                    
+                                                    <?php 
+                                                        $get_matches = $round_one_matches['match_'.$i];
+                                                        $vs_match = explode(" VS ", $get_matches);
+                                                    ?>
+
+                                                    @if ($tournament->round_one_results)
+                                                        
+                                                        @if($round_one_status)
+                                                            @if (array_key_exists('match_'.$i, $round_one_status))
+                                                                @if($round_one_status['match_'.$i])
+                                                                    <?php
+                                                                        if (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 0;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[1] > ${"rou1_m" . $i . "_s1"}[0] && ${"rou1_m" . $i . "_s2"}[1] > ${"rou1_m" . $i . "_s2"}[0]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 0;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                        }
+                                                                    ?>
+
+
+                                                                    <ul class="matchup">
+
+                                                                        <span class="custooltipleft">
+                                                                            <li
+                                                                                class="team team-top @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                                @if (${"rou1_m" . $i . "_p1_total"} < ${"rou1_m" . $i . "_p2_total"})
+                                                                                    @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                        @if($round_one_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                                @if($round_one_retires['match_'.$i] == $vs_match[0])
+                                                                                                    
+                                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                        <span
+                                                                                            class="score">{{ ${"rou1_m" . $i . "_s1"}[0] }}
+                                                                                            {{ ${"rou1_m" . $i . "_s2"}[0] }} {{ ${"rou1_m" . $i . "_s3"}[0] }}</span>
+                                                                                    @elseif($round_one_status['match_'.$i] == 'Withdraw')
+                                                                                        <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(W)</span>
+                                                                                        <span
+                                                                                            class="score">&#8212;</span>
+                                                                                    @elseif($round_one_status['match_'.$i] == 'Decided by Organisers')
+                                                                                        <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(D)</span>
+                                                                                        <span
+                                                                                            class="score">&#8212;</span>
+                                                                                    @endif
+
+                                                                                @else
+                                                                                    @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                        @if($round_one_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                                @if($round_one_retires['match_'.$i] == $vs_match[0])
+                                                                                                    
+                                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                        <span
+                                                                                        class="score winnerclractive">{{ ${"rou1_m" . $i . "_s1"}[0] }}
+                                                                                        {{ ${"rou1_m" . $i . "_s2"}[0] }} {{ ${"rou1_m" . $i . "_s3"}[0] }}</span>
+                                                                                    @elseif($round_one_status['match_'.$i] == 'Withdraw')
+                                                                                        <span
+                                                                                        class="score winnerclractive">&#8212;</span>
+                                                                                    @elseif($round_one_status['match_'.$i] == 'Decided by Organisers')
+                                                                                        <span
+                                                                                        class="score winnerclractive">&#8212;</span>
+                                                                                    @endif
+                                                                                        
+                                                                                @endif
+
+                                                                            </li>
+
+                                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }} 
+
+                                                                                @if($round_one_status)
+                                                                                    @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                        @if($round_one_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                                @if($round_one_retires['match_'.$i] == $vs_match[0])
+                                                                                                    
+                                                                                                    ({{ $round_one_status['match_'.$i] }})
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @else
+                                                                                        @if (${"rou1_m" . $i . "_p1_total"} < ${"rou1_m" . $i . "_p2_total"}) 
+                                                                                            ({{ $round_one_status['match_'.$i] }}) 
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @endif
+
+                                                                            </span>
+
+                                                                        </span>
+
+                                                                        <span class="custooltipleft">
+                                                                            <li
+                                                                                class="team team-bottom @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                                @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"})
+                                                                                    @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                        @if($round_one_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                                @if($round_one_retires['match_'.$i] == $vs_match[1])
+                                                                                                    
+                                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                        <span
+                                                                                            class="score">{{ ${"rou1_m" . $i . "_s1"}[1] }}
+                                                                                            {{ ${"rou1_m" . $i . "_s2"}[1] }} {{ ${"rou1_m" . $i . "_s3"}[1] }}</span>
+                                                                                    @elseif($round_one_status['match_'.$i] == 'Withdraw')
+                                                                                        <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(W)</span>
+                                                                                        <span
+                                                                                            class="score">&#8212;</span>
+                                                                                    @elseif($round_one_status['match_'.$i] == 'Decided by Organisers')
+                                                                                        <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(D)</span>
+                                                                                        <span
+                                                                                            class="score">&#8212;</span>
+                                                                                    @endif
+
+                                                                                @else
+                                                                                    @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                        @if($round_one_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                                @if($round_one_retires['match_'.$i] == $vs_match[1])
+                                                                                                    
+                                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                        <span
+                                                                                        class="score winnerclractive">{{ ${"rou1_m" . $i . "_s1"}[1] }}
+                                                                                        {{ ${"rou1_m" . $i . "_s2"}[1] }} {{ ${"rou1_m" . $i . "_s3"}[1] }}</span>
+                                                                                    @elseif($round_one_status['match_'.$i] == 'Withdraw')
+                                                                                        <span
+                                                                                        class="score winnerclractive">&#8212;</span>
+                                                                                    @elseif($round_one_status['match_'.$i] == 'Decided by Organisers')
+                                                                                        <span
+                                                                                        class="score winnerclractive">&#8212;</span>
+                                                                                    @endif
+                                                                                @endif
+
+                                                                            </li>
+
+                                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }} 
+
+                                                                                @if($round_one_status)
+                                                                                    @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                        @if($round_one_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                                @if($round_one_retires['match_'.$i] == $vs_match[1])
+                                                                                                    
+                                                                                                    ({{ $round_one_status['match_'.$i] }})
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @else
+                                                                                        @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) 
+                                                                                            ({{ $round_one_status['match_'.$i] }}) 
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @endif
+
+                                                                            </span>
+
+                                                                        </span>
+
+                                                                    </ul>
+
+                                                                @else
+                                                                    @if (array_key_exists('match_'.$i, $round_one_results))
+                                                                        <?php
+                                                                            if (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1]) {
+
+                                                                                ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                                ${"rou1_m" . $i . "_p2_total"} = 0;
+
+                                                                            } elseif (${"rou1_m" . $i . "_s1"}[1] > ${"rou1_m" . $i . "_s1"}[0] && ${"rou1_m" . $i . "_s2"}[1] > ${"rou1_m" . $i . "_s2"}[0]) {
+
+                                                                                ${"rou1_m" . $i . "_p1_total"} = 0;
+                                                                                ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                            } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                                ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                                ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                            } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                                ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                                ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                            } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                                ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                                ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                            } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                                ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                                ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                            }
+                                                                        ?>
+                                                                        
+
+                                                                        <ul class="matchup">
+
+                                                                            <span class="custooltipleft">
+                                                                                <li
+                                                                                    class="team team-top @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                                    {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                                    <span
+                                                                                        class="score @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[0] }}
+                                                                                        {{ ${"rou1_m" . $i . "_s2"}[0] }} {{ ${"rou1_m" . $i . "_s3"}[0] }}</span>
+
+                                                                                </li>
+                                                                                <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                            </span>
+
+                                                                            <span class="custooltipleft">
+                                                                                <li
+                                                                                    class="team team-bottom @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                                    {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                                    <span
+                                                                                        class="score @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[1] }}
+                                                                                        {{ ${"rou1_m" . $i . "_s2"}[1] }} {{ ${"rou1_m" . $i . "_s3"}[1] }}</span>
+
+                                                                                </li>
+                                                                                <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                            </span>
+
+                                                                        </ul>
+                                                                    @else
+                                                                        <ul class="matchup">
+
+                                                                            <span class="custooltipleft">
+                                                                                <li class="team team-top">
+                                                                                    {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                                    <span class="score">N/A</span>
+
+                                                                                </li>
+                                                                                <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                            </span>
+
+                                                                            <span class="custooltipleft">
+                                                                                <li class="team team-bottom">
+                                                                                    {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                                    <span class="score">N/A</span>
+
+                                                                                </li>
+                                                                                <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                            </span>
+
+                                                                        </ul>
+                                                                    @endif
+                                                                @endif
+
+
+                                                            @else
+                                                                @if (array_key_exists('match_'.$i, $round_one_results))
+                                                                    <?php
+                                                                        if (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 0;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[1] > ${"rou1_m" . $i . "_s1"}[0] && ${"rou1_m" . $i . "_s2"}[1] > ${"rou1_m" . $i . "_s2"}[0]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 0;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                        }
+                                                                    ?>
+                                                                    
+
+                                                                    <ul class="matchup">
+
+                                                                        <span class="custooltipleft">
+                                                                            <li
+                                                                                class="team team-top @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                                <span
+                                                                                    class="score @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[0] }}
+                                                                                    {{ ${"rou1_m" . $i . "_s2"}[0] }} {{ ${"rou1_m" . $i . "_s3"}[0] }}</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                        </span>
+
+                                                                        <span class="custooltipleft">
+                                                                            <li
+                                                                                class="team team-bottom @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                                <span
+                                                                                    class="score @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[1] }}
+                                                                                    {{ ${"rou1_m" . $i . "_s2"}[1] }} {{ ${"rou1_m" . $i . "_s3"}[1] }}</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                        </span>
+
+                                                                    </ul>
+                                                                @else
+                                                                    <ul class="matchup">
+
+                                                                        <span class="custooltipleft">
+                                                                            <li class="team team-top">
+                                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                                <span class="score">N/A</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                        </span>
+
+                                                                        <span class="custooltipleft">
+                                                                            <li class="team team-bottom">
+                                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                                <span class="score">N/A</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                        </span>
+
+                                                                    </ul>
+                                                                @endif
+                                                            @endif
+
+                                                        @else
+                                                            @if (array_key_exists('match_'.$i, $round_one_results))
+                                                                <?php
+                                                                    if (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 0;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[1] > ${"rou1_m" . $i . "_s1"}[0] && ${"rou1_m" . $i . "_s2"}[1] > ${"rou1_m" . $i . "_s2"}[0]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 0;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                    }
+                                                                ?>
+                                                                
+
+                                                                <ul class="matchup">
+
+                                                                    <span class="custooltipleft">
+                                                                        <li
+                                                                            class="team team-top @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                            <span
+                                                                                class="score @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[0] }}
+                                                                                {{ ${"rou1_m" . $i . "_s2"}[0] }} {{ ${"rou1_m" . $i . "_s3"}[0] }}</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                    </span>
+
+                                                                    <span class="custooltipleft">
+                                                                        <li
+                                                                            class="team team-bottom @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                            <span
+                                                                                class="score @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[1] }}
+                                                                                {{ ${"rou1_m" . $i . "_s2"}[1] }} {{ ${"rou1_m" . $i . "_s3"}[1] }}</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                    </span>
+
+                                                                </ul>
+                                                            @else
+                                                                <ul class="matchup">
+
+                                                                    <span class="custooltipleft">
+                                                                        <li class="team team-top">
+                                                                            {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                            <span class="score">N/A</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                    </span>
+
+                                                                    <span class="custooltipleft">
+                                                                        <li class="team team-bottom">
+                                                                            {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                            <span class="score">N/A</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                    </span>
+
+                                                                </ul>
+                                                            @endif
+                                                        @endif
+
+                                                    @else
+                                                        <ul class="matchup">
+
+                                                            <span class="custooltipleft">
+                                                                <li class="team team-top">
+                                                                    {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                    <span class="score">N/A</span>
+
+                                                                </li>
+                                                                <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                            </span>
+
+                                                            <span class="custooltipleft">
+                                                                <li class="team team-bottom">
+                                                                    {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                    <span class="score">N/A</span>
+
+                                                                </li>
+                                                                <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                            </span>
+                                                        </ul>
+                                                    @endif
+
+                                                @else
+                                                    <ul class="matchup">
+
+                                                        <li class="team team-top">n/a<span class="score">N/A</span></li>
+                                                        <li class="team team-bottom">n/a<span class="score">N/A</span></li>
+                                                    </ul>
+                                                @endif
+                                                
+                                            @else
+                                                
+                                                <ul class="matchup">
+                                                    
+                                                    <li class="team team-top"><span class="score"></span></li>
+                                                    <li class="team team-bottom"><span class="score"></span></li>
+                                                </ul>
+                                                
+                                            @endif
+
+                                        @endif
+
+                                    @endfor
+
+                                </div>                                
+                            @else
+                                @if($tournament->round_one_matches)
+                                    
+                                    <div class="round round-one current">
+                                        <div class="round-details">Round 1<br/><span class="date">{{ $strt_r1[0] }} - {{ $endd_r1[0] }}</span>
+                                        </div>
+                                        
+                                        @for($i = 1; $i < 3; $i++)
+                                            @if (array_key_exists('match_'.$i, $round_one_matches))
+                                                    
+                                                <?php 
+                                                    $get_matches = $round_one_matches['match_'.$i];
+                                                    $vs_match = explode(" VS ", $get_matches);
+                                                ?>
+
+                                                @if ($tournament->round_one_results)
+                                                    
+                                                    @if($round_one_status)
+                                                        @if (array_key_exists('match_'.$i, $round_one_status))
+                                                            @if($round_one_status['match_'.$i])
+                                                                <?php
+                                                                    if (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 0;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[1] > ${"rou1_m" . $i . "_s1"}[0] && ${"rou1_m" . $i . "_s2"}[1] > ${"rou1_m" . $i . "_s2"}[0]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 0;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                    }
+                                                                ?>
+
+
+                                                                <ul class="matchup">
+
+                                                                    <span class="custooltipleft">
+                                                                        <li
+                                                                            class="team team-top @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                            @if (${"rou1_m" . $i . "_p1_total"} < ${"rou1_m" . $i . "_p2_total"})
+                                                                                @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                    @if($round_one_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                            @if($round_one_retires['match_'.$i] == $vs_match[0])
+                                                                                                
+                                                                                                <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                    <span
+                                                                                        class="score">{{ ${"rou1_m" . $i . "_s1"}[0] }}
+                                                                                        {{ ${"rou1_m" . $i . "_s2"}[0] }} {{ ${"rou1_m" . $i . "_s3"}[0] }}</span>
+                                                                                @elseif($round_one_status['match_'.$i] == 'Withdraw')
+                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(W)</span>
+                                                                                    <span
+                                                                                        class="score">&#8212;</span>
+                                                                                @elseif($round_one_status['match_'.$i] == 'Decided by Organisers')
+                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(D)</span>
+                                                                                    <span
+                                                                                        class="score">&#8212;</span>
+                                                                                @endif
+
+                                                                            @else
+                                                                                @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                    @if($round_one_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                            @if($round_one_retires['match_'.$i] == $vs_match[0])
+                                                                                                
+                                                                                                <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                    <span
+                                                                                    class="score winnerclractive">{{ ${"rou1_m" . $i . "_s1"}[0] }}
+                                                                                    {{ ${"rou1_m" . $i . "_s2"}[0] }} {{ ${"rou1_m" . $i . "_s3"}[0] }}</span>
+                                                                                @elseif($round_one_status['match_'.$i] == 'Withdraw')
+                                                                                    <span
+                                                                                    class="score winnerclractive">&#8212;</span>
+                                                                                @elseif($round_one_status['match_'.$i] == 'Decided by Organisers')
+                                                                                    <span
+                                                                                    class="score winnerclractive">&#8212;</span>
+                                                                                @endif
+                                                                                    
+                                                                            @endif
+
+                                                                        </li>
+
+                                                                        <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }} 
+
+                                                                            @if($round_one_status)
+                                                                                @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                    @if($round_one_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                            @if($round_one_retires['match_'.$i] == $vs_match[0])
+                                                                                                
+                                                                                                ({{ $round_one_status['match_'.$i] }})
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @else
+                                                                                    @if (${"rou1_m" . $i . "_p1_total"} < ${"rou1_m" . $i . "_p2_total"}) 
+                                                                                        ({{ $round_one_status['match_'.$i] }}) 
+                                                                                    @endif
+                                                                                @endif
+                                                                            @endif
+
+                                                                        </span>
+
+                                                                    </span>
+
+                                                                    <span class="custooltipleft">
+                                                                        <li
+                                                                            class="team team-bottom @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                            @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"})
+                                                                                @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                    @if($round_one_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                            @if($round_one_retires['match_'.$i] == $vs_match[1])
+                                                                                                
+                                                                                                <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                    <span
+                                                                                        class="score">{{ ${"rou1_m" . $i . "_s1"}[1] }}
+                                                                                        {{ ${"rou1_m" . $i . "_s2"}[1] }} {{ ${"rou1_m" . $i . "_s3"}[1] }}</span>
+                                                                                @elseif($round_one_status['match_'.$i] == 'Withdraw')
+                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(W)</span>
+                                                                                    <span
+                                                                                        class="score">&#8212;</span>
+                                                                                @elseif($round_one_status['match_'.$i] == 'Decided by Organisers')
+                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(D)</span>
+                                                                                    <span
+                                                                                        class="score">&#8212;</span>
+                                                                                @endif
+
+                                                                            @else
+                                                                                @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                    @if($round_one_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                            @if($round_one_retires['match_'.$i] == $vs_match[1])
+                                                                                                
+                                                                                                <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                    <span
+                                                                                    class="score winnerclractive">{{ ${"rou1_m" . $i . "_s1"}[1] }}
+                                                                                    {{ ${"rou1_m" . $i . "_s2"}[1] }} {{ ${"rou1_m" . $i . "_s3"}[1] }}</span>
+                                                                                @elseif($round_one_status['match_'.$i] == 'Withdraw')
+                                                                                    <span
+                                                                                    class="score winnerclractive">&#8212;</span>
+                                                                                @elseif($round_one_status['match_'.$i] == 'Decided by Organisers')
+                                                                                    <span
+                                                                                    class="score winnerclractive">&#8212;</span>
+                                                                                @endif
+                                                                            @endif
+
+                                                                        </li>
+
+                                                                        <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }} 
+
+                                                                            @if($round_one_status)
+                                                                                @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                    @if($round_one_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                            @if($round_one_retires['match_'.$i] == $vs_match[1])
+                                                                                                
+                                                                                                ({{ $round_one_status['match_'.$i] }})
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @else
+                                                                                    @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) 
+                                                                                        ({{ $round_one_status['match_'.$i] }}) 
+                                                                                    @endif
+                                                                                @endif
+                                                                            @endif
+
+                                                                        </span>
+
+                                                                    </span>
+
+                                                                </ul>
+
+                                                            @else
+                                                                @if (array_key_exists('match_'.$i, $round_one_results))
+                                                                    <?php
+                                                                        if (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 0;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[1] > ${"rou1_m" . $i . "_s1"}[0] && ${"rou1_m" . $i . "_s2"}[1] > ${"rou1_m" . $i . "_s2"}[0]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 0;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                        }
+                                                                    ?>
+                                                                    
+
+                                                                    <ul class="matchup">
+
+                                                                        <span class="custooltipleft">
+                                                                            <li
+                                                                                class="team team-top @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                                <span
+                                                                                    class="score @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[0] }}
+                                                                                    {{ ${"rou1_m" . $i . "_s2"}[0] }} {{ ${"rou1_m" . $i . "_s3"}[0] }}</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                        </span>
+
+                                                                        <span class="custooltipleft">
+                                                                            <li
+                                                                                class="team team-bottom @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                                <span
+                                                                                    class="score @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[1] }}
+                                                                                    {{ ${"rou1_m" . $i . "_s2"}[1] }} {{ ${"rou1_m" . $i . "_s3"}[1] }}</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                        </span>
+
+                                                                    </ul>
+                                                                @else
+                                                                    <ul class="matchup">
+
+                                                                        <span class="custooltipleft">
+                                                                            <li class="team team-top">
+                                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                                <span class="score">N/A</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                        </span>
+
+                                                                        <span class="custooltipleft">
+                                                                            <li class="team team-bottom">
+                                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                                <span class="score">N/A</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                        </span>
+
+                                                                    </ul>
+                                                                @endif
+                                                            @endif
+
+
+                                                        @else
+                                                            @if (array_key_exists('match_'.$i, $round_one_results))
+                                                                <?php
+                                                                    if (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 0;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[1] > ${"rou1_m" . $i . "_s1"}[0] && ${"rou1_m" . $i . "_s2"}[1] > ${"rou1_m" . $i . "_s2"}[0]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 0;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                    }
+                                                                ?>
+                                                                
+
+                                                                <ul class="matchup">
+
+                                                                    <span class="custooltipleft">
+                                                                        <li
+                                                                            class="team team-top @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                            <span
+                                                                                class="score @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[0] }}
+                                                                                {{ ${"rou1_m" . $i . "_s2"}[0] }} {{ ${"rou1_m" . $i . "_s3"}[0] }}</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                    </span>
+
+                                                                    <span class="custooltipleft">
+                                                                        <li
+                                                                            class="team team-bottom @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                            <span
+                                                                                class="score @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[1] }}
+                                                                                {{ ${"rou1_m" . $i . "_s2"}[1] }} {{ ${"rou1_m" . $i . "_s3"}[1] }}</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                    </span>
+
+                                                                </ul>
+                                                            @else
+                                                                <ul class="matchup">
+
+                                                                    <span class="custooltipleft">
+                                                                        <li class="team team-top">
+                                                                            {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                            <span class="score">N/A</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                    </span>
+
+                                                                    <span class="custooltipleft">
+                                                                        <li class="team team-bottom">
+                                                                            {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                            <span class="score">N/A</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                    </span>
+
+                                                                </ul>
+                                                            @endif
+                                                        @endif
+
+                                                    @else
+                                                        @if (array_key_exists('match_'.$i, $round_one_results))
+                                                            <?php
+                                                                if (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1]) {
+
+                                                                    ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                    ${"rou1_m" . $i . "_p2_total"} = 0;
+
+                                                                } elseif (${"rou1_m" . $i . "_s1"}[1] > ${"rou1_m" . $i . "_s1"}[0] && ${"rou1_m" . $i . "_s2"}[1] > ${"rou1_m" . $i . "_s2"}[0]) {
+
+                                                                    ${"rou1_m" . $i . "_p1_total"} = 0;
+                                                                    ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                    ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                    ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                    ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                    ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                    ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                    ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                    ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                    ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                }
+                                                            ?>
+                                                            
+
+                                                            <ul class="matchup">
+
+                                                                <span class="custooltipleft">
+                                                                    <li
+                                                                        class="team team-top @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                        {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                        <span
+                                                                            class="score @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[0] }}
+                                                                            {{ ${"rou1_m" . $i . "_s2"}[0] }} {{ ${"rou1_m" . $i . "_s3"}[0] }}</span>
+
+                                                                    </li>
+                                                                    <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                </span>
+
+                                                                <span class="custooltipleft">
+                                                                    <li
+                                                                        class="team team-bottom @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                        {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                        <span
+                                                                            class="score @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[1] }}
+                                                                            {{ ${"rou1_m" . $i . "_s2"}[1] }} {{ ${"rou1_m" . $i . "_s3"}[1] }}</span>
+
+                                                                    </li>
+                                                                    <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                </span>
+
+                                                            </ul>
+                                                        @else
+                                                            <ul class="matchup">
+
+                                                                <span class="custooltipleft">
+                                                                    <li class="team team-top">
+                                                                        {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                        <span class="score">N/A</span>
+
+                                                                    </li>
+                                                                    <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                </span>
+
+                                                                <span class="custooltipleft">
+                                                                    <li class="team team-bottom">
+                                                                        {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                        <span class="score">N/A</span>
+
+                                                                    </li>
+                                                                    <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                </span>
+
+                                                            </ul>
+                                                        @endif
+                                                    @endif
+
+                                                @else
+                                                    <ul class="matchup">
+
+                                                        <span class="custooltipleft">
+                                                            <li class="team team-top">
+                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                <span class="score">N/A</span>
+
+                                                            </li>
+                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                        </span>
+
+                                                        <span class="custooltipleft">
+                                                            <li class="team team-bottom">
+                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                <span class="score">N/A</span>
+
+                                                            </li>
+                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                        </span>
+                                                    </ul>
+                                                @endif
+
+                                            @else
+                                                <ul class="matchup">
+
+                                                    <li class="team team-top">n/a<span class="score">N/A</span></li>
+                                                    <li class="team team-bottom">n/a<span class="score">N/A</span></li>
+                                                </ul>
+                                            @endif
+                                        @endfor
+
+                                    </div>
+
+                                @else
+                                    <div class="round round-one">
+                                        <div class="round-details">Round 1<br/><span class="date">@if($t_d_rou1) {{ $strt_r1[0] }} - {{ $endd_r1[0] }} @else N/A @endif</span></div>
+
+                                        @for($i = 1; $i < 3; $i++)
+                                            <ul class="matchup">
+                                                
+                                                <li class="team team-top"><span class="score"></span></li>
+                                                <li class="team team-bottom"><span class="score"></span></li>
+                                            </ul>
+                                        @endfor
+
+                                    </div>
+                                @endif
+                            @endif
+
+
+                            @if($semi_final_auto_selection)
+
+                                <div class="round round-two @if($semi_final_auto_selection) current @elseif($semi_final_matches) current @endif">
+                                    <div class="round-details">semifinal<br/><span class="date">@if($t_d_semf) {{ $strt_sem[0] }} - {{ $endd_sem[0] }} @else N/A @endif</span></div>
+                                    
+                                    @for($i = 1; $i < 2; $i++)
+                                        @if (array_key_exists('match_'.$i, $semi_final_auto_selection))
+                                            
+                                            <ul class="matchup">
+
+                                                <span class="custooltip">
+                                                    <li
+                                                        class="team team-top winnerclractive">
+                                                        {{ \Illuminate\Support\Str::limit($sem_mat_auto[0], 100) }}
+
+                                                        <span
+                                                            class="score winnerclractive">N/A</span>
+
+                                                    </li>
+                                                    <span class="custooltiptext">{{ $sem_mat_auto[0] }}</span>
+                                                </span>
+
+                                                <span class="custooltip">
+                                                    <li
+                                                        class="team team-bottom">
+                                                        N/A
+
+                                                        <span
+                                                            class="score">N/A</span>
+
+                                                    </li>
+                                                    <span class="custooltiptext">N/A</span>
+                                                </span>
+
+                                            </ul>
+                                            
+                                        @else
+
+                                            @if($tournament->semi_final_matches)
+                                                                                                   
+                                                @if (array_key_exists('match_'.$i, $semi_final_matches))
+
+                                                    <?php 
+                                                        $get_matches = $semi_final_matches['match_'.$i];
+                                                        $vs_match = explode(" VS ", $get_matches);
+                                                    ?>
+
+                                                    @if ($tournament->semi_final_results)
+                                                            
+                                                        @if($semi_final_status)
+                                                            @if (array_key_exists('match_'.$i, $semi_final_status))
+                                                                @if($semi_final_status['match_'.$i])
+                                                                    <?php
+                                                                        if (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 0;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[1] > ${"sem_m" . $i . "_s1"}[0] && ${"sem_m" . $i . "_s2"}[1] > ${"sem_m" . $i . "_s2"}[0]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 0;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        }
+                                                                    ?>
+
+
+                                                                    <ul class="matchup">
+
+                                                                        <span class="custooltip">
+                                                                            <li
+                                                                                class="team team-top @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                                @if (${"sem_m" . $i . "_p1_total"} < ${"sem_m" . $i . "_p2_total"})
+                                                                                    @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                        @if($semi_final_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                                @if($semi_final_retires['match_'.$i] == $vs_match[0])
+                                                                                                    
+                                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                        <span
+                                                                                            class="score">{{ ${"sem_m" . $i . "_s1"}[0] }}
+                                                                                            {{ ${"sem_m" . $i . "_s2"}[0] }} {{ ${"sem_m" . $i . "_s3"}[0] }}</span>
+                                                                                    @elseif($semi_final_status['match_'.$i] == 'Withdraw')
+                                                                                        <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(W)</span>
+                                                                                        <span
+                                                                                            class="score">&#8212;</span>
+                                                                                    @elseif($semi_final_status['match_'.$i] == 'Decided by Organisers')
+                                                                                        <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(D)</span>
+                                                                                        <span
+                                                                                            class="score">&#8212;</span>
+                                                                                    @endif
+
+                                                                                @else
+                                                                                    @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                        @if($semi_final_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                                @if($semi_final_retires['match_'.$i] == $vs_match[0])
+                                                                                                    
+                                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                        <span
+                                                                                        class="score winnerclractive">{{ ${"sem_m" . $i . "_s1"}[0] }}
+                                                                                        {{ ${"sem_m" . $i . "_s2"}[0] }} {{ ${"sem_m" . $i . "_s3"}[0] }}</span>
+                                                                                    @elseif($semi_final_status['match_'.$i] == 'Withdraw')
+                                                                                        <span
+                                                                                        class="score winnerclractive">&#8212;</span>
+                                                                                    @elseif($semi_final_status['match_'.$i] == 'Decided by Organisers')
+                                                                                        <span
+                                                                                        class="score winnerclractive">&#8212;</span>
+                                                                                    @endif
+                                                                                        
+                                                                                @endif
+
+                                                                            </li>
+
+                                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }} 
+                                                                                @if($semi_final_status)
+                                                                                    @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                        @if($semi_final_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                                @if($semi_final_retires['match_'.$i] == $vs_match[0])
+                                                                                                    
+                                                                                                    ({{ $semi_final_status['match_'.$i] }})
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @else
+                                                                                        @if (${"sem_m" . $i . "_p1_total"} < ${"sem_m" . $i . "_p2_total"}) 
+                                                                                            ({{ $semi_final_status['match_'.$i] }}) 
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @endif
+                                                                            </span>
+
+                                                                        </span>
+
+                                                                        <span class="custooltip">
+                                                                            <li
+                                                                                class="team team-bottom @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                                @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"})
+                                                                                    @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                        @if($semi_final_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                                @if($semi_final_retires['match_'.$i] == $vs_match[1])
+                                                                                                    
+                                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                        <span
+                                                                                            class="score">{{ ${"sem_m" . $i . "_s1"}[1] }}
+                                                                                            {{ ${"sem_m" . $i . "_s2"}[1] }} {{ ${"sem_m" . $i . "_s3"}[1] }}</span>
+                                                                                    @elseif($semi_final_status['match_'.$i] == 'Withdraw')
+                                                                                        <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(W)</span>
+                                                                                        <span
+                                                                                            class="score">&#8212;</span>
+                                                                                    @elseif($semi_final_status['match_'.$i] == 'Decided by Organisers')
+                                                                                        <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(D)</span>
+                                                                                        <span
+                                                                                            class="score">&#8212;</span>
+                                                                                    @endif
+
+                                                                                @else
+                                                                                    @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                        @if($semi_final_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                                @if($semi_final_retires['match_'.$i] == $vs_match[1])
+                                                                                                    
+                                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                        <span
+                                                                                        class="score winnerclractive">{{ ${"sem_m" . $i . "_s1"}[1] }}
+                                                                                        {{ ${"sem_m" . $i . "_s2"}[1] }} {{ ${"sem_m" . $i . "_s3"}[1] }}</span>
+                                                                                    @elseif($semi_final_status['match_'.$i] == 'Withdraw')
+                                                                                        <span
+                                                                                        class="score winnerclractive">&#8212;</span>
+                                                                                    @elseif($semi_final_status['match_'.$i] == 'Decided by Organisers')
+                                                                                        <span
+                                                                                        class="score winnerclractive">&#8212;</span>
+                                                                                    @endif
+                                                                                @endif
+
+                                                                            </li>
+
+                                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }} 
+
+                                                                                @if($semi_final_status)
+                                                                                    @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                        @if($semi_final_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                                @if($semi_final_retires['match_'.$i] == $vs_match[1])
+                                                                                                    
+                                                                                                    ({{ $semi_final_status['match_'.$i] }})
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @else
+                                                                                        @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) 
+                                                                                            ({{ $semi_final_status['match_'.$i] }}) 
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @endif
+
+                                                                            </span>
+
+                                                                        </span>
+
+                                                                    </ul>
+
+                                                                @else
+                                                                    @if (array_key_exists('match_'.$i, $semi_final_results))
+                                                                        <?php
+                                                                            if (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1]) {
+
+                                                                                ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                                ${"sem_m" . $i . "_p2_total"} = 0;
+
+                                                                            } elseif (${"sem_m" . $i . "_s1"}[1] > ${"sem_m" . $i . "_s1"}[0] && ${"sem_m" . $i . "_s2"}[1] > ${"sem_m" . $i . "_s2"}[0]) {
+
+                                                                                ${"sem_m" . $i . "_p1_total"} = 0;
+                                                                                ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                            } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                                ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                                ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                            } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                                ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                                ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                            } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                                ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                                ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                            } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                                ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                                ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                            }
+                                                                        ?>
+                                                                        
+
+                                                                        <ul class="matchup">
+
+                                                                            <span class="custooltip">
+                                                                                <li
+                                                                                    class="team team-top @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                                    {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                                    <span
+                                                                                        class="score @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[0] }}
+                                                                                        {{ ${"sem_m" . $i . "_s2"}[0] }} {{ ${"sem_m" . $i . "_s3"}[0] }}</span>
+
+                                                                                </li>
+                                                                                <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                            </span>
+
+                                                                            <span class="custooltip">
+                                                                                <li
+                                                                                    class="team team-bottom @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                                    {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                                    <span
+                                                                                        class="score @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[1] }}
+                                                                                        {{ ${"sem_m" . $i . "_s2"}[1] }} {{ ${"sem_m" . $i . "_s3"}[1] }}</span>
+
+                                                                                </li>
+                                                                                <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                            </span>
+
+                                                                        </ul>
+                                                                    @else
+                                                                        <ul class="matchup">
+
+                                                                            <span class="custooltip">
+                                                                                <li class="team team-top">
+                                                                                    {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                                    <span class="score">N/A</span>
+
+                                                                                </li>
+                                                                                <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                            </span>
+
+                                                                            <span class="custooltip">
+                                                                                <li class="team team-bottom">
+                                                                                    {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                                    <span class="score">N/A</span>
+
+                                                                                </li>
+                                                                                <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                            </span>
+
+                                                                        </ul>
+                                                                    @endif
+                                                                @endif
+
+
+                                                            @else
+                                                                @if (array_key_exists('match_'.$i, $semi_final_results))
+                                                                    <?php
+                                                                        if (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 0;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[1] > ${"sem_m" . $i . "_s1"}[0] && ${"sem_m" . $i . "_s2"}[1] > ${"sem_m" . $i . "_s2"}[0]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 0;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        }
+                                                                    ?>
+                                                                    
+
+                                                                    <ul class="matchup">
+
+                                                                        <span class="custooltip">
+                                                                            <li
+                                                                                class="team team-top @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                                <span
+                                                                                    class="score @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[0] }}
+                                                                                    {{ ${"sem_m" . $i . "_s2"}[0] }} {{ ${"sem_m" . $i . "_s3"}[0] }}</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                        </span>
+
+                                                                        <span class="custooltip">
+                                                                            <li
+                                                                                class="team team-bottom @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                                <span
+                                                                                    class="score @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[1] }}
+                                                                                    {{ ${"sem_m" . $i . "_s2"}[1] }} {{ ${"sem_m" . $i . "_s3"}[1] }}</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                        </span>
+
+                                                                    </ul>
+                                                                @else
+                                                                    <ul class="matchup">
+
+                                                                        <span class="custooltip">
+                                                                            <li class="team team-top">
+                                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                                <span class="score">N/A</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                        </span>
+
+                                                                        <span class="custooltip">
+                                                                            <li class="team team-bottom">
+                                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                                <span class="score">N/A</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                        </span>
+
+                                                                    </ul>
+                                                                @endif
+                                                            @endif
+
+                                                        @else
+                                                            @if (array_key_exists('match_'.$i, $semi_final_results))
+                                                                <?php
+                                                                        if (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 0;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[1] > ${"sem_m" . $i . "_s1"}[0] && ${"sem_m" . $i . "_s2"}[1] > ${"sem_m" . $i . "_s2"}[0]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 0;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        }
+                                                                ?>
+                                                                
+
+                                                                <ul class="matchup">
+
+                                                                    <span class="custooltip">
+                                                                        <li
+                                                                            class="team team-top @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                            <span
+                                                                                class="score @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[0] }}
+                                                                                {{ ${"sem_m" . $i . "_s2"}[0] }} {{ ${"sem_m" . $i . "_s3"}[0] }}</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                    </span>
+
+                                                                    <span class="custooltip">
+                                                                        <li
+                                                                            class="team team-bottom @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                            <span
+                                                                                class="score @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[1] }}
+                                                                                {{ ${"sem_m" . $i . "_s2"}[1] }} {{ ${"sem_m" . $i . "_s3"}[1] }}</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                    </span>
+
+                                                                </ul>
+                                                            @else
+                                                                <ul class="matchup">
+
+                                                                    <span class="custooltip">
+                                                                        <li class="team team-top">
+                                                                            {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                            <span class="score">N/A</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                    </span>
+
+                                                                    <span class="custooltip">
+                                                                        <li class="team team-bottom">
+                                                                            {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                            <span class="score">N/A</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                    </span>
+
+                                                                </ul>
+                                                            @endif
+                                                        @endif
+
+
+                                                    @else
+                                                        <ul class="matchup">
+
+                                                            <span class="custooltip">
+                                                                <li class="team team-top">
+                                                                    {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                    <span class="score">N/A</span>
+
+                                                                </li>
+                                                                <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                            </span>
+
+                                                            <span class="custooltip">
+                                                                <li class="team team-bottom">
+                                                                    {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                    <span class="score">N/A</span>
+
+                                                                </li>
+                                                                <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                            </span>
+                                                        </ul>
+                                                    @endif
+                                                @else
+                                                    <ul class="matchup">
+
+                                                        <li class="team team-top">n/a<span class="score">N/A</span></li>
+                                                        <li class="team team-bottom">n/a<span class="score">N/A</span></li>
+                                                    </ul>
+                                                @endif
+                                                
+                                            @else
+                                                
+                                                <ul class="matchup">
+                                                    
+                                                    <li class="team team-top"><span class="score"></span></li>
+                                                    <li class="team team-bottom"><span class="score"></span></li>
+                                                </ul>
+                                                
+                                            @endif
+
+                                        @endif
+
+                                    @endfor
+
+                                </div>                                
+                            @else
+                                @if($tournament->semi_final_matches)
+                                    
+                                    <div class="round round-two current">
+                                        <div class="round-details">semifinal<br/><span class="date">@if($t_d_semf) {{ $strt_sem[0] }} - {{ $endd_sem[0] }} @else N/A @endif</span>
+                                        </div>
+                                        
+                                        @for($i = 1; $i < 2; $i++)
+                                            @if (array_key_exists('match_'.$i, $semi_final_matches))
+
+                                                <?php 
+                                                    $get_matches = $semi_final_matches['match_'.$i];
+                                                    $vs_match = explode(" VS ", $get_matches);
+                                                ?>
+
+                                                @if ($tournament->semi_final_results)
+                                                        
+                                                    @if($semi_final_status)
+                                                        @if (array_key_exists('match_'.$i, $semi_final_status))
+                                                            @if($semi_final_status['match_'.$i])
+                                                                <?php
+                                                                    if (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 0;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[1] > ${"sem_m" . $i . "_s1"}[0] && ${"sem_m" . $i . "_s2"}[1] > ${"sem_m" . $i . "_s2"}[0]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 0;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                    }
+                                                                ?>
+
+
+                                                                <ul class="matchup">
+
+                                                                    <span class="custooltip">
+                                                                        <li
+                                                                            class="team team-top @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                            @if (${"sem_m" . $i . "_p1_total"} < ${"sem_m" . $i . "_p2_total"})
+                                                                                @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                    @if($semi_final_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                            @if($semi_final_retires['match_'.$i] == $vs_match[0])
+                                                                                                
+                                                                                                <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                    <span
+                                                                                        class="score">{{ ${"sem_m" . $i . "_s1"}[0] }}
+                                                                                        {{ ${"sem_m" . $i . "_s2"}[0] }} {{ ${"sem_m" . $i . "_s3"}[0] }}</span>
+                                                                                @elseif($semi_final_status['match_'.$i] == 'Withdraw')
+                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(W)</span>
+                                                                                    <span
+                                                                                        class="score">&#8212;</span>
+                                                                                @elseif($semi_final_status['match_'.$i] == 'Decided by Organisers')
+                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(D)</span>
+                                                                                    <span
+                                                                                        class="score">&#8212;</span>
+                                                                                @endif
+
+                                                                            @else
+                                                                                @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                    @if($semi_final_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                            @if($semi_final_retires['match_'.$i] == $vs_match[0])
+                                                                                                
+                                                                                                <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                    <span
+                                                                                    class="score winnerclractive">{{ ${"sem_m" . $i . "_s1"}[0] }}
+                                                                                    {{ ${"sem_m" . $i . "_s2"}[0] }} {{ ${"sem_m" . $i . "_s3"}[0] }}</span>
+                                                                                @elseif($semi_final_status['match_'.$i] == 'Withdraw')
+                                                                                    <span
+                                                                                    class="score winnerclractive">&#8212;</span>
+                                                                                @elseif($semi_final_status['match_'.$i] == 'Decided by Organisers')
+                                                                                    <span
+                                                                                    class="score winnerclractive">&#8212;</span>
+                                                                                @endif
+                                                                                    
+                                                                            @endif
+
+                                                                        </li>
+
+                                                                        <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }} 
+                                                                            @if($semi_final_status)
+                                                                                @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                    @if($semi_final_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                            @if($semi_final_retires['match_'.$i] == $vs_match[0])
+                                                                                                
+                                                                                                ({{ $semi_final_status['match_'.$i] }})
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @else
+                                                                                    @if (${"sem_m" . $i . "_p1_total"} < ${"sem_m" . $i . "_p2_total"}) 
+                                                                                        ({{ $semi_final_status['match_'.$i] }}) 
+                                                                                    @endif
+                                                                                @endif
+                                                                            @endif
+                                                                        </span>
+
+                                                                    </span>
+
+                                                                    <span class="custooltip">
+                                                                        <li
+                                                                            class="team team-bottom @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                            @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"})
+                                                                                @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                    @if($semi_final_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                            @if($semi_final_retires['match_'.$i] == $vs_match[1])
+                                                                                                
+                                                                                                <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                    <span
+                                                                                        class="score">{{ ${"sem_m" . $i . "_s1"}[1] }}
+                                                                                        {{ ${"sem_m" . $i . "_s2"}[1] }} {{ ${"sem_m" . $i . "_s3"}[1] }}</span>
+                                                                                @elseif($semi_final_status['match_'.$i] == 'Withdraw')
+                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(W)</span>
+                                                                                    <span
+                                                                                        class="score">&#8212;</span>
+                                                                                @elseif($semi_final_status['match_'.$i] == 'Decided by Organisers')
+                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(D)</span>
+                                                                                    <span
+                                                                                        class="score">&#8212;</span>
+                                                                                @endif
+
+                                                                            @else
+                                                                                @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                    @if($semi_final_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                            @if($semi_final_retires['match_'.$i] == $vs_match[1])
+                                                                                                
+                                                                                                <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                    <span
+                                                                                    class="score winnerclractive">{{ ${"sem_m" . $i . "_s1"}[1] }}
+                                                                                    {{ ${"sem_m" . $i . "_s2"}[1] }} {{ ${"sem_m" . $i . "_s3"}[1] }}</span>
+                                                                                @elseif($semi_final_status['match_'.$i] == 'Withdraw')
+                                                                                    <span
+                                                                                    class="score winnerclractive">&#8212;</span>
+                                                                                @elseif($semi_final_status['match_'.$i] == 'Decided by Organisers')
+                                                                                    <span
+                                                                                    class="score winnerclractive">&#8212;</span>
+                                                                                @endif
+                                                                            @endif
+
+                                                                        </li>
+
+                                                                        <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }} 
+
+                                                                            @if($semi_final_status)
+                                                                                @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                    @if($semi_final_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                            @if($semi_final_retires['match_'.$i] == $vs_match[1])
+                                                                                                
+                                                                                                ({{ $semi_final_status['match_'.$i] }})
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @else
+                                                                                    @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) 
+                                                                                        ({{ $semi_final_status['match_'.$i] }}) 
+                                                                                    @endif
+                                                                                @endif
+                                                                            @endif
+
+                                                                        </span>
+
+                                                                    </span>
+
+                                                                </ul>
+
+                                                            @else
+                                                                @if (array_key_exists('match_'.$i, $semi_final_results))
+                                                                    <?php
+                                                                        if (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 0;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[1] > ${"sem_m" . $i . "_s1"}[0] && ${"sem_m" . $i . "_s2"}[1] > ${"sem_m" . $i . "_s2"}[0]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 0;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        }
+                                                                    ?>
+                                                                    
+
+                                                                    <ul class="matchup">
+
+                                                                        <span class="custooltip">
+                                                                            <li
+                                                                                class="team team-top @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                                <span
+                                                                                    class="score @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[0] }}
+                                                                                    {{ ${"sem_m" . $i . "_s2"}[0] }} {{ ${"sem_m" . $i . "_s3"}[0] }}</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                        </span>
+
+                                                                        <span class="custooltip">
+                                                                            <li
+                                                                                class="team team-bottom @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                                <span
+                                                                                    class="score @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[1] }}
+                                                                                    {{ ${"sem_m" . $i . "_s2"}[1] }} {{ ${"sem_m" . $i . "_s3"}[1] }}</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                        </span>
+
+                                                                    </ul>
+                                                                @else
+                                                                    <ul class="matchup">
+
+                                                                        <span class="custooltip">
+                                                                            <li class="team team-top">
+                                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                                <span class="score">N/A</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                        </span>
+
+                                                                        <span class="custooltip">
+                                                                            <li class="team team-bottom">
+                                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                                <span class="score">N/A</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                        </span>
+
+                                                                    </ul>
+                                                                @endif
+                                                            @endif
+
+
+                                                        @else
+                                                            @if (array_key_exists('match_'.$i, $semi_final_results))
+                                                                <?php
+                                                                    if (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 0;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[1] > ${"sem_m" . $i . "_s1"}[0] && ${"sem_m" . $i . "_s2"}[1] > ${"sem_m" . $i . "_s2"}[0]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 0;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                    }
+                                                                ?>
+                                                                
+
+                                                                <ul class="matchup">
+
+                                                                    <span class="custooltip">
+                                                                        <li
+                                                                            class="team team-top @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                            <span
+                                                                                class="score @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[0] }}
+                                                                                {{ ${"sem_m" . $i . "_s2"}[0] }} {{ ${"sem_m" . $i . "_s3"}[0] }}</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                    </span>
+
+                                                                    <span class="custooltip">
+                                                                        <li
+                                                                            class="team team-bottom @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                            <span
+                                                                                class="score @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[1] }}
+                                                                                {{ ${"sem_m" . $i . "_s2"}[1] }} {{ ${"sem_m" . $i . "_s3"}[1] }}</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                    </span>
+
+                                                                </ul>
+                                                            @else
+                                                                <ul class="matchup">
+
+                                                                    <span class="custooltip">
+                                                                        <li class="team team-top">
+                                                                            {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                            <span class="score">N/A</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                    </span>
+
+                                                                    <span class="custooltip">
+                                                                        <li class="team team-bottom">
+                                                                            {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                            <span class="score">N/A</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                    </span>
+
+                                                                </ul>
+                                                            @endif
+                                                        @endif
+
+                                                    @else
+                                                        @if (array_key_exists('match_'.$i, $semi_final_results))
+                                                            <?php
+                                                                    if (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 0;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[1] > ${"sem_m" . $i . "_s1"}[0] && ${"sem_m" . $i . "_s2"}[1] > ${"sem_m" . $i . "_s2"}[0]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 0;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                    }
+                                                            ?>
+                                                            
+
+                                                            <ul class="matchup">
+
+                                                                <span class="custooltip">
+                                                                    <li
+                                                                        class="team team-top @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                        {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                        <span
+                                                                            class="score @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[0] }}
+                                                                            {{ ${"sem_m" . $i . "_s2"}[0] }} {{ ${"sem_m" . $i . "_s3"}[0] }}</span>
+
+                                                                    </li>
+                                                                    <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                </span>
+
+                                                                <span class="custooltip">
+                                                                    <li
+                                                                        class="team team-bottom @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                        {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                        <span
+                                                                            class="score @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[1] }}
+                                                                            {{ ${"sem_m" . $i . "_s2"}[1] }} {{ ${"sem_m" . $i . "_s3"}[1] }}</span>
+
+                                                                    </li>
+                                                                    <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                </span>
+
+                                                            </ul>
+                                                        @else
+                                                            <ul class="matchup">
+
+                                                                <span class="custooltip">
+                                                                    <li class="team team-top">
+                                                                        {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                        <span class="score">N/A</span>
+
+                                                                    </li>
+                                                                    <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                </span>
+
+                                                                <span class="custooltip">
+                                                                    <li class="team team-bottom">
+                                                                        {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                        <span class="score">N/A</span>
+
+                                                                    </li>
+                                                                    <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                </span>
+
+                                                            </ul>
+                                                        @endif
+                                                    @endif
+
+
+                                                @else
+                                                    <ul class="matchup">
+
+                                                        <span class="custooltip">
+                                                            <li class="team team-top">
+                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                <span class="score">N/A</span>
+
+                                                            </li>
+                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                        </span>
+
+                                                        <span class="custooltip">
+                                                            <li class="team team-bottom">
+                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                <span class="score">N/A</span>
+
+                                                            </li>
+                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                        </span>
+                                                    </ul>
+                                                @endif
+                                            @else
+                                                <ul class="matchup">
+
+                                                    <li class="team team-top">n/a<span class="score">N/A</span></li>
+                                                    <li class="team team-bottom">n/a<span class="score">N/A</span></li>
+                                                </ul>
+                                            @endif
+                                        @endfor
+
+                                    </div>
+
+                                @else
+                                    <div class="round round-two">
+                                        <div class="round-details">semifinal<br/><span class="date">@if($t_d_semf) {{ $strt_sem[0] }} - {{ $endd_sem[0] }} @else N/A @endif</span></div>
+
+                                        @for($i = 1; $i < 2; $i++)
+                                            <ul class="matchup">
+                                                
+                                                <li class="team team-top"><span class="score"></span></li>
+                                                <li class="team team-bottom"><span class="score"></span></li>
+                                            </ul>
+                                        @endfor
+
+                                    </div>
+                                @endif
+                            @endif
+                                                        
+                        </div> 
+
+                        <div class="champion">
+                            
+                            {{-- @if($tournament->final_matches)
+                                
+                                <div class="semis-l current">
+                                    <div class="round-details">final <br/><span class="date">{{ $strt_f[0] }} - {{ $endd_f[0] }}</span>
+                                    </div>
+                                    
+                                    @if(array_key_exists('match_1', $final_matches))                                        
+                                        @if($tournament->final_results)
+                                            @if(array_key_exists('match_1', $final_results))             
+                                                <?php 
+                                                    $final_m1_p1_total = $final_m1_s1[0] + $final_m1_s2[0] + $final_m1_s3[0];
+                                                    $final_m1_p2_total = $final_m1_s1[1] + $final_m1_s2[1] + $final_m1_s3[1];
+                                                ?>
+
+                                                <ul class="matchup championship">
+                                                    
+                                                    <span class="custooltip">
+                                                        <li style="text-align: left;" class="team team-top @if($final_m1_p1_total > $final_m1_p2_total) winnerclractive @endif">
+
+                                                            {{ \Illuminate\Support\Str::limit($final_mat_1[0], 17) }}
+
+                                                            <span class="score @if($final_m1_p1_total > $final_m1_p2_total) winnerclractive @endif">{{ $final_m1_s1[0] }} {{ $final_m1_s2[0] }} {{ $final_m1_s3[0] }}</span>
+                                                        </li>
+                                                        <span class="custooltiptext">{{ $final_mat_1[0] }}</span>
+                                                    </span>
+                                                    
+
+                                                    <span class="custooltip">
+                                                        <li style="text-align: left;" class="team team-bottom @if($final_m1_p2_total > $final_m1_p1_total) winnerclractive @endif"> 
+                                                            
+                                                            {{ \Illuminate\Support\Str::limit($final_mat_1[1], 17) }}
+                                                            
+                                                            <span class="score @if($final_m1_p2_total > $final_m1_p1_total) winnerclractive @endif">{{ $final_m1_s1[1] }} {{ $final_m1_s2[1] }} {{ $final_m1_s3[1] }}</span>
+
+                                                        </li>
+                                                        <span class="custooltiptext">{{ $final_mat_1[1] }}</span>
+                                                    </span>
+
+                                                </ul>
+                                            @else
+                                                <ul class="matchup championship">
+                                                    
+                                                    <li style="text-align: left;" class="team team-top">{{ $final_mat_1[0] }}<span class="score">N/A</span></li>
+                                                    <li style="text-align: left;" class="team team-bottom">{{ $final_mat_1[1] }}<span class="score">N/A</span></li>
+                                                </ul>
+                                            @endif
+
+                                        @else
+                                            <ul class="matchup championship">
+                                                
+                                                <li style="text-align: left;" class="team team-top">{{ $final_mat_1[0] }}<span class="score">N/A</span></li>
+                                                <li style="text-align: left;" class="team team-bottom">{{ $final_mat_1[1] }}<span class="score">N/A</span></li>
+                                            </ul>
+                                        @endif
+
+                                    @else
+
+                                        <ul class="matchup championship">
+                                            
+                                            <li style="text-align: left;" class="team team-top">n/a<span class="score">N/A</span></li>
+                                            <li style="text-align: left;" class="team team-bottom">n/a<span class="score">N/A</span></li>
+                                        </ul>                          
+                                        
+                                    @endif
+
+                                </div>
+
+                            @else
+                                <div class="semis-l">
+                                    <div class="round-details">final<br/><span class="date">@if($t_d_final) {{ $strt_f[0] }} - {{ $endd_f[0] }} @else N/A @endif</span></div>
+                                    <ul class="matchup championship">
+                                        
+                                        <li style="text-align: left;" class="team team-top"><span class="score"></span></li>
+                                        <li style="text-align: left;" class="team team-bottom"><span class="score"></span></li>
+                                    </ul>
+                                                             
+                                </div>
+                            @endif --}}
+
+
+                            @if($tournament->final_matches)
+                                
+                                <div class="semis-l current">
+                                    <div class="round-details">final<br/><span class="date">@if($t_d_final) {{ $strt_f[0] }} - {{ $endd_f[0] }} @else N/A @endif</span>
+                                    </div>
+                                    
+                                    @for($i = 1; $i < 2; $i++)
+                                        @if (array_key_exists('match_'.$i, $final_matches))
+
+                                            <?php 
+                                                $get_matches = $final_matches['match_'.$i];
+                                                $vs_match = explode(" VS ", $get_matches);
+                                            ?>
+
+                                            @if ($tournament->final_results)
+                                                
+                                                @if($final_status)
+                                                    @if (array_key_exists('match_'.$i, $final_status))
+                                                        @if($final_status['match_'.$i])
+                                                            <?php
+                                                                if (${"final_m" . $i . "_s1"}[0] > ${"final_m" . $i . "_s1"}[1] && ${"final_m" . $i . "_s2"}[0] > ${"final_m" . $i . "_s2"}[1]) 
+                                                                {
+
+                                                                    ${"final_m" . $i . "_p1_total"} = 2;
+                                                                    ${"final_m" . $i . "_p2_total"} = 0;
+
+                                                                } elseif (${"final_m" . $i . "_s1"}[1] > ${"final_m" . $i . "_s1"}[0] && ${"final_m" . $i . "_s2"}[1] > ${"final_m" . $i . "_s2"}[0]) {
+
+                                                                    ${"final_m" . $i . "_p1_total"} = 0;
+                                                                    ${"final_m" . $i . "_p2_total"} = 2;
+
+                                                                } elseif (${"final_m" . $i . "_s1"}[0] > ${"final_m" . $i . "_s1"}[1] && ${"final_m" . $i . "_s2"}[0] < ${"final_m" . $i . "_s2"}[1] && ${"final_m" . $i . "_s3"}[0] > ${"final_m" . $i . "_s3"}[1]) {
+
+                                                                    ${"final_m" . $i . "_p1_total"} = 2;
+                                                                    ${"final_m" . $i . "_p2_total"} = 1;
+
+                                                                } elseif (${"final_m" . $i . "_s1"}[0] < ${"final_m" . $i . "_s1"}[1] && ${"final_m" . $i . "_s2"}[0] > ${"final_m" . $i . "_s2"}[1] && ${"final_m" . $i . "_s3"}[0] < ${"final_m" . $i . "_s3"}[1]) {
+
+                                                                    ${"final_m" . $i . "_p1_total"} = 1;
+                                                                    ${"final_m" . $i . "_p2_total"} = 2;
+
+                                                                } elseif (${"final_m" . $i . "_s1"}[0] < ${"final_m" . $i . "_s1"}[1] && ${"final_m" . $i . "_s2"}[0] > ${"final_m" . $i . "_s2"}[1] && ${"final_m" . $i . "_s3"}[0] > ${"final_m" . $i . "_s3"}[1]) {
+
+                                                                    ${"final_m" . $i . "_p1_total"} = 2;
+                                                                    ${"final_m" . $i . "_p2_total"} = 1;
+
+                                                                } elseif (${"final_m" . $i . "_s1"}[0] > ${"final_m" . $i . "_s1"}[1] && ${"final_m" . $i . "_s2"}[0] < ${"final_m" . $i . "_s2"}[1] && ${"final_m" . $i . "_s3"}[0] < ${"final_m" . $i . "_s3"}[1]) {
+
+                                                                    ${"final_m" . $i . "_p1_total"} = 1;
+                                                                    ${"final_m" . $i . "_p2_total"} = 2;
+
+                                                                }
+                                                            ?>
+
+
+                                                            <ul class="matchup">
+
+                                                                <span class="custooltip">
+                                                                    <li style="text-align: left;" 
+                                                                        class="team team-top @if (${"final_m" . $i . "_p1_total"} > ${"final_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                        {{ \Illuminate\Support\Str::limit(${"final_mat_" . $i}[0], 100) }}
+
+                                                                        @if (${"final_m" . $i . "_p1_total"} < ${"final_m" . $i . "_p2_total"})
+                                                                            @if($final_status['match_'.$i] == 'Retired')
+                                                                                @if($final_retires)
+                                                                                    @if (array_key_exists('match_'.$i, $final_retires))
+                                                                                        @if($final_retires['match_'.$i] == $vs_match[0])
+                                                                                            
+                                                                                            <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @endif
+                                                                                <span
+                                                                                    class="score">{{ ${"final_m" . $i . "_s1"}[0] }}
+                                                                                    {{ ${"final_m" . $i . "_s2"}[0] }} {{ ${"final_m" . $i . "_s3"}[0] }}</span>
+                                                                            @elseif($final_status['match_'.$i] == 'Withdraw')
+                                                                                <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(W)</span>
+                                                                                <span
+                                                                                    class="score">&#8212;</span>
+                                                                            @elseif($final_status['match_'.$i] == 'Decided by Organisers')
+                                                                                <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(D)</span>
+                                                                                <span
+                                                                                    class="score">&#8212;</span>
+                                                                            @endif
+
+                                                                        @else
+                                                                            @if($final_status['match_'.$i] == 'Retired')
+                                                                                @if($final_retires)
+                                                                                    @if (array_key_exists('match_'.$i, $final_retires))
+                                                                                        @if($final_retires['match_'.$i] == $vs_match[0])
+                                                                                            
+                                                                                            <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @endif
+                                                                                <span
+                                                                                class="score winnerclractive">{{ ${"final_m" . $i . "_s1"}[0] }}
+                                                                                {{ ${"final_m" . $i . "_s2"}[0] }} {{ ${"final_m" . $i . "_s3"}[0] }}</span>
+                                                                            @elseif($final_status['match_'.$i] == 'Withdraw')
+                                                                                <span
+                                                                                class="score winnerclractive">&#8212;</span>
+                                                                            @elseif($final_status['match_'.$i] == 'Decided by Organisers')
+                                                                                <span
+                                                                                class="score winnerclractive">&#8212;</span>
+                                                                            @endif
+                                                                                
+                                                                        @endif
+
+                                                                    </li>
+
+                                                                    <span class="custooltiptext">{{ ${"final_mat_" . $i}[0] }} 
+
+                                                                        @if($final_status)
+                                                                            @if($final_status['match_'.$i] == 'Retired')
+                                                                                @if($final_retires)
+                                                                                    @if (array_key_exists('match_'.$i, $final_retires))
+                                                                                        @if($final_retires['match_'.$i] == $vs_match[0])
+                                                                                            
+                                                                                            ({{ $final_status['match_'.$i] }})
+
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @endif
+                                                                            @else
+                                                                                @if (${"final_m" . $i . "_p1_total"} < ${"final_m" . $i . "_p2_total"}) 
+                                                                                    ({{ $final_status['match_'.$i] }}) 
+                                                                                @endif
+                                                                            @endif
+                                                                        @endif
+
+                                                                    </span>
+
+                                                                </span>
+
+                                                                <span class="custooltip">
+                                                                    <li style="text-align: left;" 
+                                                                        class="team team-bottom @if (${"final_m" . $i . "_p2_total"} > ${"final_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                        {{ \Illuminate\Support\Str::limit(${"final_mat_" . $i}[1], 100) }}
+
+                                                                        @if (${"final_m" . $i . "_p1_total"} > ${"final_m" . $i . "_p2_total"})
+                                                                            @if($final_status['match_'.$i] == 'Retired')
+                                                                                @if($final_retires)
+                                                                                    @if (array_key_exists('match_'.$i, $final_retires))
+                                                                                        @if($final_retires['match_'.$i] == $vs_match[1])
+                                                                                            
+                                                                                            <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @endif
+                                                                                <span
+                                                                                    class="score">{{ ${"final_m" . $i . "_s1"}[1] }}
+                                                                                    {{ ${"final_m" . $i . "_s2"}[1] }} {{ ${"final_m" . $i . "_s3"}[1] }}</span>
+                                                                            @elseif($final_status['match_'.$i] == 'Withdraw')
+                                                                                <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(W)</span>
+                                                                                <span
+                                                                                    class="score">&#8212;</span>
+                                                                            @elseif($final_status['match_'.$i] == 'Decided by Organisers')
+                                                                                <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(D)</span>
+                                                                                <span
+                                                                                    class="score">&#8212;</span>
+                                                                            @endif
+
+                                                                        @else
+                                                                            @if($final_status['match_'.$i] == 'Retired')
+                                                                                @if($final_retires)
+                                                                                    @if (array_key_exists('match_'.$i, $final_retires))
+                                                                                        @if($final_retires['match_'.$i] == $vs_match[1])
+                                                                                            
+                                                                                            <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @endif
+                                                                                <span
+                                                                                class="score winnerclractive">{{ ${"final_m" . $i . "_s1"}[1] }}
+                                                                                {{ ${"final_m" . $i . "_s2"}[1] }} {{ ${"final_m" . $i . "_s3"}[1] }}</span>
+                                                                            @elseif($final_status['match_'.$i] == 'Withdraw')
+                                                                                <span
+                                                                                class="score winnerclractive">&#8212;</span>
+                                                                            @elseif($final_status['match_'.$i] == 'Decided by Organisers')
+                                                                                <span
+                                                                                class="score winnerclractive">&#8212;</span>
+                                                                            @endif
+                                                                        @endif
+
+                                                                    </li>
+
+                                                                    <span class="custooltiptext">{{ ${"final_mat_" . $i}[1] }} 
+
+                                                                        @if($final_status)
+                                                                            @if($final_status['match_'.$i] == 'Retired')
+                                                                                @if($final_retires)
+                                                                                    @if (array_key_exists('match_'.$i, $final_retires))
+                                                                                        @if($final_retires['match_'.$i] == $vs_match[1])
+                                                                                            
+                                                                                            ({{ $final_status['match_'.$i] }})
+
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @endif
+                                                                            @else
+                                                                                @if (${"final_m" . $i . "_p1_total"} > ${"final_m" . $i . "_p2_total"}) 
+                                                                                    ({{ $final_status['match_'.$i] }}) 
+                                                                                @endif
+                                                                            @endif
+                                                                        @endif
+
+                                                                    </span>
+
+                                                                </span>
+
+                                                            </ul>
+
+                                                        @else
+                                                            @if (array_key_exists('match_'.$i, $final_results))
+                                                                <?php
+                                                                    if (${"final_m" . $i . "_s1"}[0] > ${"final_m" . $i . "_s1"}[1] && ${"final_m" . $i . "_s2"}[0] > ${"final_m" . $i . "_s2"}[1]) 
+                                                                    {
+
+                                                                        ${"final_m" . $i . "_p1_total"} = 2;
+                                                                        ${"final_m" . $i . "_p2_total"} = 0;
+
+                                                                    } elseif (${"final_m" . $i . "_s1"}[1] > ${"final_m" . $i . "_s1"}[0] && ${"final_m" . $i . "_s2"}[1] > ${"final_m" . $i . "_s2"}[0]) {
+
+                                                                        ${"final_m" . $i . "_p1_total"} = 0;
+                                                                        ${"final_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"final_m" . $i . "_s1"}[0] > ${"final_m" . $i . "_s1"}[1] && ${"final_m" . $i . "_s2"}[0] < ${"final_m" . $i . "_s2"}[1] && ${"final_m" . $i . "_s3"}[0] > ${"final_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"final_m" . $i . "_p1_total"} = 2;
+                                                                        ${"final_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"final_m" . $i . "_s1"}[0] < ${"final_m" . $i . "_s1"}[1] && ${"final_m" . $i . "_s2"}[0] > ${"final_m" . $i . "_s2"}[1] && ${"final_m" . $i . "_s3"}[0] < ${"final_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"final_m" . $i . "_p1_total"} = 1;
+                                                                        ${"final_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"final_m" . $i . "_s1"}[0] < ${"final_m" . $i . "_s1"}[1] && ${"final_m" . $i . "_s2"}[0] > ${"final_m" . $i . "_s2"}[1] && ${"final_m" . $i . "_s3"}[0] > ${"final_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"final_m" . $i . "_p1_total"} = 2;
+                                                                        ${"final_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"final_m" . $i . "_s1"}[0] > ${"final_m" . $i . "_s1"}[1] && ${"final_m" . $i . "_s2"}[0] < ${"final_m" . $i . "_s2"}[1] && ${"final_m" . $i . "_s3"}[0] < ${"final_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"final_m" . $i . "_p1_total"} = 1;
+                                                                        ${"final_m" . $i . "_p2_total"} = 2;
+
+                                                                    }
+                                                                ?>
+                                                                
+
+                                                                <ul class="matchup">
+
+                                                                    <span class="custooltip">
+                                                                        <li style="text-align: left;" 
+                                                                            class="team team-top @if (${"final_m" . $i . "_p1_total"} > ${"final_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"final_mat_" . $i}[0], 100) }}
+
+                                                                            <span
+                                                                                class="score @if (${"final_m" . $i . "_p1_total"} > ${"final_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"final_m" . $i . "_s1"}[0] }}
+                                                                                {{ ${"final_m" . $i . "_s2"}[0] }} {{ ${"final_m" . $i . "_s3"}[0] }}</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiptext">{{ ${"final_mat_" . $i}[0] }}</span>
+                                                                    </span>
+
+                                                                    <span class="custooltip">
+                                                                        <li style="text-align: left;" 
+                                                                            class="team team-bottom @if (${"final_m" . $i . "_p2_total"} > ${"final_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"final_mat_" . $i}[1], 100) }}
+
+                                                                            <span
+                                                                                class="score @if (${"final_m" . $i . "_p2_total"} > ${"final_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"final_m" . $i . "_s1"}[1] }}
+                                                                                {{ ${"final_m" . $i . "_s2"}[1] }} {{ ${"final_m" . $i . "_s3"}[1] }}</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiptext">{{ ${"final_mat_" . $i}[1] }}</span>
+                                                                    </span>
+
+                                                                </ul>
+                                                            @else
+                                                                <ul class="matchup">
+
+                                                                    <span class="custooltip">
+                                                                        <li style="text-align: left;"  class="team team-top">
+                                                                            {{ \Illuminate\Support\Str::limit(${"final_mat_" . $i}[0], 100) }}
+
+                                                                            <span class="score">N/A</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiptext">{{ ${"final_mat_" . $i}[0] }}</span>
+                                                                    </span>
+
+                                                                    <span class="custooltip">
+                                                                        <li style="text-align: left;"  class="team team-bottom">
+                                                                            {{ \Illuminate\Support\Str::limit(${"final_mat_" . $i}[1], 100) }}
+
+                                                                            <span class="score">N/A</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiptext">{{ ${"final_mat_" . $i}[1] }}</span>
+                                                                    </span>
+
+                                                                </ul>
+                                                            @endif
+                                                        @endif
+
+
+                                                    @else
+                                                        @if (array_key_exists('match_'.$i, $final_results))
+                                                            <?php
+                                                                if (${"final_m" . $i . "_s1"}[0] > ${"final_m" . $i . "_s1"}[1] && ${"final_m" . $i . "_s2"}[0] > ${"final_m" . $i . "_s2"}[1]) 
+                                                                {
+
+                                                                    ${"final_m" . $i . "_p1_total"} = 2;
+                                                                    ${"final_m" . $i . "_p2_total"} = 0;
+
+                                                                } elseif (${"final_m" . $i . "_s1"}[1] > ${"final_m" . $i . "_s1"}[0] && ${"final_m" . $i . "_s2"}[1] > ${"final_m" . $i . "_s2"}[0]) {
+
+                                                                    ${"final_m" . $i . "_p1_total"} = 0;
+                                                                    ${"final_m" . $i . "_p2_total"} = 2;
+
+                                                                } elseif (${"final_m" . $i . "_s1"}[0] > ${"final_m" . $i . "_s1"}[1] && ${"final_m" . $i . "_s2"}[0] < ${"final_m" . $i . "_s2"}[1] && ${"final_m" . $i . "_s3"}[0] > ${"final_m" . $i . "_s3"}[1]) {
+
+                                                                    ${"final_m" . $i . "_p1_total"} = 2;
+                                                                    ${"final_m" . $i . "_p2_total"} = 1;
+
+                                                                } elseif (${"final_m" . $i . "_s1"}[0] < ${"final_m" . $i . "_s1"}[1] && ${"final_m" . $i . "_s2"}[0] > ${"final_m" . $i . "_s2"}[1] && ${"final_m" . $i . "_s3"}[0] < ${"final_m" . $i . "_s3"}[1]) {
+
+                                                                    ${"final_m" . $i . "_p1_total"} = 1;
+                                                                    ${"final_m" . $i . "_p2_total"} = 2;
+
+                                                                } elseif (${"final_m" . $i . "_s1"}[0] < ${"final_m" . $i . "_s1"}[1] && ${"final_m" . $i . "_s2"}[0] > ${"final_m" . $i . "_s2"}[1] && ${"final_m" . $i . "_s3"}[0] > ${"final_m" . $i . "_s3"}[1]) {
+
+                                                                    ${"final_m" . $i . "_p1_total"} = 2;
+                                                                    ${"final_m" . $i . "_p2_total"} = 1;
+
+                                                                } elseif (${"final_m" . $i . "_s1"}[0] > ${"final_m" . $i . "_s1"}[1] && ${"final_m" . $i . "_s2"}[0] < ${"final_m" . $i . "_s2"}[1] && ${"final_m" . $i . "_s3"}[0] < ${"final_m" . $i . "_s3"}[1]) {
+
+                                                                    ${"final_m" . $i . "_p1_total"} = 1;
+                                                                    ${"final_m" . $i . "_p2_total"} = 2;
+
+                                                                }
+                                                            ?>
+                                                            
+
+                                                            <ul class="matchup">
+
+                                                                <span class="custooltip">
+                                                                    <li style="text-align: left;" 
+                                                                        class="team team-top @if (${"final_m" . $i . "_p1_total"} > ${"final_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                        {{ \Illuminate\Support\Str::limit(${"final_mat_" . $i}[0], 100) }}
+
+                                                                        <span
+                                                                            class="score @if (${"final_m" . $i . "_p1_total"} > ${"final_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"final_m" . $i . "_s1"}[0] }}
+                                                                            {{ ${"final_m" . $i . "_s2"}[0] }} {{ ${"final_m" . $i . "_s3"}[0] }}</span>
+
+                                                                    </li>
+                                                                    <span class="custooltiptext">{{ ${"final_mat_" . $i}[0] }}</span>
+                                                                </span>
+
+                                                                <span class="custooltip">
+                                                                    <li style="text-align: left;" 
+                                                                        class="team team-bottom @if (${"final_m" . $i . "_p2_total"} > ${"final_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                        {{ \Illuminate\Support\Str::limit(${"final_mat_" . $i}[1], 100) }}
+
+                                                                        <span
+                                                                            class="score @if (${"final_m" . $i . "_p2_total"} > ${"final_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"final_m" . $i . "_s1"}[1] }}
+                                                                            {{ ${"final_m" . $i . "_s2"}[1] }} {{ ${"final_m" . $i . "_s3"}[1] }}</span>
+
+                                                                    </li>
+                                                                    <span class="custooltiptext">{{ ${"final_mat_" . $i}[1] }}</span>
+                                                                </span>
+
+                                                            </ul>
+                                                        @else
+                                                            <ul class="matchup">
+
+                                                                <span class="custooltip">
+                                                                    <li style="text-align: left;"  class="team team-top">
+                                                                        {{ \Illuminate\Support\Str::limit(${"final_mat_" . $i}[0], 100) }}
+
+                                                                        <span class="score">N/A</span>
+
+                                                                    </li>
+                                                                    <span class="custooltiptext">{{ ${"final_mat_" . $i}[0] }}</span>
+                                                                </span>
+
+                                                                <span class="custooltip">
+                                                                    <li style="text-align: left;"  class="team team-bottom">
+                                                                        {{ \Illuminate\Support\Str::limit(${"final_mat_" . $i}[1], 100) }}
+
+                                                                        <span class="score">N/A</span>
+
+                                                                    </li>
+                                                                    <span class="custooltiptext">{{ ${"final_mat_" . $i}[1] }}</span>
+                                                                </span>
+
+                                                            </ul>
+                                                        @endif
+                                                    @endif
+
+                                                @else
+                                                    @if (array_key_exists('match_'.$i, $final_results))
+                                                        <?php
+                                                            if (${"final_m" . $i . "_s1"}[0] > ${"final_m" . $i . "_s1"}[1] && ${"final_m" . $i . "_s2"}[0] > ${"final_m" . $i . "_s2"}[1]) 
+                                                            {
+
+                                                                ${"final_m" . $i . "_p1_total"} = 2;
+                                                                ${"final_m" . $i . "_p2_total"} = 0;
+
+                                                            } elseif (${"final_m" . $i . "_s1"}[1] > ${"final_m" . $i . "_s1"}[0] && ${"final_m" . $i . "_s2"}[1] > ${"final_m" . $i . "_s2"}[0]) {
+
+                                                                ${"final_m" . $i . "_p1_total"} = 0;
+                                                                ${"final_m" . $i . "_p2_total"} = 2;
+
+                                                            } elseif (${"final_m" . $i . "_s1"}[0] > ${"final_m" . $i . "_s1"}[1] && ${"final_m" . $i . "_s2"}[0] < ${"final_m" . $i . "_s2"}[1] && ${"final_m" . $i . "_s3"}[0] > ${"final_m" . $i . "_s3"}[1]) {
+
+                                                                ${"final_m" . $i . "_p1_total"} = 2;
+                                                                ${"final_m" . $i . "_p2_total"} = 1;
+
+                                                            } elseif (${"final_m" . $i . "_s1"}[0] < ${"final_m" . $i . "_s1"}[1] && ${"final_m" . $i . "_s2"}[0] > ${"final_m" . $i . "_s2"}[1] && ${"final_m" . $i . "_s3"}[0] < ${"final_m" . $i . "_s3"}[1]) {
+
+                                                                ${"final_m" . $i . "_p1_total"} = 1;
+                                                                ${"final_m" . $i . "_p2_total"} = 2;
+
+                                                            } elseif (${"final_m" . $i . "_s1"}[0] < ${"final_m" . $i . "_s1"}[1] && ${"final_m" . $i . "_s2"}[0] > ${"final_m" . $i . "_s2"}[1] && ${"final_m" . $i . "_s3"}[0] > ${"final_m" . $i . "_s3"}[1]) {
+
+                                                                ${"final_m" . $i . "_p1_total"} = 2;
+                                                                ${"final_m" . $i . "_p2_total"} = 1;
+
+                                                            } elseif (${"final_m" . $i . "_s1"}[0] > ${"final_m" . $i . "_s1"}[1] && ${"final_m" . $i . "_s2"}[0] < ${"final_m" . $i . "_s2"}[1] && ${"final_m" . $i . "_s3"}[0] < ${"final_m" . $i . "_s3"}[1]) {
+
+                                                                ${"final_m" . $i . "_p1_total"} = 1;
+                                                                ${"final_m" . $i . "_p2_total"} = 2;
+
+                                                            }
+                                                        ?>
+                                                        
+
+                                                        <ul class="matchup">
+
+                                                            <span class="custooltip">
+                                                                <li style="text-align: left;" 
+                                                                    class="team team-top @if (${"final_m" . $i . "_p1_total"} > ${"final_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                    {{ \Illuminate\Support\Str::limit(${"final_mat_" . $i}[0], 100) }}
+
+                                                                    <span
+                                                                        class="score @if (${"final_m" . $i . "_p1_total"} > ${"final_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"final_m" . $i . "_s1"}[0] }}
+                                                                        {{ ${"final_m" . $i . "_s2"}[0] }} {{ ${"final_m" . $i . "_s3"}[0] }}</span>
+
+                                                                </li>
+                                                                <span class="custooltiptext">{{ ${"final_mat_" . $i}[0] }}</span>
+                                                            </span>
+
+                                                            <span class="custooltip">
+                                                                <li style="text-align: left;" 
+                                                                    class="team team-bottom @if (${"final_m" . $i . "_p2_total"} > ${"final_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                    {{ \Illuminate\Support\Str::limit(${"final_mat_" . $i}[1], 100) }}
+
+                                                                    <span
+                                                                        class="score @if (${"final_m" . $i . "_p2_total"} > ${"final_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"final_m" . $i . "_s1"}[1] }}
+                                                                        {{ ${"final_m" . $i . "_s2"}[1] }} {{ ${"final_m" . $i . "_s3"}[1] }}</span>
+
+                                                                </li>
+                                                                <span class="custooltiptext">{{ ${"final_mat_" . $i}[1] }}</span>
+                                                            </span>
+
+                                                        </ul>
+                                                    @else
+                                                        <ul class="matchup">
+
+                                                            <span class="custooltip">
+                                                                <li style="text-align: left;"  class="team team-top">
+                                                                    {{ \Illuminate\Support\Str::limit(${"final_mat_" . $i}[0], 100) }}
+
+                                                                    <span class="score">N/A</span>
+
+                                                                </li>
+                                                                <span class="custooltiptext">{{ ${"final_mat_" . $i}[0] }}</span>
+                                                            </span>
+
+                                                            <span class="custooltip">
+                                                                <li style="text-align: left;"  class="team team-bottom">
+                                                                    {{ \Illuminate\Support\Str::limit(${"final_mat_" . $i}[1], 100) }}
+
+                                                                    <span class="score">N/A</span>
+
+                                                                </li>
+                                                                <span class="custooltiptext">{{ ${"final_mat_" . $i}[1] }}</span>
+                                                            </span>
+
+                                                        </ul>
+                                                    @endif
+                                                @endif
+
+
+                                            @else
+                                                <ul class="matchup">
+
+                                                    <span class="custooltip">
+                                                        <li style="text-align: left;"  class="team team-top">
+                                                            {{ \Illuminate\Support\Str::limit(${"final_mat_" . $i}[0], 100) }}
+
+                                                            <span class="score">N/A</span>
+
+                                                        </li>
+                                                        <span class="custooltiptext">{{ ${"final_mat_" . $i}[0] }}</span>
+                                                    </span>
+
+                                                    <span class="custooltip">
+                                                        <li style="text-align: left;"  class="team team-bottom">
+                                                            {{ \Illuminate\Support\Str::limit(${"final_mat_" . $i}[1], 100) }}
+
+                                                            <span class="score">N/A</span>
+
+                                                        </li>
+                                                        <span class="custooltiptext">{{ ${"final_mat_" . $i}[1] }}</span>
+                                                    </span>
+                                                </ul>
+                                            @endif
+                                        @else
+                                            <ul class="matchup">
+
+                                                <li style="text-align: left;"  class="team team-top">n/a<span class="score">N/A</span></li>
+                                                <li style="text-align: left;"  class="team team-bottom">n/a<span class="score">N/A</span></li>
+                                            </ul>
+                                        @endif
+                                    @endfor
+
+                                </div>
+                            @else
+                                <div class="semis-l">
+                                    <div class="round-details">final<br/><span class="date">@if($t_d_final) {{ $strt_f[0] }} - {{ $endd_f[0] }} @else N/A @endif</span></div>
+
+                                    @for($i = 1; $i < 2; $i++)
+                                        <ul class="matchup">
+                                            
+                                            <li style="text-align: left;"  class="team team-top"><span class="score"></span></li>
+                                            <li style="text-align: left;"  class="team team-bottom"><span class="score"></span></li>
+                                        </ul>
+                                    @endfor
+
+                                </div>
+                            @endif
+
+
+                            @if($tournament->final_results)
+                                <div class="final current">
+                                    <i class="fa fa-trophy"></i>
+                                    <div class="round-details">final championship <br/><span class="date" style="font-weight:550;">Winner</span></div>      
+                                    <ul class ="matchup championship">
+                                        
+                                        <span class="custooltip">
+                                            <li style="text-align: center;" class="team team-top winnerclractive">
+
+                                                @if($final_m1_p1_total > $final_m1_p2_total) {{ $final_mat_1[0] }} @else {{ $final_mat_1[1] }} @endif
+
+                                                
+                                            </li>
+                                            <span class="custooltiptext">{{ $final_m1_p1_total > $final_m1_p2_total ? $final_mat_1[0] : $final_mat_1[1] }}</span>
+                                        </span>
+                                    </ul>
+                                </div>
+                            @else
+
+                                <div class="final current">
+                                    <i class="fa fa-trophy"></i>
+                                    <div class="round-details">final championship <br/><span class="date" style="font-weight:550;">Winner</span></div>      
+                                    <ul class ="matchup championship">
+                                        <li class="team team-top">&nbsp;<span class="vote-count">&nbsp;</span></li>
+                                    </ul>
+                                </div>
+
+                            @endif
+                        </div>
+
+                        {{-- <li class="team"style="width: 25%;margin: 0 auto;text-align: center;color: #2c7399 !important;font-weight: bold;font-family: 'Roboto Condensed', sans-serif;">M-2</li> --}}
+
+                        <div class="split split-two">
+
+                            @if($semi_final_auto_selection)
+
+                                <div class="round round-two @if($semi_final_auto_selection) current @elseif($semi_final_matches) current @endif">
+                                    <div class="round-details">semifinal<br/><span class="date">@if($t_d_semf) {{ $strt_sem[0] }} - {{ $endd_sem[0] }} @else N/A @endif</span></div>
+                                    
+                                    @for($i = 2; $i < 3; $i++)
+                                        @if (array_key_exists('match_'.$i, $semi_final_auto_selection))
+                                            
+                                            <ul class="matchup">
+
+                                                <span class="custooltip">
+                                                    <li
+                                                        class="team team-top winnerclractive">
+                                                        {{ \Illuminate\Support\Str::limit($sem_mat_auto[0], 100) }}
+
+                                                        <span
+                                                            class="score winnerclractive">N/A</span>
+
+                                                    </li>
+                                                    <span class="custooltiptext">{{ $sem_mat_auto[0] }}</span>
+                                                </span>
+
+                                                <span class="custooltip">
+                                                    <li
+                                                        class="team team-bottom">
+                                                        N/A
+
+                                                        <span
+                                                            class="score">N/A</span>
+
+                                                    </li>
+                                                    <span class="custooltiptext">N/A</span>
+                                                </span>
+
+                                            </ul>
+                                            
+                                        @else
+
+                                            @if($tournament->semi_final_matches)
+                                                                                                   
+                                                @if (array_key_exists('match_'.$i, $semi_final_matches))
+
+                                                    <?php 
+                                                        $get_matches = $semi_final_matches['match_'.$i];
+                                                        $vs_match = explode(" VS ", $get_matches);
+                                                    ?>
+
+                                                    @if ($tournament->semi_final_results)
+                                                            
+                                                        @if($semi_final_status)
+                                                            @if (array_key_exists('match_'.$i, $semi_final_status))
+                                                                @if($semi_final_status['match_'.$i])
+                                                                    <?php
+                                                                        if (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 0;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[1] > ${"sem_m" . $i . "_s1"}[0] && ${"sem_m" . $i . "_s2"}[1] > ${"sem_m" . $i . "_s2"}[0]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 0;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        }
+                                                                    ?>
+
+
+                                                                    <ul class="matchup">
+
+                                                                        <span class="custooltip">
+                                                                            <li
+                                                                                class="team team-top @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                                @if (${"sem_m" . $i . "_p1_total"} < ${"sem_m" . $i . "_p2_total"})
+                                                                                    @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                        @if($semi_final_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                                @if($semi_final_retires['match_'.$i] == $vs_match[0])
+                                                                                                    
+                                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                        <span
+                                                                                            class="score">{{ ${"sem_m" . $i . "_s1"}[0] }}
+                                                                                            {{ ${"sem_m" . $i . "_s2"}[0] }} {{ ${"sem_m" . $i . "_s3"}[0] }}</span>
+                                                                                    @elseif($semi_final_status['match_'.$i] == 'Withdraw')
+                                                                                        <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(W)</span>
+                                                                                        <span
+                                                                                            class="score">&#8212;</span>
+                                                                                    @elseif($semi_final_status['match_'.$i] == 'Decided by Organisers')
+                                                                                        <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(D)</span>
+                                                                                        <span
+                                                                                            class="score">&#8212;</span>
+                                                                                    @endif
+
+                                                                                @else
+                                                                                    @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                        @if($semi_final_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                                @if($semi_final_retires['match_'.$i] == $vs_match[0])
+                                                                                                    
+                                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                        <span
+                                                                                        class="score winnerclractive">{{ ${"sem_m" . $i . "_s1"}[0] }}
+                                                                                        {{ ${"sem_m" . $i . "_s2"}[0] }} {{ ${"sem_m" . $i . "_s3"}[0] }}</span>
+                                                                                    @elseif($semi_final_status['match_'.$i] == 'Withdraw')
+                                                                                        <span
+                                                                                        class="score winnerclractive">&#8212;</span>
+                                                                                    @elseif($semi_final_status['match_'.$i] == 'Decided by Organisers')
+                                                                                        <span
+                                                                                        class="score winnerclractive">&#8212;</span>
+                                                                                    @endif
+                                                                                        
+                                                                                @endif
+
+                                                                            </li>
+
+                                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }} 
+                                                                                @if($semi_final_status)
+                                                                                    @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                        @if($semi_final_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                                @if($semi_final_retires['match_'.$i] == $vs_match[0])
+                                                                                                    
+                                                                                                    ({{ $semi_final_status['match_'.$i] }})
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @else
+                                                                                        @if (${"sem_m" . $i . "_p1_total"} < ${"sem_m" . $i . "_p2_total"}) 
+                                                                                            ({{ $semi_final_status['match_'.$i] }}) 
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @endif
+                                                                            </span>
+
+                                                                        </span>
+
+                                                                        <span class="custooltip">
+                                                                            <li
+                                                                                class="team team-bottom @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                                @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"})
+                                                                                    @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                        @if($semi_final_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                                @if($semi_final_retires['match_'.$i] == $vs_match[1])
+                                                                                                    
+                                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                        <span
+                                                                                            class="score">{{ ${"sem_m" . $i . "_s1"}[1] }}
+                                                                                            {{ ${"sem_m" . $i . "_s2"}[1] }} {{ ${"sem_m" . $i . "_s3"}[1] }}</span>
+                                                                                    @elseif($semi_final_status['match_'.$i] == 'Withdraw')
+                                                                                        <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(W)</span>
+                                                                                        <span
+                                                                                            class="score">&#8212;</span>
+                                                                                    @elseif($semi_final_status['match_'.$i] == 'Decided by Organisers')
+                                                                                        <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(D)</span>
+                                                                                        <span
+                                                                                            class="score">&#8212;</span>
+                                                                                    @endif
+
+                                                                                @else
+                                                                                    @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                        @if($semi_final_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                                @if($semi_final_retires['match_'.$i] == $vs_match[1])
+                                                                                                    
+                                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                        <span
+                                                                                        class="score winnerclractive">{{ ${"sem_m" . $i . "_s1"}[1] }}
+                                                                                        {{ ${"sem_m" . $i . "_s2"}[1] }} {{ ${"sem_m" . $i . "_s3"}[1] }}</span>
+                                                                                    @elseif($semi_final_status['match_'.$i] == 'Withdraw')
+                                                                                        <span
+                                                                                        class="score winnerclractive">&#8212;</span>
+                                                                                    @elseif($semi_final_status['match_'.$i] == 'Decided by Organisers')
+                                                                                        <span
+                                                                                        class="score winnerclractive">&#8212;</span>
+                                                                                    @endif
+                                                                                @endif
+
+                                                                            </li>
+
+                                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }} 
+
+                                                                                @if($semi_final_status)
+                                                                                    @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                        @if($semi_final_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                                @if($semi_final_retires['match_'.$i] == $vs_match[1])
+                                                                                                    
+                                                                                                    ({{ $semi_final_status['match_'.$i] }})
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @else
+                                                                                        @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) 
+                                                                                            ({{ $semi_final_status['match_'.$i] }}) 
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @endif
+
+                                                                            </span>
+
+                                                                        </span>
+
+                                                                    </ul>
+
+                                                                @else
+                                                                    @if (array_key_exists('match_'.$i, $semi_final_results))
+                                                                        <?php
+                                                                            if (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1]) {
+
+                                                                                ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                                ${"sem_m" . $i . "_p2_total"} = 0;
+
+                                                                            } elseif (${"sem_m" . $i . "_s1"}[1] > ${"sem_m" . $i . "_s1"}[0] && ${"sem_m" . $i . "_s2"}[1] > ${"sem_m" . $i . "_s2"}[0]) {
+
+                                                                                ${"sem_m" . $i . "_p1_total"} = 0;
+                                                                                ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                            } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                                ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                                ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                            } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                                ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                                ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                            } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                                ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                                ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                            } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                                ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                                ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                            }
+                                                                        ?>
+                                                                        
+
+                                                                        <ul class="matchup">
+
+                                                                            <span class="custooltip">
+                                                                                <li
+                                                                                    class="team team-top @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                                    {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                                    <span
+                                                                                        class="score @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[0] }}
+                                                                                        {{ ${"sem_m" . $i . "_s2"}[0] }} {{ ${"sem_m" . $i . "_s3"}[0] }}</span>
+
+                                                                                </li>
+                                                                                <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                            </span>
+
+                                                                            <span class="custooltip">
+                                                                                <li
+                                                                                    class="team team-bottom @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                                    {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                                    <span
+                                                                                        class="score @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[1] }}
+                                                                                        {{ ${"sem_m" . $i . "_s2"}[1] }} {{ ${"sem_m" . $i . "_s3"}[1] }}</span>
+
+                                                                                </li>
+                                                                                <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                            </span>
+
+                                                                        </ul>
+                                                                    @else
+                                                                        <ul class="matchup">
+
+                                                                            <span class="custooltip">
+                                                                                <li class="team team-top">
+                                                                                    {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                                    <span class="score">N/A</span>
+
+                                                                                </li>
+                                                                                <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                            </span>
+
+                                                                            <span class="custooltip">
+                                                                                <li class="team team-bottom">
+                                                                                    {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                                    <span class="score">N/A</span>
+
+                                                                                </li>
+                                                                                <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                            </span>
+
+                                                                        </ul>
+                                                                    @endif
+                                                                @endif
+
+
+                                                            @else
+                                                                @if (array_key_exists('match_'.$i, $semi_final_results))
+                                                                    <?php
+                                                                        if (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 0;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[1] > ${"sem_m" . $i . "_s1"}[0] && ${"sem_m" . $i . "_s2"}[1] > ${"sem_m" . $i . "_s2"}[0]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 0;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        }
+                                                                    ?>
+                                                                    
+
+                                                                    <ul class="matchup">
+
+                                                                        <span class="custooltip">
+                                                                            <li
+                                                                                class="team team-top @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                                <span
+                                                                                    class="score @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[0] }}
+                                                                                    {{ ${"sem_m" . $i . "_s2"}[0] }} {{ ${"sem_m" . $i . "_s3"}[0] }}</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                        </span>
+
+                                                                        <span class="custooltip">
+                                                                            <li
+                                                                                class="team team-bottom @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                                <span
+                                                                                    class="score @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[1] }}
+                                                                                    {{ ${"sem_m" . $i . "_s2"}[1] }} {{ ${"sem_m" . $i . "_s3"}[1] }}</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                        </span>
+
+                                                                    </ul>
+                                                                @else
+                                                                    <ul class="matchup">
+
+                                                                        <span class="custooltip">
+                                                                            <li class="team team-top">
+                                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                                <span class="score">N/A</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                        </span>
+
+                                                                        <span class="custooltip">
+                                                                            <li class="team team-bottom">
+                                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                                <span class="score">N/A</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                        </span>
+
+                                                                    </ul>
+                                                                @endif
+                                                            @endif
+
+                                                        @else
+                                                            @if (array_key_exists('match_'.$i, $semi_final_results))
+                                                                <?php
+                                                                        if (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 0;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[1] > ${"sem_m" . $i . "_s1"}[0] && ${"sem_m" . $i . "_s2"}[1] > ${"sem_m" . $i . "_s2"}[0]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 0;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        }
+                                                                ?>
+                                                                
+
+                                                                <ul class="matchup">
+
+                                                                    <span class="custooltip">
+                                                                        <li
+                                                                            class="team team-top @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                            <span
+                                                                                class="score @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[0] }}
+                                                                                {{ ${"sem_m" . $i . "_s2"}[0] }} {{ ${"sem_m" . $i . "_s3"}[0] }}</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                    </span>
+
+                                                                    <span class="custooltip">
+                                                                        <li
+                                                                            class="team team-bottom @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                            <span
+                                                                                class="score @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[1] }}
+                                                                                {{ ${"sem_m" . $i . "_s2"}[1] }} {{ ${"sem_m" . $i . "_s3"}[1] }}</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                    </span>
+
+                                                                </ul>
+                                                            @else
+                                                                <ul class="matchup">
+
+                                                                    <span class="custooltip">
+                                                                        <li class="team team-top">
+                                                                            {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                            <span class="score">N/A</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                    </span>
+
+                                                                    <span class="custooltip">
+                                                                        <li class="team team-bottom">
+                                                                            {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                            <span class="score">N/A</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                    </span>
+
+                                                                </ul>
+                                                            @endif
+                                                        @endif
+
+
+                                                    @else
+                                                        <ul class="matchup">
+
+                                                            <span class="custooltip">
+                                                                <li class="team team-top">
+                                                                    {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                    <span class="score">N/A</span>
+
+                                                                </li>
+                                                                <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                            </span>
+
+                                                            <span class="custooltip">
+                                                                <li class="team team-bottom">
+                                                                    {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                    <span class="score">N/A</span>
+
+                                                                </li>
+                                                                <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                            </span>
+                                                        </ul>
+                                                    @endif
+                                                @else
+                                                    <ul class="matchup">
+
+                                                        <li class="team team-top">n/a<span class="score">N/A</span></li>
+                                                        <li class="team team-bottom">n/a<span class="score">N/A</span></li>
+                                                    </ul>
+                                                @endif
+                                                
+                                            @else
+                                                
+                                                <ul class="matchup">
+                                                    
+                                                    <li class="team team-top"><span class="score"></span></li>
+                                                    <li class="team team-bottom"><span class="score"></span></li>
+                                                </ul>
+                                                
+                                            @endif
+
+                                        @endif
+
+                                    @endfor
+
+                                </div>                                
+                            @else
+                                @if($tournament->semi_final_matches)
+                                    
+                                    <div class="round round-two current">
+                                        <div class="round-details">semifinal<br/><span class="date">@if($t_d_semf) {{ $strt_sem[0] }} - {{ $endd_sem[0] }} @else N/A @endif</span>
+                                        </div>
+                                        
+                                        @for($i = 2; $i < 3; $i++)
+                                            @if (array_key_exists('match_'.$i, $semi_final_matches))
+
+                                                <?php 
+                                                    $get_matches = $semi_final_matches['match_'.$i];
+                                                    $vs_match = explode(" VS ", $get_matches);
+                                                ?>
+
+                                                @if ($tournament->semi_final_results)
+                                                        
+                                                    @if($semi_final_status)
+                                                        @if (array_key_exists('match_'.$i, $semi_final_status))
+                                                            @if($semi_final_status['match_'.$i])
+                                                                <?php
+                                                                    if (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 0;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[1] > ${"sem_m" . $i . "_s1"}[0] && ${"sem_m" . $i . "_s2"}[1] > ${"sem_m" . $i . "_s2"}[0]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 0;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                    }
+                                                                ?>
+
+
+                                                                <ul class="matchup">
+
+                                                                    <span class="custooltip">
+                                                                        <li
+                                                                            class="team team-top @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                            @if (${"sem_m" . $i . "_p1_total"} < ${"sem_m" . $i . "_p2_total"})
+                                                                                @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                    @if($semi_final_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                            @if($semi_final_retires['match_'.$i] == $vs_match[0])
+                                                                                                
+                                                                                                <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                    <span
+                                                                                        class="score">{{ ${"sem_m" . $i . "_s1"}[0] }}
+                                                                                        {{ ${"sem_m" . $i . "_s2"}[0] }} {{ ${"sem_m" . $i . "_s3"}[0] }}</span>
+                                                                                @elseif($semi_final_status['match_'.$i] == 'Withdraw')
+                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(W)</span>
+                                                                                    <span
+                                                                                        class="score">&#8212;</span>
+                                                                                @elseif($semi_final_status['match_'.$i] == 'Decided by Organisers')
+                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(D)</span>
+                                                                                    <span
+                                                                                        class="score">&#8212;</span>
+                                                                                @endif
+
+                                                                            @else
+                                                                                @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                    @if($semi_final_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                            @if($semi_final_retires['match_'.$i] == $vs_match[0])
+                                                                                                
+                                                                                                <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                    <span
+                                                                                    class="score winnerclractive">{{ ${"sem_m" . $i . "_s1"}[0] }}
+                                                                                    {{ ${"sem_m" . $i . "_s2"}[0] }} {{ ${"sem_m" . $i . "_s3"}[0] }}</span>
+                                                                                @elseif($semi_final_status['match_'.$i] == 'Withdraw')
+                                                                                    <span
+                                                                                    class="score winnerclractive">&#8212;</span>
+                                                                                @elseif($semi_final_status['match_'.$i] == 'Decided by Organisers')
+                                                                                    <span
+                                                                                    class="score winnerclractive">&#8212;</span>
+                                                                                @endif
+                                                                                    
+                                                                            @endif
+
+                                                                        </li>
+
+                                                                        <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }} 
+                                                                            @if($semi_final_status)
+                                                                                @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                    @if($semi_final_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                            @if($semi_final_retires['match_'.$i] == $vs_match[0])
+                                                                                                
+                                                                                                ({{ $semi_final_status['match_'.$i] }})
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @else
+                                                                                    @if (${"sem_m" . $i . "_p1_total"} < ${"sem_m" . $i . "_p2_total"}) 
+                                                                                        ({{ $semi_final_status['match_'.$i] }}) 
+                                                                                    @endif
+                                                                                @endif
+                                                                            @endif
+                                                                        </span>
+
+                                                                    </span>
+
+                                                                    <span class="custooltip">
+                                                                        <li
+                                                                            class="team team-bottom @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                            @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"})
+                                                                                @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                    @if($semi_final_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                            @if($semi_final_retires['match_'.$i] == $vs_match[1])
+                                                                                                
+                                                                                                <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                    <span
+                                                                                        class="score">{{ ${"sem_m" . $i . "_s1"}[1] }}
+                                                                                        {{ ${"sem_m" . $i . "_s2"}[1] }} {{ ${"sem_m" . $i . "_s3"}[1] }}</span>
+                                                                                @elseif($semi_final_status['match_'.$i] == 'Withdraw')
+                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(W)</span>
+                                                                                    <span
+                                                                                        class="score">&#8212;</span>
+                                                                                @elseif($semi_final_status['match_'.$i] == 'Decided by Organisers')
+                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(D)</span>
+                                                                                    <span
+                                                                                        class="score">&#8212;</span>
+                                                                                @endif
+
+                                                                            @else
+                                                                                @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                    @if($semi_final_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                            @if($semi_final_retires['match_'.$i] == $vs_match[1])
+                                                                                                
+                                                                                                <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                    <span
+                                                                                    class="score winnerclractive">{{ ${"sem_m" . $i . "_s1"}[1] }}
+                                                                                    {{ ${"sem_m" . $i . "_s2"}[1] }} {{ ${"sem_m" . $i . "_s3"}[1] }}</span>
+                                                                                @elseif($semi_final_status['match_'.$i] == 'Withdraw')
+                                                                                    <span
+                                                                                    class="score winnerclractive">&#8212;</span>
+                                                                                @elseif($semi_final_status['match_'.$i] == 'Decided by Organisers')
+                                                                                    <span
+                                                                                    class="score winnerclractive">&#8212;</span>
+                                                                                @endif
+                                                                            @endif
+
+                                                                        </li>
+
+                                                                        <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }} 
+
+                                                                            @if($semi_final_status)
+                                                                                @if($semi_final_status['match_'.$i] == 'Retired')
+                                                                                    @if($semi_final_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $semi_final_retires))
+                                                                                            @if($semi_final_retires['match_'.$i] == $vs_match[1])
+                                                                                                
+                                                                                                ({{ $semi_final_status['match_'.$i] }})
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @else
+                                                                                    @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) 
+                                                                                        ({{ $semi_final_status['match_'.$i] }}) 
+                                                                                    @endif
+                                                                                @endif
+                                                                            @endif
+
+                                                                        </span>
+
+                                                                    </span>
+
+                                                                </ul>
+
+                                                            @else
+                                                                @if (array_key_exists('match_'.$i, $semi_final_results))
+                                                                    <?php
+                                                                        if (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 0;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[1] > ${"sem_m" . $i . "_s1"}[0] && ${"sem_m" . $i . "_s2"}[1] > ${"sem_m" . $i . "_s2"}[0]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 0;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                            ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                        }
+                                                                    ?>
+                                                                    
+
+                                                                    <ul class="matchup">
+
+                                                                        <span class="custooltip">
+                                                                            <li
+                                                                                class="team team-top @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                                <span
+                                                                                    class="score @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[0] }}
+                                                                                    {{ ${"sem_m" . $i . "_s2"}[0] }} {{ ${"sem_m" . $i . "_s3"}[0] }}</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                        </span>
+
+                                                                        <span class="custooltip">
+                                                                            <li
+                                                                                class="team team-bottom @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                                <span
+                                                                                    class="score @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[1] }}
+                                                                                    {{ ${"sem_m" . $i . "_s2"}[1] }} {{ ${"sem_m" . $i . "_s3"}[1] }}</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                        </span>
+
+                                                                    </ul>
+                                                                @else
+                                                                    <ul class="matchup">
+
+                                                                        <span class="custooltip">
+                                                                            <li class="team team-top">
+                                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                                <span class="score">N/A</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                        </span>
+
+                                                                        <span class="custooltip">
+                                                                            <li class="team team-bottom">
+                                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                                <span class="score">N/A</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                        </span>
+
+                                                                    </ul>
+                                                                @endif
+                                                            @endif
+
+
+                                                        @else
+                                                            @if (array_key_exists('match_'.$i, $semi_final_results))
+                                                                <?php
+                                                                    if (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 0;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[1] > ${"sem_m" . $i . "_s1"}[0] && ${"sem_m" . $i . "_s2"}[1] > ${"sem_m" . $i . "_s2"}[0]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 0;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                    }
+                                                                ?>
+                                                                
+
+                                                                <ul class="matchup">
+
+                                                                    <span class="custooltip">
+                                                                        <li
+                                                                            class="team team-top @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                            <span
+                                                                                class="score @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[0] }}
+                                                                                {{ ${"sem_m" . $i . "_s2"}[0] }} {{ ${"sem_m" . $i . "_s3"}[0] }}</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                    </span>
+
+                                                                    <span class="custooltip">
+                                                                        <li
+                                                                            class="team team-bottom @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                            <span
+                                                                                class="score @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[1] }}
+                                                                                {{ ${"sem_m" . $i . "_s2"}[1] }} {{ ${"sem_m" . $i . "_s3"}[1] }}</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                    </span>
+
+                                                                </ul>
+                                                            @else
+                                                                <ul class="matchup">
+
+                                                                    <span class="custooltip">
+                                                                        <li class="team team-top">
+                                                                            {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                            <span class="score">N/A</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                    </span>
+
+                                                                    <span class="custooltip">
+                                                                        <li class="team team-bottom">
+                                                                            {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                            <span class="score">N/A</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                    </span>
+
+                                                                </ul>
+                                                            @endif
+                                                        @endif
+
+                                                    @else
+                                                        @if (array_key_exists('match_'.$i, $semi_final_results))
+                                                            <?php
+                                                                    if (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 0;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[1] > ${"sem_m" . $i . "_s1"}[0] && ${"sem_m" . $i . "_s2"}[1] > ${"sem_m" . $i . "_s2"}[0]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 0;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] < ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] > ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] > ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 2;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"sem_m" . $i . "_s1"}[0] > ${"sem_m" . $i . "_s1"}[1] && ${"sem_m" . $i . "_s2"}[0] < ${"sem_m" . $i . "_s2"}[1] && ${"sem_m" . $i . "_s3"}[0] < ${"sem_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"sem_m" . $i . "_p1_total"} = 1;
+                                                                        ${"sem_m" . $i . "_p2_total"} = 2;
+
+                                                                    }
+                                                            ?>
+                                                            
+
+                                                            <ul class="matchup">
+
+                                                                <span class="custooltip">
+                                                                    <li
+                                                                        class="team team-top @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                        {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                        <span
+                                                                            class="score @if (${"sem_m" . $i . "_p1_total"} > ${"sem_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[0] }}
+                                                                            {{ ${"sem_m" . $i . "_s2"}[0] }} {{ ${"sem_m" . $i . "_s3"}[0] }}</span>
+
+                                                                    </li>
+                                                                    <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                </span>
+
+                                                                <span class="custooltip">
+                                                                    <li
+                                                                        class="team team-bottom @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                        {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                        <span
+                                                                            class="score @if (${"sem_m" . $i . "_p2_total"} > ${"sem_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"sem_m" . $i . "_s1"}[1] }}
+                                                                            {{ ${"sem_m" . $i . "_s2"}[1] }} {{ ${"sem_m" . $i . "_s3"}[1] }}</span>
+
+                                                                    </li>
+                                                                    <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                </span>
+
+                                                            </ul>
+                                                        @else
+                                                            <ul class="matchup">
+
+                                                                <span class="custooltip">
+                                                                    <li class="team team-top">
+                                                                        {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                        <span class="score">N/A</span>
+
+                                                                    </li>
+                                                                    <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                                </span>
+
+                                                                <span class="custooltip">
+                                                                    <li class="team team-bottom">
+                                                                        {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                        <span class="score">N/A</span>
+
+                                                                    </li>
+                                                                    <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                                </span>
+
+                                                            </ul>
+                                                        @endif
+                                                    @endif
+
+
+                                                @else
+                                                    <ul class="matchup">
+
+                                                        <span class="custooltip">
+                                                            <li class="team team-top">
+                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[0], 100) }}
+
+                                                                <span class="score">N/A</span>
+
+                                                            </li>
+                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[0] }}</span>
+                                                        </span>
+
+                                                        <span class="custooltip">
+                                                            <li class="team team-bottom">
+                                                                {{ \Illuminate\Support\Str::limit(${"sem_mat_" . $i}[1], 100) }}
+
+                                                                <span class="score">N/A</span>
+
+                                                            </li>
+                                                            <span class="custooltiptext">{{ ${"sem_mat_" . $i}[1] }}</span>
+                                                        </span>
+                                                    </ul>
+                                                @endif
+                                            @else
+                                                <ul class="matchup">
+
+                                                    <li class="team team-top">n/a<span class="score">N/A</span></li>
+                                                    <li class="team team-bottom">n/a<span class="score">N/A</span></li>
+                                                </ul>
+                                            @endif
+                                        @endfor
+
+                                    </div>
+
+                                @else
+                                    <div class="round round-two">
+                                        <div class="round-details">semifinal<br/><span class="date">@if($t_d_semf) {{ $strt_sem[0] }} - {{ $endd_sem[0] }} @else N/A @endif</span></div>
+
+                                        @for($i = 2; $i < 3; $i++)
+                                            <ul class="matchup">
+                                                
+                                                <li class="team team-top"><span class="score"></span></li>
+                                                <li class="team team-bottom"><span class="score"></span></li>
+                                            </ul>
+                                        @endfor
+
+                                    </div>
+                                @endif
+                            @endif
+
+
+                            @if($round_one_auto_selection)
+
+                                <div class="round round-one @if($round_one_auto_selection) current @elseif($round_one_matches) current @endif">
+                                    <div class="round-details">Round 1<br/><span class="date">@if($t_d_rou1) {{ $strt_r1[0] }} - {{ $endd_r1[0] }} @else N/A @endif</span></div>
+                                    
+                                    @for($i = 3; $i < 5; $i++)
+                                        @if (array_key_exists('match_'.$i, $round_one_auto_selection))
+                                            
+                                            <ul class="matchup">
+
+                                                <span class="custooltipleft">
+                                                    <li
+                                                        class="team team-top winnerclractive">
+                                                        {{ \Illuminate\Support\Str::limit($rou_1_mat_auto['match_'.$i], 100) }}
+
+                                                        <span
+                                                            class="score winnerclractive">N/A</span>
+
+                                                    </li>
+                                                    <span class="custooltiplefttext">{{ $rou_1_mat_auto['match_'.$i] }}</span>
+                                                </span>
+
+                                                <span class="custooltipleft">
+                                                    <li
+                                                        class="team team-bottom">
+                                                        N/A
+
+                                                        <span
+                                                            class="score">N/A</span>
+
+                                                    </li>
+                                                    <span class="custooltiplefttext">N/A</span>
+                                                </span>
+
+                                            </ul>
+                                            
+                                        @else
+
+                                            @if($tournament->round_one_matches)
+                                                                                                   
+                                                @if (array_key_exists('match_'.$i, $round_one_matches))
+                                                    
+                                                    <?php 
+                                                        $get_matches = $round_one_matches['match_'.$i];
+                                                        $vs_match = explode(" VS ", $get_matches);
+                                                    ?>
+
+                                                    @if ($tournament->round_one_results)
+                                                        
+                                                        @if($round_one_status)
+                                                            @if (array_key_exists('match_'.$i, $round_one_status))
+                                                                @if($round_one_status['match_'.$i])
+                                                                    <?php
+                                                                        if (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 0;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[1] > ${"rou1_m" . $i . "_s1"}[0] && ${"rou1_m" . $i . "_s2"}[1] > ${"rou1_m" . $i . "_s2"}[0]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 0;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                        }
+                                                                    ?>
+
+
+                                                                    <ul class="matchup">
+
+                                                                        <span class="custooltipleft">
+                                                                            <li
+                                                                                class="team team-top @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                                @if (${"rou1_m" . $i . "_p1_total"} < ${"rou1_m" . $i . "_p2_total"})
+                                                                                    @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                        @if($round_one_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                                @if($round_one_retires['match_'.$i] == $vs_match[0])
+                                                                                                    
+                                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                        <span
+                                                                                            class="score">{{ ${"rou1_m" . $i . "_s1"}[0] }}
+                                                                                            {{ ${"rou1_m" . $i . "_s2"}[0] }} {{ ${"rou1_m" . $i . "_s3"}[0] }}</span>
+                                                                                    @elseif($round_one_status['match_'.$i] == 'Withdraw')
+                                                                                        <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(W)</span>
+                                                                                        <span
+                                                                                            class="score">&#8212;</span>
+                                                                                    @elseif($round_one_status['match_'.$i] == 'Decided by Organisers')
+                                                                                        <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(D)</span>
+                                                                                        <span
+                                                                                            class="score">&#8212;</span>
+                                                                                    @endif
+
+                                                                                @else
+                                                                                    @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                        @if($round_one_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                                @if($round_one_retires['match_'.$i] == $vs_match[0])
+                                                                                                    
+                                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                        <span
+                                                                                        class="score winnerclractive">{{ ${"rou1_m" . $i . "_s1"}[0] }}
+                                                                                        {{ ${"rou1_m" . $i . "_s2"}[0] }} {{ ${"rou1_m" . $i . "_s3"}[0] }}</span>
+                                                                                    @elseif($round_one_status['match_'.$i] == 'Withdraw')
+                                                                                        <span
+                                                                                        class="score winnerclractive">&#8212;</span>
+                                                                                    @elseif($round_one_status['match_'.$i] == 'Decided by Organisers')
+                                                                                        <span
+                                                                                        class="score winnerclractive">&#8212;</span>
+                                                                                    @endif
+                                                                                        
+                                                                                @endif
+
+                                                                            </li>
+
+                                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }} 
+
+                                                                                @if($round_one_status)
+                                                                                    @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                        @if($round_one_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                                @if($round_one_retires['match_'.$i] == $vs_match[0])
+                                                                                                    
+                                                                                                    ({{ $round_one_status['match_'.$i] }})
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @else
+                                                                                        @if (${"rou1_m" . $i . "_p1_total"} < ${"rou1_m" . $i . "_p2_total"}) 
+                                                                                            ({{ $round_one_status['match_'.$i] }}) 
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @endif
+
+                                                                            </span>
+
+                                                                        </span>
+
+                                                                        <span class="custooltipleft">
+                                                                            <li
+                                                                                class="team team-bottom @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                                @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"})
+                                                                                    @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                        @if($round_one_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                                @if($round_one_retires['match_'.$i] == $vs_match[1])
+                                                                                                    
+                                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                        <span
+                                                                                            class="score">{{ ${"rou1_m" . $i . "_s1"}[1] }}
+                                                                                            {{ ${"rou1_m" . $i . "_s2"}[1] }} {{ ${"rou1_m" . $i . "_s3"}[1] }}</span>
+                                                                                    @elseif($round_one_status['match_'.$i] == 'Withdraw')
+                                                                                        <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(W)</span>
+                                                                                        <span
+                                                                                            class="score">&#8212;</span>
+                                                                                    @elseif($round_one_status['match_'.$i] == 'Decided by Organisers')
+                                                                                        <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(D)</span>
+                                                                                        <span
+                                                                                            class="score">&#8212;</span>
+                                                                                    @endif
+
+                                                                                @else
+                                                                                    @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                        @if($round_one_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                                @if($round_one_retires['match_'.$i] == $vs_match[1])
+                                                                                                    
+                                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                        <span
+                                                                                        class="score winnerclractive">{{ ${"rou1_m" . $i . "_s1"}[1] }}
+                                                                                        {{ ${"rou1_m" . $i . "_s2"}[1] }} {{ ${"rou1_m" . $i . "_s3"}[1] }}</span>
+                                                                                    @elseif($round_one_status['match_'.$i] == 'Withdraw')
+                                                                                        <span
+                                                                                        class="score winnerclractive">&#8212;</span>
+                                                                                    @elseif($round_one_status['match_'.$i] == 'Decided by Organisers')
+                                                                                        <span
+                                                                                        class="score winnerclractive">&#8212;</span>
+                                                                                    @endif
+                                                                                @endif
+
+                                                                            </li>
+
+                                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }} 
+
+                                                                                @if($round_one_status)
+                                                                                    @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                        @if($round_one_retires)
+                                                                                            @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                                @if($round_one_retires['match_'.$i] == $vs_match[1])
+                                                                                                    
+                                                                                                    ({{ $round_one_status['match_'.$i] }})
+
+                                                                                                @endif
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @else
+                                                                                        @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) 
+                                                                                            ({{ $round_one_status['match_'.$i] }}) 
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @endif
+
+                                                                            </span>
+
+                                                                        </span>
+
+                                                                    </ul>
+
+                                                                @else
+                                                                    @if (array_key_exists('match_'.$i, $round_one_results))
+                                                                        <?php
+                                                                            if (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1]) {
+
+                                                                                ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                                ${"rou1_m" . $i . "_p2_total"} = 0;
+
+                                                                            } elseif (${"rou1_m" . $i . "_s1"}[1] > ${"rou1_m" . $i . "_s1"}[0] && ${"rou1_m" . $i . "_s2"}[1] > ${"rou1_m" . $i . "_s2"}[0]) {
+
+                                                                                ${"rou1_m" . $i . "_p1_total"} = 0;
+                                                                                ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                            } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                                ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                                ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                            } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                                ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                                ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                            } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                                ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                                ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                            } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                                ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                                ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                            }
+                                                                        ?>
+                                                                        
+
+                                                                        <ul class="matchup">
+
+                                                                            <span class="custooltipleft">
+                                                                                <li
+                                                                                    class="team team-top @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                                    {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                                    <span
+                                                                                        class="score @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[0] }}
+                                                                                        {{ ${"rou1_m" . $i . "_s2"}[0] }} {{ ${"rou1_m" . $i . "_s3"}[0] }}</span>
+
+                                                                                </li>
+                                                                                <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                            </span>
+
+                                                                            <span class="custooltipleft">
+                                                                                <li
+                                                                                    class="team team-bottom @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                                    {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                                    <span
+                                                                                        class="score @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[1] }}
+                                                                                        {{ ${"rou1_m" . $i . "_s2"}[1] }} {{ ${"rou1_m" . $i . "_s3"}[1] }}</span>
+
+                                                                                </li>
+                                                                                <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                            </span>
+
+                                                                        </ul>
+                                                                    @else
+                                                                        <ul class="matchup">
+
+                                                                            <span class="custooltipleft">
+                                                                                <li class="team team-top">
+                                                                                    {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                                    <span class="score">N/A</span>
+
+                                                                                </li>
+                                                                                <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                            </span>
+
+                                                                            <span class="custooltipleft">
+                                                                                <li class="team team-bottom">
+                                                                                    {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                                    <span class="score">N/A</span>
+
+                                                                                </li>
+                                                                                <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                            </span>
+
+                                                                        </ul>
+                                                                    @endif
+                                                                @endif
+
+
+                                                            @else
+                                                                @if (array_key_exists('match_'.$i, $round_one_results))
+                                                                    <?php
+                                                                        if (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 0;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[1] > ${"rou1_m" . $i . "_s1"}[0] && ${"rou1_m" . $i . "_s2"}[1] > ${"rou1_m" . $i . "_s2"}[0]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 0;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                        }
+                                                                    ?>
+                                                                    
+
+                                                                    <ul class="matchup">
+
+                                                                        <span class="custooltipleft">
+                                                                            <li
+                                                                                class="team team-top @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                                <span
+                                                                                    class="score @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[0] }}
+                                                                                    {{ ${"rou1_m" . $i . "_s2"}[0] }} {{ ${"rou1_m" . $i . "_s3"}[0] }}</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                        </span>
+
+                                                                        <span class="custooltipleft">
+                                                                            <li
+                                                                                class="team team-bottom @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                                <span
+                                                                                    class="score @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[1] }}
+                                                                                    {{ ${"rou1_m" . $i . "_s2"}[1] }} {{ ${"rou1_m" . $i . "_s3"}[1] }}</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                        </span>
+
+                                                                    </ul>
+                                                                @else
+                                                                    <ul class="matchup">
+
+                                                                        <span class="custooltipleft">
+                                                                            <li class="team team-top">
+                                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                                <span class="score">N/A</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                        </span>
+
+                                                                        <span class="custooltipleft">
+                                                                            <li class="team team-bottom">
+                                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                                <span class="score">N/A</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                        </span>
+
+                                                                    </ul>
+                                                                @endif
+                                                            @endif
+
+                                                        @else
+                                                            @if (array_key_exists('match_'.$i, $round_one_results))
+                                                                <?php
+                                                                    if (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 0;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[1] > ${"rou1_m" . $i . "_s1"}[0] && ${"rou1_m" . $i . "_s2"}[1] > ${"rou1_m" . $i . "_s2"}[0]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 0;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                    }
+                                                                ?>
+                                                                
+
+                                                                <ul class="matchup">
+
+                                                                    <span class="custooltipleft">
+                                                                        <li
+                                                                            class="team team-top @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                            <span
+                                                                                class="score @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[0] }}
+                                                                                {{ ${"rou1_m" . $i . "_s2"}[0] }} {{ ${"rou1_m" . $i . "_s3"}[0] }}</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                    </span>
+
+                                                                    <span class="custooltipleft">
+                                                                        <li
+                                                                            class="team team-bottom @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                            <span
+                                                                                class="score @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[1] }}
+                                                                                {{ ${"rou1_m" . $i . "_s2"}[1] }} {{ ${"rou1_m" . $i . "_s3"}[1] }}</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                    </span>
+
+                                                                </ul>
+                                                                
+                                                            @else
+                                                                <ul class="matchup">
+
+                                                                    <span class="custooltipleft">
+                                                                        <li class="team team-top">
+                                                                            {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                            <span class="score">N/A</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                    </span>
+
+                                                                    <span class="custooltipleft">
+                                                                        <li class="team team-bottom">
+                                                                            {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                            <span class="score">N/A</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                    </span>
+
+                                                                </ul>
+                                                            @endif
+                                                        @endif
+
+                                                    @else
+                                                        <ul class="matchup">
+
+                                                            <span class="custooltipleft">
+                                                                <li class="team team-top">
+                                                                    {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                    <span class="score">N/A</span>
+
+                                                                </li>
+                                                                <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                            </span>
+
+                                                            <span class="custooltipleft">
+                                                                <li class="team team-bottom">
+                                                                    {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                    <span class="score">N/A</span>
+
+                                                                </li>
+                                                                <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                            </span>
+                                                        </ul>
+                                                    @endif
+
+                                                @else
+                                                    <ul class="matchup">
+
+                                                        <li class="team team-top">n/a<span class="score">N/A</span></li>
+                                                        <li class="team team-bottom">n/a<span class="score">N/A</span></li>
+                                                    </ul>
+                                                @endif
+                                                
+                                            @else
+                                                
+                                                <ul class="matchup">
+                                                    
+                                                    <li class="team team-top"><span class="score"></span></li>
+                                                    <li class="team team-bottom"><span class="score"></span></li>
+                                                </ul>
+                                                
+                                            @endif
+
+                                        @endif
+
+                                    @endfor
+
+                                </div>                                
+                            @else
+                                @if($tournament->round_one_matches)
+                                    
+                                    <div class="round round-one current">
+                                        <div class="round-details">Round 1<br/><span class="date">{{ $strt_r1[0] }} - {{ $endd_r1[0] }}</span>
+                                        </div>
+                                        
+                                        @for($i = 3; $i < 5; $i++)
+                                            @if (array_key_exists('match_'.$i, $round_one_matches))
+                                                    
+                                                <?php 
+                                                    $get_matches = $round_one_matches['match_'.$i];
+                                                    $vs_match = explode(" VS ", $get_matches);
+                                                ?>
+
+                                                @if ($tournament->round_one_results)
+                                                    
+                                                    @if($round_one_status)
+                                                        @if (array_key_exists('match_'.$i, $round_one_status))
+                                                            @if($round_one_status['match_'.$i])
+                                                                <?php
+                                                                    if (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 0;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[1] > ${"rou1_m" . $i . "_s1"}[0] && ${"rou1_m" . $i . "_s2"}[1] > ${"rou1_m" . $i . "_s2"}[0]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 0;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                    }
+                                                                ?>
+
+
+                                                                <ul class="matchup">
+
+                                                                    <span class="custooltipleft">
+                                                                        <li
+                                                                            class="team team-top @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                            @if (${"rou1_m" . $i . "_p1_total"} < ${"rou1_m" . $i . "_p2_total"})
+                                                                                @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                    @if($round_one_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                            @if($round_one_retires['match_'.$i] == $vs_match[0])
+                                                                                                
+                                                                                                <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                    <span
+                                                                                        class="score">{{ ${"rou1_m" . $i . "_s1"}[0] }}
+                                                                                        {{ ${"rou1_m" . $i . "_s2"}[0] }} {{ ${"rou1_m" . $i . "_s3"}[0] }}</span>
+                                                                                @elseif($round_one_status['match_'.$i] == 'Withdraw')
+                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(W)</span>
+                                                                                    <span
+                                                                                        class="score">&#8212;</span>
+                                                                                @elseif($round_one_status['match_'.$i] == 'Decided by Organisers')
+                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(D)</span>
+                                                                                    <span
+                                                                                        class="score">&#8212;</span>
+                                                                                @endif
+
+                                                                            @else
+                                                                                @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                    @if($round_one_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                            @if($round_one_retires['match_'.$i] == $vs_match[0])
+                                                                                                
+                                                                                                <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                    <span
+                                                                                    class="score winnerclractive">{{ ${"rou1_m" . $i . "_s1"}[0] }}
+                                                                                    {{ ${"rou1_m" . $i . "_s2"}[0] }} {{ ${"rou1_m" . $i . "_s3"}[0] }}</span>
+                                                                                @elseif($round_one_status['match_'.$i] == 'Withdraw')
+                                                                                    <span
+                                                                                    class="score winnerclractive">&#8212;</span>
+                                                                                @elseif($round_one_status['match_'.$i] == 'Decided by Organisers')
+                                                                                    <span
+                                                                                    class="score winnerclractive">&#8212;</span>
+                                                                                @endif
+                                                                                    
+                                                                            @endif
+
+                                                                        </li>
+
+                                                                        <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }} 
+
+                                                                            @if($round_one_status)
+                                                                                @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                    @if($round_one_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                            @if($round_one_retires['match_'.$i] == $vs_match[0])
+                                                                                                
+                                                                                                ({{ $round_one_status['match_'.$i] }})
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @else
+                                                                                    @if (${"rou1_m" . $i . "_p1_total"} < ${"rou1_m" . $i . "_p2_total"}) 
+                                                                                        ({{ $round_one_status['match_'.$i] }}) 
+                                                                                    @endif
+                                                                                @endif
+                                                                            @endif
+
+                                                                        </span>
+
+                                                                    </span>
+
+                                                                    <span class="custooltipleft">
+                                                                        <li
+                                                                            class="team team-bottom @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                            @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"})
+                                                                                @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                    @if($round_one_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                            @if($round_one_retires['match_'.$i] == $vs_match[1])
+                                                                                                
+                                                                                                <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                    <span
+                                                                                        class="score">{{ ${"rou1_m" . $i . "_s1"}[1] }}
+                                                                                        {{ ${"rou1_m" . $i . "_s2"}[1] }} {{ ${"rou1_m" . $i . "_s3"}[1] }}</span>
+                                                                                @elseif($round_one_status['match_'.$i] == 'Withdraw')
+                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(W)</span>
+                                                                                    <span
+                                                                                        class="score">&#8212;</span>
+                                                                                @elseif($round_one_status['match_'.$i] == 'Decided by Organisers')
+                                                                                    <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(D)</span>
+                                                                                    <span
+                                                                                        class="score">&#8212;</span>
+                                                                                @endif
+
+                                                                            @else
+                                                                                @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                    @if($round_one_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                            @if($round_one_retires['match_'.$i] == $vs_match[1])
+                                                                                                
+                                                                                                <span class="text-danger text-center" style="font-size: 8px;font-weight: 500;">(R)</span>
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                    <span
+                                                                                    class="score winnerclractive">{{ ${"rou1_m" . $i . "_s1"}[1] }}
+                                                                                    {{ ${"rou1_m" . $i . "_s2"}[1] }} {{ ${"rou1_m" . $i . "_s3"}[1] }}</span>
+                                                                                @elseif($round_one_status['match_'.$i] == 'Withdraw')
+                                                                                    <span
+                                                                                    class="score winnerclractive">&#8212;</span>
+                                                                                @elseif($round_one_status['match_'.$i] == 'Decided by Organisers')
+                                                                                    <span
+                                                                                    class="score winnerclractive">&#8212;</span>
+                                                                                @endif
+                                                                            @endif
+
+                                                                        </li>
+
+                                                                        <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }} 
+
+                                                                            @if($round_one_status)
+                                                                                @if($round_one_status['match_'.$i] == 'Retired')
+                                                                                    @if($round_one_retires)
+                                                                                        @if (array_key_exists('match_'.$i, $round_one_retires))
+                                                                                            @if($round_one_retires['match_'.$i] == $vs_match[1])
+                                                                                                
+                                                                                                ({{ $round_one_status['match_'.$i] }})
+
+                                                                                            @endif
+                                                                                        @endif
+                                                                                    @endif
+                                                                                @else
+                                                                                    @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) 
+                                                                                        ({{ $round_one_status['match_'.$i] }}) 
+                                                                                    @endif
+                                                                                @endif
+                                                                            @endif
+
+                                                                        </span>
+
+                                                                    </span>
+
+                                                                </ul>
+
+                                                            @else
+                                                                @if (array_key_exists('match_'.$i, $round_one_results))
+                                                                    <?php
+                                                                        if (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 0;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[1] > ${"rou1_m" . $i . "_s1"}[0] && ${"rou1_m" . $i . "_s2"}[1] > ${"rou1_m" . $i . "_s2"}[0]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 0;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                        } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                            ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                            ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                        }
+                                                                    ?>
+                                                                    
+
+                                                                    <ul class="matchup">
+
+                                                                        <span class="custooltipleft">
+                                                                            <li
+                                                                                class="team team-top @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                                <span
+                                                                                    class="score @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[0] }}
+                                                                                    {{ ${"rou1_m" . $i . "_s2"}[0] }} {{ ${"rou1_m" . $i . "_s3"}[0] }}</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                        </span>
+
+                                                                        <span class="custooltipleft">
+                                                                            <li
+                                                                                class="team team-bottom @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                                <span
+                                                                                    class="score @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[1] }}
+                                                                                    {{ ${"rou1_m" . $i . "_s2"}[1] }} {{ ${"rou1_m" . $i . "_s3"}[1] }}</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                        </span>
+
+                                                                    </ul>
+                                                                @else
+                                                                    <ul class="matchup">
+
+                                                                        <span class="custooltipleft">
+                                                                            <li class="team team-top">
+                                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                                <span class="score">N/A</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                        </span>
+
+                                                                        <span class="custooltipleft">
+                                                                            <li class="team team-bottom">
+                                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                                <span class="score">N/A</span>
+
+                                                                            </li>
+                                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                        </span>
+
+                                                                    </ul>
+                                                                @endif
+                                                            @endif
+
+
+                                                        @else
+                                                            @if (array_key_exists('match_'.$i, $round_one_results))
+                                                                <?php
+                                                                    if (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 0;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[1] > ${"rou1_m" . $i . "_s1"}[0] && ${"rou1_m" . $i . "_s2"}[1] > ${"rou1_m" . $i . "_s2"}[0]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 0;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                    } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                        ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                        ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                    }
+                                                                ?>
+                                                                
+
+                                                                <ul class="matchup">
+
+                                                                    <span class="custooltipleft">
+                                                                        <li
+                                                                            class="team team-top @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                            <span
+                                                                                class="score @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[0] }}
+                                                                                {{ ${"rou1_m" . $i . "_s2"}[0] }} {{ ${"rou1_m" . $i . "_s3"}[0] }}</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                    </span>
+
+                                                                    <span class="custooltipleft">
+                                                                        <li
+                                                                            class="team team-bottom @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                            {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                            <span
+                                                                                class="score @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[1] }}
+                                                                                {{ ${"rou1_m" . $i . "_s2"}[1] }} {{ ${"rou1_m" . $i . "_s3"}[1] }}</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                    </span>
+
+                                                                </ul>
+                                                            @else
+                                                                <ul class="matchup">
+
+                                                                    <span class="custooltipleft">
+                                                                        <li class="team team-top">
+                                                                            {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                            <span class="score">N/A</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                    </span>
+
+                                                                    <span class="custooltipleft">
+                                                                        <li class="team team-bottom">
+                                                                            {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                            <span class="score">N/A</span>
+
+                                                                        </li>
+                                                                        <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                    </span>
+
+                                                                </ul>
+                                                            @endif
+                                                        @endif
+
+                                                    @else
+                                                        @if (array_key_exists('match_'.$i, $round_one_results))
+                                                            <?php
+                                                                if (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1]) {
+
+                                                                    ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                    ${"rou1_m" . $i . "_p2_total"} = 0;
+
+                                                                } elseif (${"rou1_m" . $i . "_s1"}[1] > ${"rou1_m" . $i . "_s1"}[0] && ${"rou1_m" . $i . "_s2"}[1] > ${"rou1_m" . $i . "_s2"}[0]) {
+
+                                                                    ${"rou1_m" . $i . "_p1_total"} = 0;
+                                                                    ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                    ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                    ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                    ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                    ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                } elseif (${"rou1_m" . $i . "_s1"}[0] < ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] > ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] > ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                    ${"rou1_m" . $i . "_p1_total"} = 2;
+                                                                    ${"rou1_m" . $i . "_p2_total"} = 1;
+
+                                                                } elseif (${"rou1_m" . $i . "_s1"}[0] > ${"rou1_m" . $i . "_s1"}[1] && ${"rou1_m" . $i . "_s2"}[0] < ${"rou1_m" . $i . "_s2"}[1] && ${"rou1_m" . $i . "_s3"}[0] < ${"rou1_m" . $i . "_s3"}[1]) {
+
+                                                                    ${"rou1_m" . $i . "_p1_total"} = 1;
+                                                                    ${"rou1_m" . $i . "_p2_total"} = 2;
+
+                                                                }
+                                                            ?>
+                                                            
+
+                                                            <ul class="matchup">
+
+                                                                <span class="custooltipleft">
+                                                                    <li
+                                                                        class="team team-top @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">
+                                                                        {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                        <span
+                                                                            class="score @if (${"rou1_m" . $i . "_p1_total"} > ${"rou1_m" . $i . "_p2_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[0] }}
+                                                                            {{ ${"rou1_m" . $i . "_s2"}[0] }} {{ ${"rou1_m" . $i . "_s3"}[0] }}</span>
+
+                                                                    </li>
+                                                                    <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                </span>
+
+                                                                <span class="custooltipleft">
+                                                                    <li
+                                                                        class="team team-bottom @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">
+                                                                        {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                        <span
+                                                                            class="score @if (${"rou1_m" . $i . "_p2_total"} > ${"rou1_m" . $i . "_p1_total"}) winnerclractive @endif">{{ ${"rou1_m" . $i . "_s1"}[1] }}
+                                                                            {{ ${"rou1_m" . $i . "_s2"}[1] }} {{ ${"rou1_m" . $i . "_s3"}[1] }}</span>
+
+                                                                    </li>
+                                                                    <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                </span>
+
+                                                            </ul>
+                                                        @else
+                                                            <ul class="matchup">
+
+                                                                <span class="custooltipleft">
+                                                                    <li class="team team-top">
+                                                                        {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                        <span class="score">N/A</span>
+
+                                                                    </li>
+                                                                    <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                                </span>
+
+                                                                <span class="custooltipleft">
+                                                                    <li class="team team-bottom">
+                                                                        {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                        <span class="score">N/A</span>
+
+                                                                    </li>
+                                                                    <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                                </span>
+
+                                                            </ul>
+                                                        @endif
+                                                    @endif
+
+                                                @else
+                                                    <ul class="matchup">
+
+                                                        <span class="custooltipleft">
+                                                            <li class="team team-top">
+                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[0], 100) }}
+
+                                                                <span class="score">N/A</span>
+
+                                                            </li>
+                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[0] }}</span>
+                                                        </span>
+
+                                                        <span class="custooltipleft">
+                                                            <li class="team team-bottom">
+                                                                {{ \Illuminate\Support\Str::limit(${"rou_1_mat_" . $i}[1], 100) }}
+
+                                                                <span class="score">N/A</span>
+
+                                                            </li>
+                                                            <span class="custooltiplefttext">{{ ${"rou_1_mat_" . $i}[1] }}</span>
+                                                        </span>
+                                                    </ul>
+                                                @endif
+
+                                            @else
+                                                <ul class="matchup">
+
+                                                    <li class="team team-top">n/a<span class="score">N/A</span></li>
+                                                    <li class="team team-bottom">n/a<span class="score">N/A</span></li>
+                                                </ul>
+                                            @endif
+                                        @endfor
+
+                                    </div>
+
+                                @else
+                                    <div class="round round-one">
+                                        <div class="round-details">Round 1<br/><span class="date">@if($t_d_rou1) {{ $strt_r1[0] }} - {{ $endd_r1[0] }} @else N/A @endif</span></div>
+
+                                        @for($i = 3; $i < 5; $i++)
+                                            <ul class="matchup">
+                                                
+                                                <li class="team team-top"><span class="score"></span></li>
+                                                <li class="team team-bottom"><span class="score"></span></li>
+                                            </ul>
+                                        @endfor
+
+                                    </div>
+                                @endif
+                            @endif
+
+                        </div>
+                    </div>
+                </section>
+            @endif
+
+        </div>
+    </div>
+
+@endsection
+
+
+@section('styles')
+    <style type="text/css">
+        .select2-container--default .select2-results>.select2-results__options{
+            max-height: 550px !important;
+        }
+    </style>
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Holtwood+One+SC' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script|Herr+Von+Muellerhoff' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Istok+Web|Roboto+Condensed:700' rel='stylesheet' type='text/css'>
+
+    <style type="text/css">
+        .winnerclractive {
+            color : #D07030 !important;
+        }
+
+        .hero {
+          font-family: "Istok Web", sans-serif;
+          background: url("http://picjumbo.com/wp-content/uploads/HNCK2189-1300x866.jpg")
+            no-repeat #000;
+          background-size: cover;
+          min-height: 100%;
+          margin: 0;
+
+          position: relative;
+          text-align: center;
+          overflow: hidden;
+          color: #fcfcfc;
+        }
+        .hero h1 {
+          font-family: "Holtwood One SC", serif;
+          font-weight: normal;
+          font-size: 5.4em;
+          margin-top: 40px !important;
+          color: #fff;
+          margin: 0 0 20px;
+          text-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+          text-transform: uppercase;
+          letter-spacing: -1px;
+        }
+        .hero p {
+          font-family: "Abel", sans-serif;
+          text-transform: uppercase;
+          color: #5cca87;
+          letter-spacing: 6px;
+          text-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+          font-size: 1.2em;
+        }
+        .hero-wrap {
+          padding: 3.5em 10px;
+        }
+        .hero p.intro {
+          font-family: "Holtwood One SC", serif;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          font-size: 3em;
+          margin-bottom: -40px;
+        }
+        .hero p.year {
+          color: #fff;
+          letter-spacing: 20px;
+          font-size: 34px;
+          margin: -25px 0 25px;
+        }
+        .hero p.year i {
+          font-size: 14px;
+          vertical-align: middle;
+        }
+        #bracket {
+          overflow: hidden;
+          background-color: #e1e1e1;
+          background-color: rgba(225, 225, 225, 0.9);
+          padding-top: 20px;
+          font-size: 12px;
+          padding: 40px 0;
+        }
+        .container {
+          max-width: 1100px;
+          margin: 0 auto;
+          display: block;
+          display: -webkit-box !important;
+          display: -moz-box !important;
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display: -webkit-flex;
+          display: flex;
+          -webkit-flex-direction: row;
+          flex-direction: row;
+        }
+        .split {
+          display: block;
+          float: left;
+          display: -webkit-box;
+          display: -moz-box;
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display: flex;
+          width: 55%;
+          -webkit-flex-direction: row;
+          -moz-flex-direction: row;
+          flex-direction: row;
+        }
+        .champion {
+          float: left;
+          display: block;
+          width: 30%;
+          -webkit-flex-direction: row;
+          flex-direction: row;
+          -webkit-align-self: center;
+          align-self: center;
+          margin-top: -1px;
+          text-align: center;
+          padding: 230px 0\9;
+        }
+        .champion i {
+          color: #a0a6a8;
+          font-size: 45px;
+          padding: 10px 0;
+        }
+        .round {
+          display: block;
+          float: left;
+          display: -webkit-box;
+          display: -moz-box;
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display: flex;
+          -webkit-flex-direction: column;
+          flex-direction: column;
+          width: 95%;
+          width: 30.8333%\9;
+        }
+        .split-two {
+        }
+        .split-one .round {
+          margin: 0 2.5% 0 0;
+        }
+        .split-two .round {
+          margin: 0 0 0 2.5%;
+        }
+        .matchup {
+          margin: 0;
+          width: 100%;
+          padding: 10px 0;
+          -webkit-transition: all 0.2s;
+          transition: all 0.2s;
+        }
+        .score {
+          font-size: 11px;
+          text-transform: uppercase;
+          float: right;
+          color: #2c7399;
+          font-weight: bold;
+          font-family: "Roboto Condensed", sans-serif;
+          position: absolute;
+          right: 5px;
+        }
+        .team {
+          padding: 0 5px;
+          margin: 3px 0;
+          height: 25px;
+          line-height: 25px;
+          white-space: nowrap;
+          overflow: hidden;
+          position: relative;
+        }
+        .round-two .matchup {
+          margin: 0;
+          padding: 50px 0;
+        }
+        .round-three .matchup {
+          margin: 0;
+          padding: 130px 0;
+        }
+        .round-details {
+          font-family: "Roboto Condensed", sans-serif;
+          font-size: 13px;
+          color: #2c7399;
+          text-transform: uppercase;
+          text-align: center;
+          height: 40px;
+        }
+        .champion li,
+        .round li {
+          background-color: #fff;
+          box-shadow: none;
+          opacity: 0.45;
+        }
+        .current li {
+          opacity: 1;
+        }
+        .current li.team {
+          background-color: #fff;
+          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+          opacity: 1;
+        }
+        .vote-options {
+          display: block;
+          height: 52px;
+        }
+        .share .container {
+          margin: 0 auto;
+          text-align: center;
+        }
+        .share-icon {
+          font-size: 24px;
+          color: #fff;
+          padding: 25px;
+        }
+        .share-wrap {
+          max-width: 1100px;
+          text-align: center;
+          margin: 60px auto;
+        }
+        .final {
+          margin: 4.5em 0;
+        }
+
+        @-webkit-keyframes pulse {
+          0% {
+            -webkit-transform: scale(1);
+            transform: scale(1);
+          }
+
+          50% {
+            -webkit-transform: scale(1.3);
+            transform: scale(1.3);
+          }
+
+          100% {
+            -webkit-transform: scale(1);
+            transform: scale(1);
+          }
+        }
+
+        @keyframes pulse {
+          0% {
+            -webkit-transform: scale(1);
+            -ms-transform: scale(1);
+            transform: scale(1);
+          }
+
+          50% {
+            -webkit-transform: scale(1.3);
+            -ms-transform: scale(1.3);
+            transform: scale(1.3);
+          }
+
+          100% {
+            -webkit-transform: scale(1);
+            -ms-transform: scale(1);
+            transform: scale(1);
+          }
+        }
+
+        .share-icon {
+          color: #fff;
+          opacity: 0.35;
+        }
+        .share-icon:hover {
+          opacity: 1;
+          -webkit-animation: pulse 0.5s;
+          animation: pulse 0.5s;
+        }
+        .date {
+          font-size: 10px;
+          letter-spacing: 2px;
+          font-family: "Istok Web", sans-serif;
+          color: #3f915f;
+        }
+
+        @media screen and (min-width: 981px) and (max-width: 1099px) {
+          .container {
+            margin: 0 1%;
+          }
+          .champion {
+            width: 40%;
+          }
+          .split {
+            width: 120%;
+          }
+          .split-one .vote-box {
+            margin-left: 138px;
+          }
+          .hero p.intro {
+            font-size: 28px;
+          }
+          .hero p.year {
+            margin: 5px 0 10px;
+          }
+        }
+
+        @media screen and (max-width: 980px) {
+          .container {
+            display: -webkit-box !important;
+            display: -moz-box !important;
+            -webkit-flex-direction: column;
+            -moz-flex-direction: column;
+            flex-direction: column;
+          }
+          .split {
+            width: 180%;
+            margin: 35px 5%;
+          }
+          .champion {
+            width: 80%;
+            margin: 20px 1%;
+            position: relative;
+            left: -13%;
+          }
+          .split {
+            border-bottom: 1px solid #b6b6b6;
+            padding-bottom: 20px;
+          }
+          .round {
+            width: 40% !important;
+          }
+          .hero p.intro {
+            font-size: 24px;
+          }
+          .hero h1 {
+            font-size: 3em;
+            margin: 15px 0;
+          }
+          .hero p {
+            font-size: 1em;
+          }
+        }
+
+        @media screen and (max-width: 400px) {
+          .split {
+            width: 150%;
+            margin: 25px 2.5%;
+          }
+          .champion {
+            width: 90%;
+            position: relative;
+            left: 0%;
+          }
+          .round {
+            width: 40%;
+          }
+          .current {
+            -webkit-flex-grow: 1;
+            -moz-flex-grow: 1;
+            flex-grow: 1;
+          }
+          .hero h1 {
+            font-size: 2.15em;
+            letter-spacing: 0;
+            margin: 0;
+          }
+          .hero p.intro {
+            font-size: 1.15em;
+            margin-bottom: -10px;
+          }
+          .round-details {
+            font-size: 90%;
+          }
+          .hero-wrap {
+            padding: 2.5em;
+          }
+          .hero p.year {
+            margin: 5px 0 10px;
+            font-size: 18px;
+          }
+        }
+
+
+        /*.CellWithComment{
+            position:relative;
+        }
+
+        .CellComment{
+            display: none;
+            position: relative; 
+            z-index: 100;
+            padding: .25em .4em;
+            font-size: 87%;
+            font-weight: 500;
+            line-height: 1;
+            color: #fff;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: .25rem;
+            right: 40%;
+            bottom: 0.55px;
+        }
+
+        .CellWithComment:hover span.CellComment {
+            display:inline-block !important;
+        }*/
+
+
+        .TopCellWithComment{
+            position:relative;
+        }
+
+        .TopCellComment{
+            display: none;
+            position: relative; 
+            z-index: 100;
+            padding: .25em 1em;
+            font-size: 87%;
+            font-weight: 500;
+            line-height: 1;
+            color: #fff;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: .25rem;
+            right: 40%;
+            bottom: 0.55px;
+        }
+
+        .TopCellWithComment:hover .TopCellComment {
+            display:inline-block !important;
+        }
+
+
+
+        .custooltip {
+            position: relative;
+            display: block;
+        }
+
+        .custooltip .custooltiptext {
+            visibility: hidden;
+            width: 180px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            padding: 3px 0;
+            border-radius: 4px;
+
+            /* Position the tooltip text - see examples below! */
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 105%;
+        }
+
+        .custooltip:hover .custooltiptext {
+            visibility: visible;
+        }
+
+        .custooltip .custooltiptext::after {
+          content: " ";
+          position: absolute;
+          top: 50%;
+          right: 100%; /* To the left of the tooltip */
+          margin-top: -5px;
+          border-width: 5px;
+          border-style: solid;
+          border-color: transparent black transparent transparent;
+        }
+
+
+        .custooltipleft {
+            position: relative;
+            display: block;
+        }
+
+        .custooltipleft .custooltiplefttext {
+            visibility: hidden;
+            width: 180px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            padding: 3px 0;
+            border-radius: 4px;
+
+            /* Position the tooltip text - see examples below! */
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 105%;
+        }
+
+        .custooltipleft:hover .custooltiplefttext {
+            visibility: visible;
+        }
+
+        .custooltipleft .custooltiplefttext::after {
+            content: " ";
+            position: absolute;
+            top: 50%;
+            right: 100%; /* To the left of the tooltip */
+            margin-top: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent black transparent transparent;
+        }
+
+    </style>
+@endsection
+
+
+
