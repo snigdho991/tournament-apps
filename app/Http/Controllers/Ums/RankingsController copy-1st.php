@@ -68,17 +68,17 @@ class RankingsController extends Controller
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $findOne->{'1st_elite'} = $findOne->{'1st_elite'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $findOne->{'1st_pro'} = $findOne->{'1st_pro'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $findOne->{'1st_adv'} = $findOne->{'1st_adv'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $findOne->{'1st_int'} = $findOne->{'1st_int'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'1st_rookie'} = $findOne->{'1st_rookie'} + $request->{'p1_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $findOne->{'1st_rook'} = $findOne->{'1st_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -88,51 +88,51 @@ class RankingsController extends Controller
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $findOne->{'2nd_elite'} = $findOne->{'2nd_elite'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $findOne->{'2nd_pro'} = $findOne->{'2nd_pro'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $findOne->{'2nd_adv'} = $findOne->{'2nd_adv'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $findOne->{'2nd_int'} = $findOne->{'2nd_int'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'2nd_rookie'} = $findOne->{'2nd_rookie'} + $request->{'p1_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $findOne->{'2nd_rook'} = $findOne->{'2nd_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $findOne->{'3rd_elite'} = $findOne->{'3rd_elite'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $findOne->{'3rd_pro'} = $findOne->{'3rd_pro'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $findOne->{'3rd_adv'} = $findOne->{'3rd_adv'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $findOne->{'3rd_int'} = $findOne->{'3rd_int'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'3rd_rookie'} = $findOne->{'3rd_rookie'} + $request->{'p1_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $findOne->{'3rd_rook'} = $findOne->{'3rd_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $findOne->{'4th_elite'} = $findOne->{'4th_elite'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $findOne->{'4th_pro'} = $findOne->{'4th_pro'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $findOne->{'4th_adv'} = $findOne->{'4th_adv'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $findOne->{'4th_int'} = $findOne->{'4th_int'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'4th_rookie'} = $findOne->{'4th_rookie'} + $request->{'p1_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $findOne->{'4th_rook'} = $findOne->{'4th_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == 'Top16 Finals'){
@@ -154,17 +154,17 @@ class RankingsController extends Controller
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $newRankOne->{'1st_elite'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $newRankOne->{'1st_pro'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $newRankOne->{'1st_adv'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $newRankOne->{'1st_int'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'1st_rookie'} = $request->{'p1_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $newRankOne->{'1st_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -174,51 +174,51 @@ class RankingsController extends Controller
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $newRankOne->{'2nd_elite'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $newRankOne->{'2nd_pro'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $newRankOne->{'2nd_adv'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $newRankOne->{'2nd_int'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'2nd_rookie'} = $request->{'p1_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $newRankOne->{'2nd_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $newRankOne->{'3rd_elite'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $newRankOne->{'3rd_pro'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $newRankOne->{'3rd_adv'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $newRankOne->{'3rd_int'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'3rd_rookie'} = $request->{'p1_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $newRankOne->{'3rd_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $newRankOne->{'4th_elite'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $newRankOne->{'4th_pro'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $newRankOne->{'4th_adv'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $newRankOne->{'4th_int'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'4th_rookie'} = $request->{'p1_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $newRankOne->{'4th_rook'} = $request->{'p1_m'.$i};
                         }
                     }
 
@@ -234,17 +234,17 @@ class RankingsController extends Controller
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $findTwo->{'1st_elite'} = $findTwo->{'1st_elite'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $findTwo->{'1st_pro'} = $findTwo->{'1st_pro'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $findTwo->{'1st_adv'} = $findTwo->{'1st_adv'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $findTwo->{'1st_int'} = $findTwo->{'1st_int'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'1st_rookie'} = $findTwo->{'1st_rookie'} + $request->{'p2_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $findTwo->{'1st_rook'} = $findTwo->{'1st_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -254,51 +254,51 @@ class RankingsController extends Controller
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $findTwo->{'2nd_elite'} = $findTwo->{'2nd_elite'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $findTwo->{'2nd_pro'} = $findTwo->{'2nd_pro'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $findTwo->{'2nd_adv'} = $findTwo->{'2nd_adv'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $findTwo->{'2nd_int'} = $findTwo->{'2nd_int'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'2nd_rookie'} = $findTwo->{'2nd_rookie'} + $request->{'p2_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $findTwo->{'2nd_rook'} = $findTwo->{'2nd_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $findTwo->{'3rd_elite'} = $findTwo->{'3rd_elite'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $findTwo->{'3rd_pro'} = $findTwo->{'3rd_pro'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $findTwo->{'3rd_adv'} = $findTwo->{'3rd_adv'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $findTwo->{'3rd_int'} = $findTwo->{'3rd_int'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'3rd_rookie'} = $findTwo->{'3rd_rookie'} + $request->{'p2_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $findTwo->{'3rd_rook'} = $findTwo->{'3rd_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $findTwo->{'4th_elite'} = $findTwo->{'4th_elite'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $findTwo->{'4th_pro'} = $findTwo->{'4th_pro'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $findTwo->{'4th_adv'} = $findTwo->{'4th_adv'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $findTwo->{'4th_int'} = $findTwo->{'4th_int'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'4th_rookie'} = $findTwo->{'4th_rookie'} + $request->{'p2_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $findTwo->{'4th_rook'} = $findTwo->{'4th_rook'} + $request->{'p2_m'.$i};
                         }
                     }
 
@@ -315,17 +315,17 @@ class RankingsController extends Controller
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $newRankTwo->{'1st_elite'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $newRankTwo->{'1st_pro'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $newRankTwo->{'1st_adv'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $newRankTwo->{'1st_int'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'1st_rookie'} = $request->{'p2_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $newRankTwo->{'1st_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -335,51 +335,51 @@ class RankingsController extends Controller
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $newRankTwo->{'2nd_elite'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $newRankTwo->{'2nd_pro'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $newRankTwo->{'2nd_adv'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $newRankTwo->{'2nd_int'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'2nd_rookie'} = $request->{'p2_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $newRankTwo->{'2nd_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $newRankTwo->{'3rd_elite'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $newRankTwo->{'3rd_pro'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $newRankTwo->{'3rd_adv'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $newRankTwo->{'3rd_int'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'3rd_rookie'} = $request->{'p2_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $newRankTwo->{'3rd_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $newRankTwo->{'4th_elite'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $newRankTwo->{'4th_pro'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $newRankTwo->{'4th_adv'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $newRankTwo->{'4th_int'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'4th_rookie'} = $request->{'p2_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $newRankTwo->{'4th_rook'} = $request->{'p2_m'.$i};
                         }
                     }
 
@@ -458,17 +458,17 @@ class RankingsController extends Controller
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $findOne->{'1st_elite'} = $findOne->{'1st_elite'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $findOne->{'1st_pro'} = $findOne->{'1st_pro'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $findOne->{'1st_adv'} = $findOne->{'1st_adv'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $findOne->{'1st_int'} = $findOne->{'1st_int'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'1st_rookie'} = $findOne->{'1st_rookie'} + $request->{'p1_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $findOne->{'1st_rook'} = $findOne->{'1st_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -478,51 +478,51 @@ class RankingsController extends Controller
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $findOne->{'2nd_elite'} = $findOne->{'2nd_elite'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $findOne->{'2nd_pro'} = $findOne->{'2nd_pro'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $findOne->{'2nd_adv'} = $findOne->{'2nd_adv'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $findOne->{'2nd_int'} = $findOne->{'2nd_int'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'2nd_rookie'} = $findOne->{'2nd_rookie'} + $request->{'p1_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $findOne->{'2nd_rook'} = $findOne->{'2nd_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $findOne->{'3rd_elite'} = $findOne->{'3rd_elite'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $findOne->{'3rd_pro'} = $findOne->{'3rd_pro'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $findOne->{'3rd_adv'} = $findOne->{'3rd_adv'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $findOne->{'3rd_int'} = $findOne->{'3rd_int'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'3rd_rookie'} = $findOne->{'3rd_rookie'} + $request->{'p1_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $findOne->{'3rd_rook'} = $findOne->{'3rd_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $findOne->{'4th_elite'} = $findOne->{'4th_elite'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $findOne->{'4th_pro'} = $findOne->{'4th_pro'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $findOne->{'4th_adv'} = $findOne->{'4th_adv'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $findOne->{'4th_int'} = $findOne->{'4th_int'} + $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'4th_rookie'} = $findOne->{'4th_rookie'} + $request->{'p1_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $findOne->{'4th_rook'} = $findOne->{'4th_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == 'Top16 Finals'){
@@ -544,17 +544,17 @@ class RankingsController extends Controller
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $newRankOne->{'1st_elite'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $newRankOne->{'1st_pro'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $newRankOne->{'1st_adv'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $newRankOne->{'1st_int'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'1st_rookie'} = $request->{'p1_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $newRankOne->{'1st_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -564,51 +564,51 @@ class RankingsController extends Controller
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $newRankOne->{'2nd_elite'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $newRankOne->{'2nd_pro'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $newRankOne->{'2nd_adv'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $newRankOne->{'2nd_int'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'2nd_rookie'} = $request->{'p1_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $newRankOne->{'2nd_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $newRankOne->{'3rd_elite'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $newRankOne->{'3rd_pro'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $newRankOne->{'3rd_adv'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $newRankOne->{'3rd_int'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'3rd_rookie'} = $request->{'p1_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $newRankOne->{'3rd_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $newRankOne->{'4th_elite'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $newRankOne->{'4th_pro'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $newRankOne->{'4th_adv'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $newRankOne->{'4th_int'} = $request->{'p1_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'4th_rookie'} = $request->{'p1_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $newRankOne->{'4th_rook'} = $request->{'p1_m'.$i};
                         }
                     }
 
@@ -624,17 +624,17 @@ class RankingsController extends Controller
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $findTwo->{'1st_elite'} = $findTwo->{'1st_elite'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $findTwo->{'1st_pro'} = $findTwo->{'1st_pro'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $findTwo->{'1st_adv'} = $findTwo->{'1st_adv'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $findTwo->{'1st_int'} = $findTwo->{'1st_int'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'1st_rookie'} = $findTwo->{'1st_rookie'} + $request->{'p2_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $findTwo->{'1st_rook'} = $findTwo->{'1st_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -644,51 +644,51 @@ class RankingsController extends Controller
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $findTwo->{'2nd_elite'} = $findTwo->{'2nd_elite'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $findTwo->{'2nd_pro'} = $findTwo->{'2nd_pro'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $findTwo->{'2nd_adv'} = $findTwo->{'2nd_adv'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $findTwo->{'2nd_int'} = $findTwo->{'2nd_int'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'2nd_rookie'} = $findTwo->{'2nd_rookie'} + $request->{'p2_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $findTwo->{'2nd_rook'} = $findTwo->{'2nd_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $findTwo->{'3rd_elite'} = $findTwo->{'3rd_elite'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $findTwo->{'3rd_pro'} = $findTwo->{'3rd_pro'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $findTwo->{'3rd_adv'} = $findTwo->{'3rd_adv'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $findTwo->{'3rd_int'} = $findTwo->{'3rd_int'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'3rd_rookie'} = $findTwo->{'3rd_rookie'} + $request->{'p2_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $findTwo->{'3rd_rook'} = $findTwo->{'3rd_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $findTwo->{'4th_elite'} = $findTwo->{'4th_elite'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $findTwo->{'4th_pro'} = $findTwo->{'4th_pro'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $findTwo->{'4th_adv'} = $findTwo->{'4th_adv'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $findTwo->{'4th_int'} = $findTwo->{'4th_int'} + $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'4th_rookie'} = $findTwo->{'4th_rookie'} + $request->{'p2_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $findTwo->{'4th_rook'} = $findTwo->{'4th_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     
@@ -705,17 +705,17 @@ class RankingsController extends Controller
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $newRankTwo->{'1st_elite'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $newRankTwo->{'1st_pro'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $newRankTwo->{'1st_adv'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $newRankTwo->{'1st_int'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'1st_rookie'} = $request->{'p2_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $newRankTwo->{'1st_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -725,51 +725,51 @@ class RankingsController extends Controller
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $newRankTwo->{'2nd_elite'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $newRankTwo->{'2nd_pro'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $newRankTwo->{'2nd_adv'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $newRankTwo->{'2nd_int'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'2nd_rookie'} = $request->{'p2_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $newRankTwo->{'2nd_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $newRankTwo->{'3rd_elite'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $newRankTwo->{'3rd_pro'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $newRankTwo->{'3rd_adv'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $newRankTwo->{'3rd_int'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'3rd_rookie'} = $request->{'p2_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $newRankTwo->{'3rd_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
                         if (strpos($tournament->name, "ELITE") !== false) {
                             $newRankTwo->{'4th_elite'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "PRO") !== false) {
+                        if (strpos($tournament->name, "PRO")) {
                             $newRankTwo->{'4th_pro'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ADV") !== false) {
+                        if (strpos($tournament->name, "ADV")) {
                             $newRankTwo->{'4th_adv'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "INT") !== false) {
+                        if (strpos($tournament->name, "INT")) {
                             $newRankTwo->{'4th_int'} = $request->{'p2_m'.$i};
                         }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'4th_rookie'} = $request->{'p2_m'.$i};
+                        if (strpos($tournament->name, "ROOKIE")) {
+                            $newRankTwo->{'4th_rook'} = $request->{'p2_m'.$i};
                         }
                     }
 
@@ -829,341 +829,23 @@ class RankingsController extends Controller
         $pointsArr = [];
         for($i = 1; $i < 9; $i++) {
             if(isset($request->{'p1_m'.$i.'_id'}) && isset($request->{'p2_m'.$i.'_id'}) && isset($request->{'p1_m'.$i}) && isset($request->{'p2_m'.$i})) {
-                $pointsArr['match_'.$i][$request->{'p1_m'.$i.'_id'}] = $request->{'p1_m'.$i};
-                $pointsArr['match_'.$i][$request->{'p2_m'.$i.'_id'}] = $request->{'p2_m'.$i};
+                $pointsArr['match_' . $i][$request->{'p1_m' . $i . '_id'}] = $request->{'p1_m' . $i};
+                $pointsArr['match_' . $i][$request->{'p2_m' . $i . '_id'}] = $request->{'p2_m' . $i};
 
-                
                 $year = date('Y', strtotime($tournament->start));
-                $findOne = Ranking::where(['year' => $year, 'user_id' => $request->{'p1_m'.$i.'_id'}])->first();
-                $findTwo = Ranking::where(['year' => $year, 'user_id' => $request->{'p2_m'.$i.'_id'}])->first();
+
+                $chk_points = json_decode($tournament->round_three_points, true);
                 
-                if($findOne) {
-                    if($tournament->draw_status == '1st Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $findOne->{'1st_league'} = $findOne->{'1st_league'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findOne->{'1st_elite'} = $findOne->{'1st_elite'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findOne->{'1st_pro'} = $findOne->{'1st_pro'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findOne->{'1st_adv'} = $findOne->{'1st_adv'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findOne->{'1st_int'} = $findOne->{'1st_int'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'1st_rookie'} = $findOne->{'1st_rookie'} + $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '2nd Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $findOne->{'2nd_league'} = $findOne->{'2nd_league'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findOne->{'2nd_elite'} = $findOne->{'2nd_elite'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findOne->{'2nd_pro'} = $findOne->{'2nd_pro'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findOne->{'2nd_adv'} = $findOne->{'2nd_adv'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findOne->{'2nd_int'} = $findOne->{'2nd_int'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'2nd_rookie'} = $findOne->{'2nd_rookie'} + $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '3rd Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findOne->{'3rd_elite'} = $findOne->{'3rd_elite'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findOne->{'3rd_pro'} = $findOne->{'3rd_pro'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findOne->{'3rd_adv'} = $findOne->{'3rd_adv'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findOne->{'3rd_int'} = $findOne->{'3rd_int'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'3rd_rookie'} = $findOne->{'3rd_rookie'} + $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '4th Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findOne->{'4th_elite'} = $findOne->{'4th_elite'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findOne->{'4th_pro'} = $findOne->{'4th_pro'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findOne->{'4th_adv'} = $findOne->{'4th_adv'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findOne->{'4th_int'} = $findOne->{'4th_int'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'4th_rookie'} = $findOne->{'4th_rookie'} + $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == 'Top16 Finals'){
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $findOne->{'top16_finals'} = $findOne->{'top16_finals'} + $request->{'p1_m'.$i};
-                        }
-                    }
-
-                    $findOne->save();
-
-                } else {
-                    $newRankOne = new Ranking();
-                    $newRankOne->year = date('Y');
-                    $newRankOne->user_id = $request->{'p1_m'.$i.'_id'};
-                    if($tournament->draw_status == '1st Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $newRankOne->{'1st_league'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankOne->{'1st_elite'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankOne->{'1st_pro'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankOne->{'1st_adv'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankOne->{'1st_int'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'1st_rookie'} = $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '2nd Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $newRankOne->{'2nd_league'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankOne->{'2nd_elite'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankOne->{'2nd_pro'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankOne->{'2nd_adv'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankOne->{'2nd_int'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'2nd_rookie'} = $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '3rd Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankOne->{'3rd_elite'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankOne->{'3rd_pro'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankOne->{'3rd_adv'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankOne->{'3rd_int'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'3rd_rookie'} = $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '4th Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankOne->{'4th_elite'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankOne->{'4th_pro'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankOne->{'4th_adv'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankOne->{'4th_int'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'4th_rookie'} = $request->{'p1_m'.$i};
-                        }
-                    }
-
-                    $newRankOne->save();
-
-                }
+                $points_one = isset($chk_points['match_' . $i][$request->{'p1_m' . $i . '_id'}])
+                    ? $request->{'p1_m' . $i} - $chk_points['match_' . $i][$request->{'p1_m' . $i . '_id'}]
+                    : $request->{'p1_m' . $i};
                 
-                if($findTwo) {
-                    if($tournament->draw_status == '1st Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $findTwo->{'1st_league'} = $findTwo->{'1st_league'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findTwo->{'1st_elite'} = $findTwo->{'1st_elite'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findTwo->{'1st_pro'} = $findTwo->{'1st_pro'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findTwo->{'1st_adv'} = $findTwo->{'1st_adv'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findTwo->{'1st_int'} = $findTwo->{'1st_int'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'1st_rookie'} = $findTwo->{'1st_rookie'} + $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '2nd Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $findTwo->{'2nd_league'} = $findTwo->{'2nd_league'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findTwo->{'2nd_elite'} = $findTwo->{'2nd_elite'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findTwo->{'2nd_pro'} = $findTwo->{'2nd_pro'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findTwo->{'2nd_adv'} = $findTwo->{'2nd_adv'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findTwo->{'2nd_int'} = $findTwo->{'2nd_int'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'2nd_rookie'} = $findTwo->{'2nd_rookie'} + $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '3rd Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findTwo->{'3rd_elite'} = $findTwo->{'3rd_elite'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findTwo->{'3rd_pro'} = $findTwo->{'3rd_pro'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findTwo->{'3rd_adv'} = $findTwo->{'3rd_adv'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findTwo->{'3rd_int'} = $findTwo->{'3rd_int'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'3rd_rookie'} = $findTwo->{'3rd_rookie'} + $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '4th Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findTwo->{'4th_elite'} = $findTwo->{'4th_elite'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findTwo->{'4th_pro'} = $findTwo->{'4th_pro'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findTwo->{'4th_adv'} = $findTwo->{'4th_adv'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findTwo->{'4th_int'} = $findTwo->{'4th_int'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'4th_rookie'} = $findTwo->{'4th_rookie'} + $request->{'p2_m'.$i};
-                        }
-                    }
-                    
-                    $findTwo->save();
-
-                } else {
-                    $newRankTwo = new Ranking();
-                    $newRankTwo->year = date('Y');
-                    $newRankTwo->user_id = $request->{'p2_m'.$i.'_id'};
-                    if($tournament->draw_status == '1st Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $newRankTwo->{'1st_league'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankTwo->{'1st_elite'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankTwo->{'1st_pro'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankTwo->{'1st_adv'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankTwo->{'1st_int'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'1st_rookie'} = $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '2nd Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $newRankTwo->{'2nd_league'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankTwo->{'2nd_elite'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankTwo->{'2nd_pro'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankTwo->{'2nd_adv'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankTwo->{'2nd_int'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'2nd_rookie'} = $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '3rd Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankTwo->{'3rd_elite'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankTwo->{'3rd_pro'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankTwo->{'3rd_adv'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankTwo->{'3rd_int'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'3rd_rookie'} = $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '4th Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankTwo->{'4th_elite'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankTwo->{'4th_pro'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankTwo->{'4th_adv'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankTwo->{'4th_int'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'4th_rookie'} = $request->{'p2_m'.$i};
-                        }
-                    }
-
-                    $newRankTwo->save();
-
-                }
-
+                $points_two = isset($chk_points['match_' . $i][$request->{'p2_m' . $i . '_id'}])
+                    ? $request->{'p2_m' . $i} - $chk_points['match_' . $i][$request->{'p2_m' . $i . '_id'}]
+                    : $request->{'p2_m' . $i};
+                
+                $this->processRanking($year, $request->{'p1_m' . $i . '_id'}, $points_one, $tournament, $request->chk_type);
+                $this->processRanking($year, $request->{'p2_m' . $i . '_id'}, $points_two, $tournament, $request->chk_type);
 
             }
         }
@@ -1192,341 +874,23 @@ class RankingsController extends Controller
         $pointsArr = [];
         for($i = 1; $i < 5; $i++) {
             if(isset($request->{'p1_m'.$i.'_id'}) && isset($request->{'p2_m'.$i.'_id'}) && isset($request->{'p1_m'.$i}) && isset($request->{'p2_m'.$i})) {
-                $pointsArr['match_'.$i][$request->{'p1_m'.$i.'_id'}] = $request->{'p1_m'.$i};
-                $pointsArr['match_'.$i][$request->{'p2_m'.$i.'_id'}] = $request->{'p2_m'.$i};
+                $pointsArr['match_' . $i][$request->{'p1_m' . $i . '_id'}] = $request->{'p1_m' . $i};
+                $pointsArr['match_' . $i][$request->{'p2_m' . $i . '_id'}] = $request->{'p2_m' . $i};
 
-                
                 $year = date('Y', strtotime($tournament->start));
-                $findOne = Ranking::where(['year' => $year, 'user_id' => $request->{'p1_m'.$i.'_id'}])->first();
-                $findTwo = Ranking::where(['year' => $year, 'user_id' => $request->{'p2_m'.$i.'_id'}])->first();
+
+                $chk_points = json_decode($tournament->quarter_final_points, true);
                 
-                if($findOne) {
-                    if($tournament->draw_status == '1st Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $findOne->{'1st_league'} = $findOne->{'1st_league'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findOne->{'1st_elite'} = $findOne->{'1st_elite'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findOne->{'1st_pro'} = $findOne->{'1st_pro'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findOne->{'1st_adv'} = $findOne->{'1st_adv'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findOne->{'1st_int'} = $findOne->{'1st_int'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'1st_rookie'} = $findOne->{'1st_rookie'} + $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '2nd Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $findOne->{'2nd_league'} = $findOne->{'2nd_league'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findOne->{'2nd_elite'} = $findOne->{'2nd_elite'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findOne->{'2nd_pro'} = $findOne->{'2nd_pro'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findOne->{'2nd_adv'} = $findOne->{'2nd_adv'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findOne->{'2nd_int'} = $findOne->{'2nd_int'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'2nd_rookie'} = $findOne->{'2nd_rookie'} + $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '3rd Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findOne->{'3rd_elite'} = $findOne->{'3rd_elite'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findOne->{'3rd_pro'} = $findOne->{'3rd_pro'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findOne->{'3rd_adv'} = $findOne->{'3rd_adv'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findOne->{'3rd_int'} = $findOne->{'3rd_int'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'3rd_rookie'} = $findOne->{'3rd_rookie'} + $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '4th Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findOne->{'4th_elite'} = $findOne->{'4th_elite'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findOne->{'4th_pro'} = $findOne->{'4th_pro'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findOne->{'4th_adv'} = $findOne->{'4th_adv'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findOne->{'4th_int'} = $findOne->{'4th_int'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'4th_rookie'} = $findOne->{'4th_rookie'} + $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == 'Top16 Finals'){
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $findOne->{'top16_finals'} = $findOne->{'top16_finals'} + $request->{'p1_m'.$i};
-                        }
-                    }
-
-                    $findOne->save();
-
-                } else {
-                    $newRankOne = new Ranking();
-                    $newRankOne->year = date('Y');
-                    $newRankOne->user_id = $request->{'p1_m'.$i.'_id'};
-                    if($tournament->draw_status == '1st Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $newRankOne->{'1st_league'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankOne->{'1st_elite'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankOne->{'1st_pro'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankOne->{'1st_adv'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankOne->{'1st_int'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'1st_rookie'} = $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '2nd Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $newRankOne->{'2nd_league'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankOne->{'2nd_elite'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankOne->{'2nd_pro'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankOne->{'2nd_adv'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankOne->{'2nd_int'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'2nd_rookie'} = $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '3rd Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankOne->{'3rd_elite'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankOne->{'3rd_pro'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankOne->{'3rd_adv'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankOne->{'3rd_int'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'3rd_rookie'} = $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '4th Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankOne->{'4th_elite'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankOne->{'4th_pro'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankOne->{'4th_adv'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankOne->{'4th_int'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'4th_rookie'} = $request->{'p1_m'.$i};
-                        }
-                    }
-
-                    $newRankOne->save();
-
-                }
+                $points_one = isset($chk_points['match_' . $i][$request->{'p1_m' . $i . '_id'}])
+                    ? $request->{'p1_m' . $i} - $chk_points['match_' . $i][$request->{'p1_m' . $i . '_id'}]
+                    : $request->{'p1_m' . $i};
                 
-                if($findTwo) {
-                    if($tournament->draw_status == '1st Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $findTwo->{'1st_league'} = $findTwo->{'1st_league'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findTwo->{'1st_elite'} = $findTwo->{'1st_elite'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findTwo->{'1st_pro'} = $findTwo->{'1st_pro'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findTwo->{'1st_adv'} = $findTwo->{'1st_adv'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findTwo->{'1st_int'} = $findTwo->{'1st_int'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'1st_rookie'} = $findTwo->{'1st_rookie'} + $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '2nd Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $findTwo->{'2nd_league'} = $findTwo->{'2nd_league'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findTwo->{'2nd_elite'} = $findTwo->{'2nd_elite'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findTwo->{'2nd_pro'} = $findTwo->{'2nd_pro'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findTwo->{'2nd_adv'} = $findTwo->{'2nd_adv'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findTwo->{'2nd_int'} = $findTwo->{'2nd_int'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'2nd_rookie'} = $findTwo->{'2nd_rookie'} + $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '3rd Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findTwo->{'3rd_elite'} = $findTwo->{'3rd_elite'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findTwo->{'3rd_pro'} = $findTwo->{'3rd_pro'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findTwo->{'3rd_adv'} = $findTwo->{'3rd_adv'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findTwo->{'3rd_int'} = $findTwo->{'3rd_int'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'3rd_rookie'} = $findTwo->{'3rd_rookie'} + $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '4th Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findTwo->{'4th_elite'} = $findTwo->{'4th_elite'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findTwo->{'4th_pro'} = $findTwo->{'4th_pro'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findTwo->{'4th_adv'} = $findTwo->{'4th_adv'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findTwo->{'4th_int'} = $findTwo->{'4th_int'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'4th_rookie'} = $findTwo->{'4th_rookie'} + $request->{'p2_m'.$i};
-                        }
-                    }
-                    
-                    $findTwo->save();
-
-                } else {
-                    $newRankTwo = new Ranking();
-                    $newRankTwo->year = date('Y');
-                    $newRankTwo->user_id = $request->{'p2_m'.$i.'_id'};
-                    if($tournament->draw_status == '1st Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $newRankTwo->{'1st_league'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankTwo->{'1st_elite'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankTwo->{'1st_pro'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankTwo->{'1st_adv'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankTwo->{'1st_int'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'1st_rookie'} = $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '2nd Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $newRankTwo->{'2nd_league'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankTwo->{'2nd_elite'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankTwo->{'2nd_pro'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankTwo->{'2nd_adv'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankTwo->{'2nd_int'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'2nd_rookie'} = $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '3rd Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankTwo->{'3rd_elite'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankTwo->{'3rd_pro'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankTwo->{'3rd_adv'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankTwo->{'3rd_int'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'3rd_rookie'} = $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '4th Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankTwo->{'4th_elite'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankTwo->{'4th_pro'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankTwo->{'4th_adv'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankTwo->{'4th_int'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'4th_rookie'} = $request->{'p2_m'.$i};
-                        }
-                    }
-
-                    $newRankTwo->save();
-
-                }
-
+                $points_two = isset($chk_points['match_' . $i][$request->{'p2_m' . $i . '_id'}])
+                    ? $request->{'p2_m' . $i} - $chk_points['match_' . $i][$request->{'p2_m' . $i . '_id'}]
+                    : $request->{'p2_m' . $i};
+                
+                $this->processRanking($year, $request->{'p1_m' . $i . '_id'}, $points_one, $tournament, $request->chk_type);
+                $this->processRanking($year, $request->{'p2_m' . $i . '_id'}, $points_two, $tournament, $request->chk_type);
 
             }
         }
@@ -1555,341 +919,23 @@ class RankingsController extends Controller
         $pointsArr = [];
         for($i = 1; $i < 3; $i++) {
             if(isset($request->{'p1_m'.$i.'_id'}) && isset($request->{'p2_m'.$i.'_id'}) && isset($request->{'p1_m'.$i}) && isset($request->{'p2_m'.$i})) {
-                $pointsArr['match_'.$i][$request->{'p1_m'.$i.'_id'}] = $request->{'p1_m'.$i};
-                $pointsArr['match_'.$i][$request->{'p2_m'.$i.'_id'}] = $request->{'p2_m'.$i};
+                $pointsArr['match_' . $i][$request->{'p1_m' . $i . '_id'}] = $request->{'p1_m' . $i};
+                $pointsArr['match_' . $i][$request->{'p2_m' . $i . '_id'}] = $request->{'p2_m' . $i};
 
-                
                 $year = date('Y', strtotime($tournament->start));
-                $findOne = Ranking::where(['year' => $year, 'user_id' => $request->{'p1_m'.$i.'_id'}])->first();
-                $findTwo = Ranking::where(['year' => $year, 'user_id' => $request->{'p2_m'.$i.'_id'}])->first();
+
+                $chk_points = json_decode($tournament->semi_final_points, true);
                 
-                if($findOne) {
-                    if($tournament->draw_status == '1st Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $findOne->{'1st_league'} = $findOne->{'1st_league'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findOne->{'1st_elite'} = $findOne->{'1st_elite'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findOne->{'1st_pro'} = $findOne->{'1st_pro'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findOne->{'1st_adv'} = $findOne->{'1st_adv'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findOne->{'1st_int'} = $findOne->{'1st_int'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'1st_rookie'} = $findOne->{'1st_rookie'} + $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '2nd Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $findOne->{'2nd_league'} = $findOne->{'2nd_league'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findOne->{'2nd_elite'} = $findOne->{'2nd_elite'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findOne->{'2nd_pro'} = $findOne->{'2nd_pro'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findOne->{'2nd_adv'} = $findOne->{'2nd_adv'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findOne->{'2nd_int'} = $findOne->{'2nd_int'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'2nd_rookie'} = $findOne->{'2nd_rookie'} + $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '3rd Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findOne->{'3rd_elite'} = $findOne->{'3rd_elite'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findOne->{'3rd_pro'} = $findOne->{'3rd_pro'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findOne->{'3rd_adv'} = $findOne->{'3rd_adv'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findOne->{'3rd_int'} = $findOne->{'3rd_int'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'3rd_rookie'} = $findOne->{'3rd_rookie'} + $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '4th Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findOne->{'4th_elite'} = $findOne->{'4th_elite'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findOne->{'4th_pro'} = $findOne->{'4th_pro'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findOne->{'4th_adv'} = $findOne->{'4th_adv'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findOne->{'4th_int'} = $findOne->{'4th_int'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'4th_rookie'} = $findOne->{'4th_rookie'} + $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == 'Top16 Finals'){
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $findOne->{'top16_finals'} = $findOne->{'top16_finals'} + $request->{'p1_m'.$i};
-                        }
-                    }
-
-                    $findOne->save();
-
-                } else {
-                    $newRankOne = new Ranking();
-                    $newRankOne->year = date('Y');
-                    $newRankOne->user_id = $request->{'p1_m'.$i.'_id'};
-                    if($tournament->draw_status == '1st Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $newRankOne->{'1st_league'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankOne->{'1st_elite'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankOne->{'1st_pro'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankOne->{'1st_adv'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankOne->{'1st_int'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'1st_rookie'} = $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '2nd Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $newRankOne->{'2nd_league'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankOne->{'2nd_elite'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankOne->{'2nd_pro'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankOne->{'2nd_adv'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankOne->{'2nd_int'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'2nd_rookie'} = $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '3rd Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankOne->{'3rd_elite'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankOne->{'3rd_pro'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankOne->{'3rd_adv'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankOne->{'3rd_int'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'3rd_rookie'} = $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '4th Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankOne->{'4th_elite'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankOne->{'4th_pro'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankOne->{'4th_adv'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankOne->{'4th_int'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'4th_rookie'} = $request->{'p1_m'.$i};
-                        }
-                    }
-
-                    $newRankOne->save();
-
-                }
+                $points_one = isset($chk_points['match_' . $i][$request->{'p1_m' . $i . '_id'}])
+                    ? $request->{'p1_m' . $i} - $chk_points['match_' . $i][$request->{'p1_m' . $i . '_id'}]
+                    : $request->{'p1_m' . $i};
                 
-                if($findTwo) {
-                    if($tournament->draw_status == '1st Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $findTwo->{'1st_league'} = $findTwo->{'1st_league'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findTwo->{'1st_elite'} = $findTwo->{'1st_elite'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findTwo->{'1st_pro'} = $findTwo->{'1st_pro'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findTwo->{'1st_adv'} = $findTwo->{'1st_adv'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findTwo->{'1st_int'} = $findTwo->{'1st_int'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'1st_rookie'} = $findTwo->{'1st_rookie'} + $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '2nd Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $findTwo->{'2nd_league'} = $findTwo->{'2nd_league'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findTwo->{'2nd_elite'} = $findTwo->{'2nd_elite'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findTwo->{'2nd_pro'} = $findTwo->{'2nd_pro'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findTwo->{'2nd_adv'} = $findTwo->{'2nd_adv'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findTwo->{'2nd_int'} = $findTwo->{'2nd_int'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'2nd_rookie'} = $findTwo->{'2nd_rookie'} + $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '3rd Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findTwo->{'3rd_elite'} = $findTwo->{'3rd_elite'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findTwo->{'3rd_pro'} = $findTwo->{'3rd_pro'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findTwo->{'3rd_adv'} = $findTwo->{'3rd_adv'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findTwo->{'3rd_int'} = $findTwo->{'3rd_int'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'3rd_rookie'} = $findTwo->{'3rd_rookie'} + $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '4th Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findTwo->{'4th_elite'} = $findTwo->{'4th_elite'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findTwo->{'4th_pro'} = $findTwo->{'4th_pro'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findTwo->{'4th_adv'} = $findTwo->{'4th_adv'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findTwo->{'4th_int'} = $findTwo->{'4th_int'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'4th_rookie'} = $findTwo->{'4th_rookie'} + $request->{'p2_m'.$i};
-                        }
-                    }
-                    
-                    $findTwo->save();
-
-                } else {
-                    $newRankTwo = new Ranking();
-                    $newRankTwo->year = date('Y');
-                    $newRankTwo->user_id = $request->{'p2_m'.$i.'_id'};
-                    if($tournament->draw_status == '1st Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $newRankTwo->{'1st_league'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankTwo->{'1st_elite'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankTwo->{'1st_pro'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankTwo->{'1st_adv'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankTwo->{'1st_int'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'1st_rookie'} = $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '2nd Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $newRankTwo->{'2nd_league'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankTwo->{'2nd_elite'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankTwo->{'2nd_pro'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankTwo->{'2nd_adv'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankTwo->{'2nd_int'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'2nd_rookie'} = $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '3rd Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankTwo->{'3rd_elite'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankTwo->{'3rd_pro'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankTwo->{'3rd_adv'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankTwo->{'3rd_int'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'3rd_rookie'} = $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '4th Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankTwo->{'4th_elite'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankTwo->{'4th_pro'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankTwo->{'4th_adv'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankTwo->{'4th_int'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'4th_rookie'} = $request->{'p2_m'.$i};
-                        }
-                    }
-
-                    $newRankTwo->save();
-
-                }
-
+                $points_two = isset($chk_points['match_' . $i][$request->{'p2_m' . $i . '_id'}])
+                    ? $request->{'p2_m' . $i} - $chk_points['match_' . $i][$request->{'p2_m' . $i . '_id'}]
+                    : $request->{'p2_m' . $i};
+                
+                $this->processRanking($year, $request->{'p1_m' . $i . '_id'}, $points_one, $tournament, $request->chk_type);
+                $this->processRanking($year, $request->{'p2_m' . $i . '_id'}, $points_two, $tournament, $request->chk_type);
 
             }
         }
@@ -1918,341 +964,23 @@ class RankingsController extends Controller
         $pointsArr = [];
         for($i = 1; $i < 2; $i++) {
             if(isset($request->{'p1_m'.$i.'_id'}) && isset($request->{'p2_m'.$i.'_id'}) && isset($request->{'p1_m'.$i}) && isset($request->{'p2_m'.$i})) {
-                $pointsArr['match_'.$i][$request->{'p1_m'.$i.'_id'}] = $request->{'p1_m'.$i};
-                $pointsArr['match_'.$i][$request->{'p2_m'.$i.'_id'}] = $request->{'p2_m'.$i};
+                $pointsArr['match_' . $i][$request->{'p1_m' . $i . '_id'}] = $request->{'p1_m' . $i};
+                $pointsArr['match_' . $i][$request->{'p2_m' . $i . '_id'}] = $request->{'p2_m' . $i};
 
-                
                 $year = date('Y', strtotime($tournament->start));
-                $findOne = Ranking::where(['year' => $year, 'user_id' => $request->{'p1_m'.$i.'_id'}])->first();
-                $findTwo = Ranking::where(['year' => $year, 'user_id' => $request->{'p2_m'.$i.'_id'}])->first();
+
+                $chk_points = json_decode($tournament->final_points, true);
                 
-                if($findOne) {
-                    if($tournament->draw_status == '1st Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $findOne->{'1st_league'} = $findOne->{'1st_league'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findOne->{'1st_elite'} = $findOne->{'1st_elite'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findOne->{'1st_pro'} = $findOne->{'1st_pro'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findOne->{'1st_adv'} = $findOne->{'1st_adv'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findOne->{'1st_int'} = $findOne->{'1st_int'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'1st_rookie'} = $findOne->{'1st_rookie'} + $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '2nd Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $findOne->{'2nd_league'} = $findOne->{'2nd_league'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findOne->{'2nd_elite'} = $findOne->{'2nd_elite'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findOne->{'2nd_pro'} = $findOne->{'2nd_pro'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findOne->{'2nd_adv'} = $findOne->{'2nd_adv'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findOne->{'2nd_int'} = $findOne->{'2nd_int'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'2nd_rookie'} = $findOne->{'2nd_rookie'} + $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '3rd Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findOne->{'3rd_elite'} = $findOne->{'3rd_elite'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findOne->{'3rd_pro'} = $findOne->{'3rd_pro'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findOne->{'3rd_adv'} = $findOne->{'3rd_adv'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findOne->{'3rd_int'} = $findOne->{'3rd_int'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'3rd_rookie'} = $findOne->{'3rd_rookie'} + $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '4th Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findOne->{'4th_elite'} = $findOne->{'4th_elite'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findOne->{'4th_pro'} = $findOne->{'4th_pro'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findOne->{'4th_adv'} = $findOne->{'4th_adv'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findOne->{'4th_int'} = $findOne->{'4th_int'} + $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'4th_rookie'} = $findOne->{'4th_rookie'} + $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == 'Top16 Finals'){
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $findOne->{'top16_finals'} = $findOne->{'top16_finals'} + $request->{'p1_m'.$i};
-                        }
-                    }
-
-                    $findOne->save();
-
-                } else {
-                    $newRankOne = new Ranking();
-                    $newRankOne->year = date('Y');
-                    $newRankOne->user_id = $request->{'p1_m'.$i.'_id'};
-                    if($tournament->draw_status == '1st Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $newRankOne->{'1st_league'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankOne->{'1st_elite'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankOne->{'1st_pro'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankOne->{'1st_adv'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankOne->{'1st_int'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'1st_rookie'} = $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '2nd Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $newRankOne->{'2nd_league'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankOne->{'2nd_elite'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankOne->{'2nd_pro'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankOne->{'2nd_adv'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankOne->{'2nd_int'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'2nd_rookie'} = $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '3rd Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankOne->{'3rd_elite'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankOne->{'3rd_pro'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankOne->{'3rd_adv'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankOne->{'3rd_int'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'3rd_rookie'} = $request->{'p1_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '4th Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankOne->{'4th_elite'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankOne->{'4th_pro'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankOne->{'4th_adv'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankOne->{'4th_int'} = $request->{'p1_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'4th_rookie'} = $request->{'p1_m'.$i};
-                        }
-                    }
-
-                    $newRankOne->save();
-
-                }
+                $points_one = isset($chk_points['match_' . $i][$request->{'p1_m' . $i . '_id'}])
+                    ? $request->{'p1_m' . $i} - $chk_points['match_' . $i][$request->{'p1_m' . $i . '_id'}]
+                    : $request->{'p1_m' . $i};
                 
-                if($findTwo) {
-                    if($tournament->draw_status == '1st Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $findTwo->{'1st_league'} = $findTwo->{'1st_league'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findTwo->{'1st_elite'} = $findTwo->{'1st_elite'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findTwo->{'1st_pro'} = $findTwo->{'1st_pro'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findTwo->{'1st_adv'} = $findTwo->{'1st_adv'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findTwo->{'1st_int'} = $findTwo->{'1st_int'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'1st_rookie'} = $findTwo->{'1st_rookie'} + $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '2nd Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $findTwo->{'2nd_league'} = $findTwo->{'2nd_league'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findTwo->{'2nd_elite'} = $findTwo->{'2nd_elite'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findTwo->{'2nd_pro'} = $findTwo->{'2nd_pro'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findTwo->{'2nd_adv'} = $findTwo->{'2nd_adv'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findTwo->{'2nd_int'} = $findTwo->{'2nd_int'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'2nd_rookie'} = $findTwo->{'2nd_rookie'} + $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '3rd Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findTwo->{'3rd_elite'} = $findTwo->{'3rd_elite'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findTwo->{'3rd_pro'} = $findTwo->{'3rd_pro'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findTwo->{'3rd_adv'} = $findTwo->{'3rd_adv'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findTwo->{'3rd_int'} = $findTwo->{'3rd_int'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'3rd_rookie'} = $findTwo->{'3rd_rookie'} + $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '4th Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $findTwo->{'4th_elite'} = $findTwo->{'4th_elite'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $findTwo->{'4th_pro'} = $findTwo->{'4th_pro'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $findTwo->{'4th_adv'} = $findTwo->{'4th_adv'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $findTwo->{'4th_int'} = $findTwo->{'4th_int'} + $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'4th_rookie'} = $findTwo->{'4th_rookie'} + $request->{'p2_m'.$i};
-                        }
-                    }
-                    
-                    $findTwo->save();
-
-                } else {
-                    $newRankTwo = new Ranking();
-                    $newRankTwo->year = date('Y');
-                    $newRankTwo->user_id = $request->{'p2_m'.$i.'_id'};
-                    if($tournament->draw_status == '1st Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $newRankTwo->{'1st_league'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankTwo->{'1st_elite'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankTwo->{'1st_pro'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankTwo->{'1st_adv'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankTwo->{'1st_int'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'1st_rookie'} = $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '2nd Draw') {
-                        if($request->chk_type && $request->chk_type == 'League') {
-                            $newRankTwo->{'2nd_league'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankTwo->{'2nd_elite'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankTwo->{'2nd_pro'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankTwo->{'2nd_adv'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankTwo->{'2nd_int'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'2nd_rookie'} = $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '3rd Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankTwo->{'3rd_elite'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankTwo->{'3rd_pro'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankTwo->{'3rd_adv'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankTwo->{'3rd_int'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'3rd_rookie'} = $request->{'p2_m'.$i};
-                        }
-                    }
-                    if($tournament->draw_status == '4th Draw') {
-                        if (strpos($tournament->name, "ELITE") !== false) {
-                            $newRankTwo->{'4th_elite'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "PRO") !== false) {
-                            $newRankTwo->{'4th_pro'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ADV") !== false) {
-                            $newRankTwo->{'4th_adv'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "INT") !== false) {
-                            $newRankTwo->{'4th_int'} = $request->{'p2_m'.$i};
-                        }
-                        if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'4th_rookie'} = $request->{'p2_m'.$i};
-                        }
-                    }
-
-                    $newRankTwo->save();
-
-                }
-
+                $points_two = isset($chk_points['match_' . $i][$request->{'p2_m' . $i . '_id'}])
+                    ? $request->{'p2_m' . $i} - $chk_points['match_' . $i][$request->{'p2_m' . $i . '_id'}]
+                    : $request->{'p2_m' . $i};
+                
+                $this->processRanking($year, $request->{'p1_m' . $i . '_id'}, $points_one, $tournament, $request->chk_type);
+                $this->processRanking($year, $request->{'p2_m' . $i . '_id'}, $points_two, $tournament, $request->chk_type);
 
             }
         }

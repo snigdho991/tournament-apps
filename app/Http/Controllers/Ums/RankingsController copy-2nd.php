@@ -78,7 +78,7 @@ class RankingsController extends Controller
                             $findOne->{'1st_int'} = $findOne->{'1st_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'1st_rookie'} = $findOne->{'1st_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'1st_rook'} = $findOne->{'1st_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -98,7 +98,7 @@ class RankingsController extends Controller
                             $findOne->{'2nd_int'} = $findOne->{'2nd_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'2nd_rookie'} = $findOne->{'2nd_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'2nd_rook'} = $findOne->{'2nd_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -115,7 +115,7 @@ class RankingsController extends Controller
                             $findOne->{'3rd_int'} = $findOne->{'3rd_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'3rd_rookie'} = $findOne->{'3rd_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'3rd_rook'} = $findOne->{'3rd_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -132,7 +132,7 @@ class RankingsController extends Controller
                             $findOne->{'4th_int'} = $findOne->{'4th_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'4th_rookie'} = $findOne->{'4th_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'4th_rook'} = $findOne->{'4th_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == 'Top16 Finals'){
@@ -164,7 +164,7 @@ class RankingsController extends Controller
                             $newRankOne->{'1st_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'1st_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'1st_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -184,7 +184,7 @@ class RankingsController extends Controller
                             $newRankOne->{'2nd_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'2nd_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'2nd_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -201,7 +201,7 @@ class RankingsController extends Controller
                             $newRankOne->{'3rd_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'3rd_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'3rd_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -218,7 +218,7 @@ class RankingsController extends Controller
                             $newRankOne->{'4th_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'4th_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'4th_rook'} = $request->{'p1_m'.$i};
                         }
                     }
 
@@ -244,7 +244,7 @@ class RankingsController extends Controller
                             $findTwo->{'1st_int'} = $findTwo->{'1st_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'1st_rookie'} = $findTwo->{'1st_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'1st_rook'} = $findTwo->{'1st_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -264,7 +264,7 @@ class RankingsController extends Controller
                             $findTwo->{'2nd_int'} = $findTwo->{'2nd_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'2nd_rookie'} = $findTwo->{'2nd_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'2nd_rook'} = $findTwo->{'2nd_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -281,7 +281,7 @@ class RankingsController extends Controller
                             $findTwo->{'3rd_int'} = $findTwo->{'3rd_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'3rd_rookie'} = $findTwo->{'3rd_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'3rd_rook'} = $findTwo->{'3rd_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -298,7 +298,7 @@ class RankingsController extends Controller
                             $findTwo->{'4th_int'} = $findTwo->{'4th_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'4th_rookie'} = $findTwo->{'4th_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'4th_rook'} = $findTwo->{'4th_rook'} + $request->{'p2_m'.$i};
                         }
                     }
 
@@ -325,7 +325,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'1st_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'1st_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'1st_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -345,7 +345,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'2nd_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'2nd_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'2nd_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -362,7 +362,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'3rd_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'3rd_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'3rd_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -379,7 +379,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'4th_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'4th_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'4th_rook'} = $request->{'p2_m'.$i};
                         }
                     }
 
@@ -468,7 +468,7 @@ class RankingsController extends Controller
                             $findOne->{'1st_int'} = $findOne->{'1st_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'1st_rookie'} = $findOne->{'1st_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'1st_rook'} = $findOne->{'1st_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -488,7 +488,7 @@ class RankingsController extends Controller
                             $findOne->{'2nd_int'} = $findOne->{'2nd_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'2nd_rookie'} = $findOne->{'2nd_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'2nd_rook'} = $findOne->{'2nd_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -505,7 +505,7 @@ class RankingsController extends Controller
                             $findOne->{'3rd_int'} = $findOne->{'3rd_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'3rd_rookie'} = $findOne->{'3rd_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'3rd_rook'} = $findOne->{'3rd_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -522,7 +522,7 @@ class RankingsController extends Controller
                             $findOne->{'4th_int'} = $findOne->{'4th_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'4th_rookie'} = $findOne->{'4th_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'4th_rook'} = $findOne->{'4th_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == 'Top16 Finals'){
@@ -554,7 +554,7 @@ class RankingsController extends Controller
                             $newRankOne->{'1st_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'1st_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'1st_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -574,7 +574,7 @@ class RankingsController extends Controller
                             $newRankOne->{'2nd_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'2nd_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'2nd_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -591,7 +591,7 @@ class RankingsController extends Controller
                             $newRankOne->{'3rd_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'3rd_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'3rd_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -608,7 +608,7 @@ class RankingsController extends Controller
                             $newRankOne->{'4th_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'4th_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'4th_rook'} = $request->{'p1_m'.$i};
                         }
                     }
 
@@ -634,7 +634,7 @@ class RankingsController extends Controller
                             $findTwo->{'1st_int'} = $findTwo->{'1st_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'1st_rookie'} = $findTwo->{'1st_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'1st_rook'} = $findTwo->{'1st_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -654,7 +654,7 @@ class RankingsController extends Controller
                             $findTwo->{'2nd_int'} = $findTwo->{'2nd_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'2nd_rookie'} = $findTwo->{'2nd_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'2nd_rook'} = $findTwo->{'2nd_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -671,7 +671,7 @@ class RankingsController extends Controller
                             $findTwo->{'3rd_int'} = $findTwo->{'3rd_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'3rd_rookie'} = $findTwo->{'3rd_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'3rd_rook'} = $findTwo->{'3rd_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -688,7 +688,7 @@ class RankingsController extends Controller
                             $findTwo->{'4th_int'} = $findTwo->{'4th_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'4th_rookie'} = $findTwo->{'4th_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'4th_rook'} = $findTwo->{'4th_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     
@@ -715,7 +715,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'1st_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'1st_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'1st_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -735,7 +735,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'2nd_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'2nd_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'2nd_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -752,7 +752,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'3rd_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'3rd_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'3rd_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -769,7 +769,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'4th_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'4th_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'4th_rook'} = $request->{'p2_m'.$i};
                         }
                     }
 
@@ -855,7 +855,7 @@ class RankingsController extends Controller
                             $findOne->{'1st_int'} = $findOne->{'1st_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'1st_rookie'} = $findOne->{'1st_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'1st_rook'} = $findOne->{'1st_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -875,7 +875,7 @@ class RankingsController extends Controller
                             $findOne->{'2nd_int'} = $findOne->{'2nd_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'2nd_rookie'} = $findOne->{'2nd_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'2nd_rook'} = $findOne->{'2nd_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -892,7 +892,7 @@ class RankingsController extends Controller
                             $findOne->{'3rd_int'} = $findOne->{'3rd_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'3rd_rookie'} = $findOne->{'3rd_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'3rd_rook'} = $findOne->{'3rd_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -909,7 +909,7 @@ class RankingsController extends Controller
                             $findOne->{'4th_int'} = $findOne->{'4th_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'4th_rookie'} = $findOne->{'4th_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'4th_rook'} = $findOne->{'4th_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == 'Top16 Finals'){
@@ -941,7 +941,7 @@ class RankingsController extends Controller
                             $newRankOne->{'1st_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'1st_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'1st_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -961,7 +961,7 @@ class RankingsController extends Controller
                             $newRankOne->{'2nd_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'2nd_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'2nd_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -978,7 +978,7 @@ class RankingsController extends Controller
                             $newRankOne->{'3rd_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'3rd_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'3rd_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -995,7 +995,7 @@ class RankingsController extends Controller
                             $newRankOne->{'4th_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'4th_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'4th_rook'} = $request->{'p1_m'.$i};
                         }
                     }
 
@@ -1021,7 +1021,7 @@ class RankingsController extends Controller
                             $findTwo->{'1st_int'} = $findTwo->{'1st_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'1st_rookie'} = $findTwo->{'1st_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'1st_rook'} = $findTwo->{'1st_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -1041,7 +1041,7 @@ class RankingsController extends Controller
                             $findTwo->{'2nd_int'} = $findTwo->{'2nd_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'2nd_rookie'} = $findTwo->{'2nd_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'2nd_rook'} = $findTwo->{'2nd_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -1058,7 +1058,7 @@ class RankingsController extends Controller
                             $findTwo->{'3rd_int'} = $findTwo->{'3rd_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'3rd_rookie'} = $findTwo->{'3rd_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'3rd_rook'} = $findTwo->{'3rd_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -1075,7 +1075,7 @@ class RankingsController extends Controller
                             $findTwo->{'4th_int'} = $findTwo->{'4th_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'4th_rookie'} = $findTwo->{'4th_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'4th_rook'} = $findTwo->{'4th_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     
@@ -1102,7 +1102,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'1st_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'1st_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'1st_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -1122,7 +1122,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'2nd_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'2nd_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'2nd_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -1139,7 +1139,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'3rd_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'3rd_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'3rd_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -1156,7 +1156,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'4th_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'4th_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'4th_rook'} = $request->{'p2_m'.$i};
                         }
                     }
 
@@ -1218,7 +1218,7 @@ class RankingsController extends Controller
                             $findOne->{'1st_int'} = $findOne->{'1st_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'1st_rookie'} = $findOne->{'1st_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'1st_rook'} = $findOne->{'1st_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -1238,7 +1238,7 @@ class RankingsController extends Controller
                             $findOne->{'2nd_int'} = $findOne->{'2nd_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'2nd_rookie'} = $findOne->{'2nd_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'2nd_rook'} = $findOne->{'2nd_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -1255,7 +1255,7 @@ class RankingsController extends Controller
                             $findOne->{'3rd_int'} = $findOne->{'3rd_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'3rd_rookie'} = $findOne->{'3rd_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'3rd_rook'} = $findOne->{'3rd_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -1272,7 +1272,7 @@ class RankingsController extends Controller
                             $findOne->{'4th_int'} = $findOne->{'4th_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'4th_rookie'} = $findOne->{'4th_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'4th_rook'} = $findOne->{'4th_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == 'Top16 Finals'){
@@ -1304,7 +1304,7 @@ class RankingsController extends Controller
                             $newRankOne->{'1st_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'1st_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'1st_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -1324,7 +1324,7 @@ class RankingsController extends Controller
                             $newRankOne->{'2nd_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'2nd_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'2nd_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -1341,7 +1341,7 @@ class RankingsController extends Controller
                             $newRankOne->{'3rd_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'3rd_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'3rd_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -1358,7 +1358,7 @@ class RankingsController extends Controller
                             $newRankOne->{'4th_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'4th_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'4th_rook'} = $request->{'p1_m'.$i};
                         }
                     }
 
@@ -1384,7 +1384,7 @@ class RankingsController extends Controller
                             $findTwo->{'1st_int'} = $findTwo->{'1st_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'1st_rookie'} = $findTwo->{'1st_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'1st_rook'} = $findTwo->{'1st_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -1404,7 +1404,7 @@ class RankingsController extends Controller
                             $findTwo->{'2nd_int'} = $findTwo->{'2nd_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'2nd_rookie'} = $findTwo->{'2nd_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'2nd_rook'} = $findTwo->{'2nd_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -1421,7 +1421,7 @@ class RankingsController extends Controller
                             $findTwo->{'3rd_int'} = $findTwo->{'3rd_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'3rd_rookie'} = $findTwo->{'3rd_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'3rd_rook'} = $findTwo->{'3rd_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -1438,7 +1438,7 @@ class RankingsController extends Controller
                             $findTwo->{'4th_int'} = $findTwo->{'4th_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'4th_rookie'} = $findTwo->{'4th_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'4th_rook'} = $findTwo->{'4th_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     
@@ -1465,7 +1465,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'1st_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'1st_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'1st_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -1485,7 +1485,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'2nd_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'2nd_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'2nd_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -1502,7 +1502,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'3rd_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'3rd_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'3rd_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -1519,7 +1519,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'4th_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'4th_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'4th_rook'} = $request->{'p2_m'.$i};
                         }
                     }
 
@@ -1581,7 +1581,7 @@ class RankingsController extends Controller
                             $findOne->{'1st_int'} = $findOne->{'1st_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'1st_rookie'} = $findOne->{'1st_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'1st_rook'} = $findOne->{'1st_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -1601,7 +1601,7 @@ class RankingsController extends Controller
                             $findOne->{'2nd_int'} = $findOne->{'2nd_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'2nd_rookie'} = $findOne->{'2nd_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'2nd_rook'} = $findOne->{'2nd_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -1618,7 +1618,7 @@ class RankingsController extends Controller
                             $findOne->{'3rd_int'} = $findOne->{'3rd_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'3rd_rookie'} = $findOne->{'3rd_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'3rd_rook'} = $findOne->{'3rd_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -1635,7 +1635,7 @@ class RankingsController extends Controller
                             $findOne->{'4th_int'} = $findOne->{'4th_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'4th_rookie'} = $findOne->{'4th_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'4th_rook'} = $findOne->{'4th_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == 'Top16 Finals'){
@@ -1667,7 +1667,7 @@ class RankingsController extends Controller
                             $newRankOne->{'1st_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'1st_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'1st_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -1687,7 +1687,7 @@ class RankingsController extends Controller
                             $newRankOne->{'2nd_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'2nd_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'2nd_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -1704,7 +1704,7 @@ class RankingsController extends Controller
                             $newRankOne->{'3rd_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'3rd_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'3rd_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -1721,7 +1721,7 @@ class RankingsController extends Controller
                             $newRankOne->{'4th_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'4th_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'4th_rook'} = $request->{'p1_m'.$i};
                         }
                     }
 
@@ -1747,7 +1747,7 @@ class RankingsController extends Controller
                             $findTwo->{'1st_int'} = $findTwo->{'1st_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'1st_rookie'} = $findTwo->{'1st_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'1st_rook'} = $findTwo->{'1st_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -1767,7 +1767,7 @@ class RankingsController extends Controller
                             $findTwo->{'2nd_int'} = $findTwo->{'2nd_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'2nd_rookie'} = $findTwo->{'2nd_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'2nd_rook'} = $findTwo->{'2nd_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -1784,7 +1784,7 @@ class RankingsController extends Controller
                             $findTwo->{'3rd_int'} = $findTwo->{'3rd_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'3rd_rookie'} = $findTwo->{'3rd_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'3rd_rook'} = $findTwo->{'3rd_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -1801,7 +1801,7 @@ class RankingsController extends Controller
                             $findTwo->{'4th_int'} = $findTwo->{'4th_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'4th_rookie'} = $findTwo->{'4th_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'4th_rook'} = $findTwo->{'4th_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     
@@ -1828,7 +1828,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'1st_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'1st_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'1st_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -1848,7 +1848,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'2nd_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'2nd_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'2nd_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -1865,7 +1865,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'3rd_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'3rd_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'3rd_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -1882,7 +1882,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'4th_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'4th_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'4th_rook'} = $request->{'p2_m'.$i};
                         }
                     }
 
@@ -1944,7 +1944,7 @@ class RankingsController extends Controller
                             $findOne->{'1st_int'} = $findOne->{'1st_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'1st_rookie'} = $findOne->{'1st_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'1st_rook'} = $findOne->{'1st_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -1964,7 +1964,7 @@ class RankingsController extends Controller
                             $findOne->{'2nd_int'} = $findOne->{'2nd_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'2nd_rookie'} = $findOne->{'2nd_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'2nd_rook'} = $findOne->{'2nd_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -1981,7 +1981,7 @@ class RankingsController extends Controller
                             $findOne->{'3rd_int'} = $findOne->{'3rd_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'3rd_rookie'} = $findOne->{'3rd_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'3rd_rook'} = $findOne->{'3rd_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -1998,7 +1998,7 @@ class RankingsController extends Controller
                             $findOne->{'4th_int'} = $findOne->{'4th_int'} + $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findOne->{'4th_rookie'} = $findOne->{'4th_rookie'} + $request->{'p1_m'.$i};
+                            $findOne->{'4th_rook'} = $findOne->{'4th_rook'} + $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == 'Top16 Finals'){
@@ -2030,7 +2030,7 @@ class RankingsController extends Controller
                             $newRankOne->{'1st_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'1st_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'1st_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -2050,7 +2050,7 @@ class RankingsController extends Controller
                             $newRankOne->{'2nd_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'2nd_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'2nd_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -2067,7 +2067,7 @@ class RankingsController extends Controller
                             $newRankOne->{'3rd_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'3rd_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'3rd_rook'} = $request->{'p1_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -2084,7 +2084,7 @@ class RankingsController extends Controller
                             $newRankOne->{'4th_int'} = $request->{'p1_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankOne->{'4th_rookie'} = $request->{'p1_m'.$i};
+                            $newRankOne->{'4th_rook'} = $request->{'p1_m'.$i};
                         }
                     }
 
@@ -2110,7 +2110,7 @@ class RankingsController extends Controller
                             $findTwo->{'1st_int'} = $findTwo->{'1st_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'1st_rookie'} = $findTwo->{'1st_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'1st_rook'} = $findTwo->{'1st_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -2130,7 +2130,7 @@ class RankingsController extends Controller
                             $findTwo->{'2nd_int'} = $findTwo->{'2nd_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'2nd_rookie'} = $findTwo->{'2nd_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'2nd_rook'} = $findTwo->{'2nd_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -2147,7 +2147,7 @@ class RankingsController extends Controller
                             $findTwo->{'3rd_int'} = $findTwo->{'3rd_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'3rd_rookie'} = $findTwo->{'3rd_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'3rd_rook'} = $findTwo->{'3rd_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -2164,7 +2164,7 @@ class RankingsController extends Controller
                             $findTwo->{'4th_int'} = $findTwo->{'4th_int'} + $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $findTwo->{'4th_rookie'} = $findTwo->{'4th_rookie'} + $request->{'p2_m'.$i};
+                            $findTwo->{'4th_rook'} = $findTwo->{'4th_rook'} + $request->{'p2_m'.$i};
                         }
                     }
                     
@@ -2191,7 +2191,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'1st_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'1st_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'1st_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '2nd Draw') {
@@ -2211,7 +2211,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'2nd_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'2nd_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'2nd_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '3rd Draw') {
@@ -2228,7 +2228,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'3rd_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'3rd_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'3rd_rook'} = $request->{'p2_m'.$i};
                         }
                     }
                     if($tournament->draw_status == '4th Draw') {
@@ -2245,7 +2245,7 @@ class RankingsController extends Controller
                             $newRankTwo->{'4th_int'} = $request->{'p2_m'.$i};
                         }
                         if (strpos($tournament->name, "ROOKIE") !== false) {
-                            $newRankTwo->{'4th_rookie'} = $request->{'p2_m'.$i};
+                            $newRankTwo->{'4th_rook'} = $request->{'p2_m'.$i};
                         }
                     }
 
